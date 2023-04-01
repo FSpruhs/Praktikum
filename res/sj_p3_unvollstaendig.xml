@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Schlangenjagd SYSTEM "schlangenjagd.dtd" >
+<Schlangenjagd>
+	<Zeit einheit="s">
+		<Vorgabe>10.0</Vorgabe>
+	</Zeit>
+	<Dschungel zeilen="11" spalten="11" zeichen="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
+	</Dschungel>
+	<Schlangenarten>
+		<Schlangenart id="A0" punkte="1" anzahl="1">
+			<Zeichenkette>DONAUDAMPFSCHIFFFAHRTSELEKTRIZITÄTENHAUPTBETRIEBSWERKBAUUNTERBEAMTENGESELLSCHAFT</Zeichenkette>
+			<Nachbarschaftsstruktur typ="Distanz">
+				<Parameter wert="1" />
+			</Nachbarschaftsstruktur>
+		</Schlangenart>
+	</Schlangenarten>
+</Schlangenjagd>

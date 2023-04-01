@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Schlangenjagd SYSTEM "schlangenjagd.dtd">
+<Schlangenjagd>
+    <Zeit einheit="s">
+        <Vorgabe>10.0</Vorgabe>
+        <Abgabe>4.37810965</Abgabe>
+    </Zeit>
+    <Dschungel zeilen="5" spalten="8" zeichen="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
+        <Feld id="F0" zeile="0" spalte="0" verwendbarkeit="1" punkte="1">N</Feld>
+        <Feld id="F1" zeile="0" spalte="1" verwendbarkeit="1" punkte="1">G</Feld>
+        <Feld id="F2" zeile="0" spalte="2" verwendbarkeit="1" punkte="1">R</Feld>
+        <Feld id="F3" zeile="0" spalte="3" verwendbarkeit="1" punkte="1">N</Feld>
+        <Feld id="F4" zeile="0" spalte="4" verwendbarkeit="1" punkte="1">T</Feld>
+        <Feld id="F5" zeile="0" spalte="5" verwendbarkeit="1" punkte="1">A</Feld>
+        <Feld id="F6" zeile="0" spalte="6" verwendbarkeit="1" punkte="1">R</Feld>
+        <Feld id="F7" zeile="0" spalte="7" verwendbarkeit="1" punkte="1">E</Feld>
+        <Feld id="F8" zeile="1" spalte="0" verwendbarkeit="1" punkte="1">H</Feld>
+        <Feld id="F9" zeile="1" spalte="1" verwendbarkeit="1" punkte="1">I</Feld>
+        <Feld id="F10" zeile="1" spalte="2" verwendbarkeit="1" punkte="1">E</Feld>
+        <Feld id="F11" zeile="1" spalte="3" verwendbarkeit="1" punkte="1">I</Feld>
+        <Feld id="F12" zeile="1" spalte="4" verwendbarkeit="1" punkte="1">T</Feld>
+        <Feld id="F13" zeile="1" spalte="5" verwendbarkeit="1" punkte="1">A</Feld>
+        <Feld id="F14" zeile="1" spalte="6" verwendbarkeit="1" punkte="1">T</Feld>
+        <Feld id="F15" zeile="1" spalte="7" verwendbarkeit="1" punkte="1">Ä</Feld>
+        <Feld id="F16" zeile="2" spalte="0" verwendbarkeit="1" punkte="1">C</Feld>
+        <Feld id="F17" zeile="2" spalte="1" verwendbarkeit="1" punkte="1">R</Feld>
+        <Feld id="F18" zeile="2" spalte="2" verwendbarkeit="1" punkte="1">N</Feld>
+        <Feld id="F19" zeile="2" spalte="3" verwendbarkeit="1" punkte="1">N</Feld>
+        <Feld id="F20" zeile="2" spalte="4" verwendbarkeit="1" punkte="1">E</Feld>
+        <Feld id="F21" zeile="2" spalte="5" verwendbarkeit="1" punkte="1">N</Feld>
+        <Feld id="F22" zeile="2" spalte="6" verwendbarkeit="1" punkte="1">S</Feld>
+        <Feld id="F23" zeile="2" spalte="7" verwendbarkeit="1" punkte="1">T</Feld>
+        <Feld id="F24" zeile="3" spalte="0" verwendbarkeit="1" punkte="1">G</Feld>
+        <Feld id="F25" zeile="3" spalte="1" verwendbarkeit="1" punkte="1">R</Feld>
+        <Feld id="F26" zeile="3" spalte="2" verwendbarkeit="1" punkte="1">L</Feld>
+        <Feld id="F27" zeile="3" spalte="3" verwendbarkeit="1" punkte="1">P</Feld>
+        <Feld id="F28" zeile="3" spalte="4" verwendbarkeit="1" punkte="1">T</Feld>
+        <Feld id="F29" zeile="3" spalte="5" verwendbarkeit="1" punkte="1">L</Feld>
+        <Feld id="F30" zeile="3" spalte="6" verwendbarkeit="1" punkte="1">K</Feld>
+        <Feld id="F31" zeile="3" spalte="7" verwendbarkeit="1" punkte="1">U</Feld>
+        <Feld id="F32" zeile="4" spalte="0" verwendbarkeit="1" punkte="1">E</Feld>
+        <Feld id="F33" zeile="4" spalte="1" verwendbarkeit="1" punkte="1">L</Feld>
+        <Feld id="F34" zeile="4" spalte="2" verwendbarkeit="1" punkte="1">S</Feld>
+        <Feld id="F35" zeile="4" spalte="3" verwendbarkeit="1" punkte="1">A</Feld>
+        <Feld id="F36" zeile="4" spalte="4" verwendbarkeit="1" punkte="1">R</Feld>
+        <Feld id="F37" zeile="4" spalte="5" verwendbarkeit="1" punkte="1">A</Feld>
+        <Feld id="F38" zeile="4" spalte="6" verwendbarkeit="1" punkte="1">T</Feld>
+        <Feld id="F39" zeile="4" spalte="7" verwendbarkeit="1" punkte="1">A</Feld>
+    </Dschungel>
+    <Schlangenarten>
+        <Schlangenart id="A0" punkte="1" anzahl="1">
+            <Zeichenkette>ÄSKULAPNATTER</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Distanz">
+                <Parameter wert="2" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+        <Schlangenart id="A1" punkte="1" anzahl="1">
+            <Zeichenkette>RINGELNATTER</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Distanz">
+                <Parameter wert="2" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+        <Schlangenart id="A2" punkte="1" anzahl="1">
+            <Zeichenkette>SCHLINGNATTER</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Distanz">
+                <Parameter wert="2" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+    </Schlangenarten>
+    <Schlangen>
+        <Schlange art="A1">
+            <Schlangenglied feld="F2" />
+            <Schlangenglied feld="F11" />
+            <Schlangenglied feld="F18" />
+            <Schlangenglied feld="F24" />
+            <Schlangenglied feld="F32" />
+            <Schlangenglied feld="F33" />
+            <Schlangenglied feld="F19" />
+            <Schlangenglied feld="F5" />
+            <Schlangenglied feld="F4" />
+            <Schlangenglied feld="F12" />
+            <Schlangenglied feld="F10" />
+            <Schlangenglied feld="F17" />
+        </Schlange>
+        <Schlange art="A0">
+            <Schlangenglied feld="F15" />
+            <Schlangenglied feld="F22" />
+            <Schlangenglied feld="F30" />
+            <Schlangenglied feld="F31" />
+            <Schlangenglied feld="F29" />
+            <Schlangenglied feld="F35" />
+            <Schlangenglied feld="F27" />
+            <Schlangenglied feld="F21" />
+            <Schlangenglied feld="F37" />
+            <Schlangenglied feld="F23" />
+            <Schlangenglied feld="F14" />
+            <Schlangenglied feld="F7" />
+            <Schlangenglied feld="F6" />
+        </Schlange>
+        <Schlange art="A2">
+            <Schlangenglied feld="F34" />
+            <Schlangenglied feld="F16" />
+            <Schlangenglied feld="F8" />
+            <Schlangenglied feld="F26" />
+            <Schlangenglied feld="F9" />
+            <Schlangenglied feld="F0" />
+            <Schlangenglied feld="F1" />
+            <Schlangenglied feld="F3" />
+            <Schlangenglied feld="F13" />
+            <Schlangenglied feld="F28" />
+            <Schlangenglied feld="F38" />
+            <Schlangenglied feld="F20" />
+            <Schlangenglied feld="F36" />
+        </Schlange>
+    </Schlangen>
+</Schlangenjagd>

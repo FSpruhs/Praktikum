@@ -1,0 +1,47 @@
+<!ELEMENT Schlangenjagd (Zeit?, Dschungel, Schlangenarten, 
+        Schlangen?)>
+<!ELEMENT Zeit (Vorgabe, Abgabe?)> 
+<!ATTLIST Zeit
+    einheit (ms|s|min|h|d) "s"
+>
+<!ELEMENT Vorgabe (#PCDATA)>
+<!ELEMENT Abgabe (#PCDATA)>
+<!ELEMENT Dschungel (Feld*)>
+<!ATTLIST Dschungel
+    zeilen CDATA #REQUIRED
+    spalten CDATA #REQUIRED
+    zeichen CDATA #REQUIRED
+>
+<!ELEMENT Feld (#PCDATA)> 
+<!ATTLIST Feld
+    id ID #REQUIRED
+    zeile CDATA #REQUIRED
+    spalte CDATA #REQUIRED
+    verwendbarkeit CDATA "1"
+    punkte CDATA "1"
+>
+<!ELEMENT Schlangenarten (Schlangenart+)>
+<!ELEMENT Schlangenart (Zeichenkette, Nachbarschaftsstruktur)>
+<!ATTLIST Schlangenart
+    id ID #REQUIRED
+    punkte CDATA "1"
+    anzahl CDATA #REQUIRED
+>
+<!ELEMENT Zeichenkette (#PCDATA)>
+<!ELEMENT Nachbarschaftsstruktur (Parameter*)>
+<!ATTLIST Nachbarschaftsstruktur
+    typ CDATA #REQUIRED
+>
+<!ELEMENT Parameter EMPTY>
+<!ATTLIST Parameter
+    wert CDATA #REQUIRED
+>
+<!ELEMENT Schlangen (Schlange*)>
+<!ELEMENT Schlange (Schlangenglied+)>
+<!ATTLIST Schlange
+    art IDREF #REQUIRED
+>
+<!ELEMENT Schlangenglied EMPTY>
+<!ATTLIST Schlangenglied
+    feld IDREF #REQUIRED
+>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Schlangenjagd SYSTEM "schlangenjagd.dtd" >
+<Schlangenjagd>
+	<Zeit einheit="s">
+		<Vorgabe>10.0</Vorgabe>
+	</Zeit>
+	<Dschungel zeilen="5" spalten="10" zeichen="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
+	</Dschungel>
+	<Schlangenarten>
+		<Schlangenart id="A0" punkte="1" anzahl="1">
+			<Zeichenkette>DIE</Zeichenkette>
+			<Nachbarschaftsstruktur typ="Distanz">
+				<Parameter wert="1" />
+			</Nachbarschaftsstruktur>
+		</Schlangenart>
+		<Schlangenart id="A1" punkte="1" anzahl="1">
+			<Zeichenkette>DIES</Zeichenkette>
+			<Nachbarschaftsstruktur typ="Distanz">
+				<Parameter wert="1" />
+			</Nachbarschaftsstruktur>
+		</Schlangenart>
+		<Schlangenart id="A2" punkte="1" anzahl="1">
+			<Zeichenkette>DIESE</Zeichenkette>
+			<Nachbarschaftsstruktur typ="Distanz">
+				<Parameter wert="1" />
+			</Nachbarschaftsstruktur>
+		</Schlangenart>
+		<Schlangenart id="A3" punkte="1" anzahl="1">
+			<Zeichenkette>DIESES</Zeichenkette>
+			<Nachbarschaftsstruktur typ="Distanz">
+				<Parameter wert="1" />
+			</Nachbarschaftsstruktur>
+		</Schlangenart>
+		<Schlangenart id="A4" punkte="1" anzahl="1">
+			<Zeichenkette>DIESEN</Zeichenkette>
+			<Nachbarschaftsstruktur typ="Distanz">
+				<Parameter wert="1" />
+			</Nachbarschaftsstruktur>
+		</Schlangenart>
+		<Schlangenart id="A5" punkte="1" anzahl="1">
+			<Zeichenkette>DIESER</Zeichenkette>
+			<Nachbarschaftsstruktur typ="Distanz">
+				<Parameter wert="1" />
+			</Nachbarschaftsstruktur>
+		</Schlangenart>
+	</Schlangenarten>
+</Schlangenjagd>
