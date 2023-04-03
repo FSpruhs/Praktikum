@@ -5,5 +5,9 @@ import java.util.List;
 public class Solution {
 	
 	private List<Snake> snakes;
+	
+	public void loadSnakes(List<Snake> snakes) {
+		this.snakes = snakes;
+	}
 
 }

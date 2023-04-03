@@ -4,7 +4,12 @@ import java.util.List;
 
 public class Snake {
 	
-	private int snakeTypeId;
-	private List<SnakePart> snakeParts;
+	private final String snakeTypeId;
+	private final List<SnakePart> snakeParts;
+	
+	public Snake(String snakeTypeId, List<SnakePart> snakeParts) {
+		this.snakeTypeId = snakeTypeId;
+		this.snakeParts = snakeParts;
+	}
 
 }
