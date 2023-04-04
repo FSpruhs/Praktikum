@@ -11,6 +11,7 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
+import de.fernuni.kurs01584.ss23.domain.exception.NeighborhoodStructureNotFoundException;
 import de.fernuni.kurs01584.ss23.domain.model.Jungle;
 import de.fernuni.kurs01584.ss23.domain.model.JungleField;
 import de.fernuni.kurs01584.ss23.domain.model.Snake;
@@ -65,10 +66,10 @@ public class XMLSnakeHuntReader {
 				);
 	}
 	
-	public List<SnakeType> snakeTypes() {
+	public List<SnakeType> readSnakeTypes() {
 		List<SnakeType> result = new LinkedList<>();
 		root.getChild("Schlangenarten").getChildren().forEach(snakeType -> {
-			readSnakeType(snakeType);
+			result.add(readSnakeType(snakeType))  ;
 		});
 		return result;
 	}
@@ -85,12 +86,12 @@ public class XMLSnakeHuntReader {
 	
 	private NeighborhoodStructure readNeighborhoodStructure(Element neighborhoodStructure) {
 		if (neighborhoodStructure.getAttributeValue("typ").equals("Distanz")) {
-			
 			return readDistance(neighborhoodStructure);
-		} else {
-
+		} 
+		if (neighborhoodStructure.getAttributeValue("typ").equals("Sprung")) {
 			return readJump(neighborhoodStructure);
 		}
+		throw new NeighborhoodStructureNotFoundException(neighborhoodStructure.getAttributeValue("typ").toString());
 	}
 	
 	private NeighborhoodStructure readDistance(Element neighborhoodStructure) {
@@ -104,8 +105,8 @@ public class XMLSnakeHuntReader {
 				);
 	}
 	
-	public Duration durationinSeconds() {
-		return Duration.ofSeconds(Long.parseLong(root.getChild("Zeit").getChild("Vorgabe").getValue()));
+	public Duration readDurationInSeconds() {
+		return Duration.ofSeconds( (long) Float.parseFloat(root.getChild("Zeit").getChild("Vorgabe").getValue()));
 	}
 	
 	public Solution readSolution() {
@@ -115,17 +116,12 @@ public class XMLSnakeHuntReader {
 			return result;
 		}
 		return null;
-
 	}
 
 	private List<Snake> readSnakes() {
 		List<Snake> result = new LinkedList<>();
 		root.getChild("Schlangen").getChildren().forEach(snake -> {
 			result.add(readSnake(snake));
-			snake.getAttributeValue("art");
-			snake.getChildren().forEach(snakePart -> {
-				log.info(snakePart.getAttributeValue("feld"));
-			});
 		});
 		return result;
 	}
@@ -147,10 +143,5 @@ public class XMLSnakeHuntReader {
 
 	private SnakePart readSnakePart(Element snakePart) {
 		return new SnakePart(snakePart.getAttributeValue("feld"));
-	}
-	
-	public static void main(String[] args) {
-		//XMLSnakeHuntReader xmlSnakeHuntReader = new XMLSnakeHuntReader();
-		//xmlSnakeHuntReader.readFile("./res/sj_p5_loesung.xml");
 	}
 }
