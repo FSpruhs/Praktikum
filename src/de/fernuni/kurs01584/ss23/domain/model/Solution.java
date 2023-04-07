@@ -10,6 +10,10 @@ public class Solution {
 	public void loadSnakes(List<Snake> snakes) {
 		this.snakes = snakes;
 	}
+	
+	public List<Snake> getSnakes() {
+		return snakes;
+	}
 
 	@Override
 	public int hashCode() {

@@ -10,13 +10,21 @@ public class Jungle {
 	private final int rows;
 	private final int columns;
 	private final String characters;
-	private final List<JungleField> jungleFields;
+	private final JungleField[][] jungleFields;
 	
-	public Jungle(int rows, int columns, String characters, List<JungleField> jungleFields) {
+	public Jungle(int rows, int columns, String characters, JungleField[][]jungleFields) {
 		this.rows = rows;
 		this.columns = columns;
 		this.characters = characters;
 		this.jungleFields = jungleFields;
+	}
+	
+	public JungleField[][] getJungleFields() {
+		return jungleFields;
+	}
+	
+	public JungleField getJungleField(int row, int colum) {
+		return jungleFields[row][colum];
 	}
 
 	@Override
@@ -36,7 +44,21 @@ public class Jungle {
 		return Objects.equals(characters, other.characters) && columns == other.columns
 				&& Objects.equals(jungleFields, other.jungleFields) && rows == other.rows;
 	}
-	
-	
+
+	public JungleField getJungleField(String fieldId) {
+		return null;
+	}
+
+	public void placeSnakePart(SnakePart snakePart, int row, int column) {
+		jungleFields[row][column].placeSnakePart(snakePart);
+	}
+
+	public int getJungleFieldUsability(int row, int column) {
+		return jungleFields[row][column].getUsability();
+	}
+
+	public char getJungleFieldSign(int row, int column) {
+		return jungleFields[row][column].getCharachter();
+	}
 
 }

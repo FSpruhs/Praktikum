@@ -20,6 +20,10 @@ public class SnakeType {
 		this.characterband = characterband;
 		this.neighborhoodStructure = neighborhoodStructure;
 	}
+	
+	public int getSnakeLength() {
+		return characterband.length();
+	}
 
 	@Override
 	public int hashCode() {

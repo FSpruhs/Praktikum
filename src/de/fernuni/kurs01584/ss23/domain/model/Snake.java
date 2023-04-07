@@ -12,6 +12,18 @@ public class Snake {
 		this.snakeTypeId = snakeTypeId;
 		this.snakeParts = snakeParts;
 	}
+	
+	public String getSnakeTypeId() {
+		return snakeTypeId;
+	}
+	
+	public List<SnakePart> getSnakeParts() {
+		return snakeParts;
+	}
+	
+	public int getLength() {
+		return snakeParts.size();
+	}
 
 	@Override
 	public int hashCode() {
