@@ -58,6 +58,21 @@ public class JungleField {
 	public char getCharachter() {
 		return charachter;
 	}
+
+
+	public int getRow() {
+		return row;
+	}
+
+
+	public int getColumn() {
+		return column;
+	}
+
+
+	public String getId() {
+		return id;
+	}
 	
 	
 

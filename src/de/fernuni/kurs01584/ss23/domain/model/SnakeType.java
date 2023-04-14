@@ -43,6 +43,15 @@ public class SnakeType {
 				&& Objects.equals(id, other.id) && Objects.equals(neighborhoodStructure, other.neighborhoodStructure)
 				&& snakeValue == other.snakeValue;
 	}
+
+	public boolean isNotSuccessor(SnakePart actualSnakePart, SnakePart previousSnakePart) {
+		return neighborhoodStructure.isNotNeighbour(actualSnakePart, previousSnakePart);
+	}
+
+	public char getCharachterAt(int counter) {
+		return characterband.charAt(counter);
+	}
+
 	
 	
 

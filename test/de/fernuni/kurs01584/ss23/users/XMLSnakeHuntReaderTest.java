@@ -5,23 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.IntStream;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import de.fernuni.kurs01584.ss23.domain.model.Jungle;
 import de.fernuni.kurs01584.ss23.domain.model.JungleField;
@@ -50,15 +36,15 @@ public class XMLSnakeHuntReaderTest {
 	@Test
 	@DisplayName("Testing reading jungle")
 	void readJungle() {
-		List<JungleField> expectedJungleFields = new LinkedList<>();
-		expectedJungleFields.add(new JungleField("F0", 0, 0, 1, 1, 'F'));
-		expectedJungleFields.add(new JungleField("F1", 0, 1, 1, 1, 'E'));
-		expectedJungleFields.add(new JungleField("F2", 0, 2, 1, 1, 'R'));
-		expectedJungleFields.add(new JungleField("F3", 0, 3, 1, 1, 'N'));
-		expectedJungleFields.add(new JungleField("F4", 1, 0, 1, 1, 'X'));
-		expectedJungleFields.add(new JungleField("F5", 1, 1, 1, 1, 'I'));
-		expectedJungleFields.add(new JungleField("F6", 1, 2, 1, 1, 'N'));
-		expectedJungleFields.add(new JungleField("F7", 1, 3, 1, 1, 'U'));
+		JungleField[][] expectedJungleFields = new JungleField[2][4];
+		expectedJungleFields[0][0] = new JungleField("F0", 0, 0, 1, 1, 'F');
+		expectedJungleFields[0][1] = new JungleField("F1", 0, 1, 1, 1, 'E');
+		expectedJungleFields[0][2] = new JungleField("F2", 0, 2, 1, 1, 'R');
+		expectedJungleFields[0][3] = new JungleField("F3", 0, 3, 1, 1, 'N');
+		expectedJungleFields[1][0] = new JungleField("F4", 1, 0, 1, 1, 'X');
+		expectedJungleFields[1][1] = new JungleField("F5", 1, 1, 1, 1, 'I');
+		expectedJungleFields[1][2] = new JungleField("F6", 1, 2, 1, 1, 'N');
+		expectedJungleFields[1][3] = new JungleField("F7", 1, 3, 1, 1, 'U');
 		String expectedSignString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		Jungle expectedJungle = new Jungle(2, 4, expectedSignString, expectedJungleFields);
 		
@@ -85,13 +71,13 @@ public class XMLSnakeHuntReaderTest {
 		
 		List<Snake> expectedSnakes = new LinkedList<>();
 		expectedSnakes.add(new Snake("A0", List.of(
-				new SnakePart("F0"),
-				new SnakePart("F1"),
-				new SnakePart("F2"),
-				new SnakePart("F3"),
-				new SnakePart("F7"),
-				new SnakePart("F6"),
-				new SnakePart("F5")
+				new SnakePart("F0", 'F', 0, 0),
+				new SnakePart("F1", 'E', 0, 1),
+				new SnakePart("F2", 'R', 0, 2),
+				new SnakePart("F3", 'N', 0, 3),
+				new SnakePart("F7", 'U', 1, 3),
+				new SnakePart("F6", 'N', 1, 2),
+				new SnakePart("F5", 'I', 1, 1)
 				)));
 		
 		Solution expectedSolution = new Solution();

@@ -40,17 +40,27 @@ public class XMLSnakeHuntReader {
 	
 	public Jungle readJungle() {
 		return new Jungle(
-				Integer.parseInt(root.getChild("Dschungel").getAttributeValue("zeilen")),
-				Integer.parseInt(root.getChild("Dschungel").getAttributeValue("spalten")),
+				getJungleRow(),
+				getJungleColumn(),
 				root.getChild("Dschungel").getAttributeValue("zeichen"),
-				readJungleFields()
+				readJungleFields(getJungleRow(), getJungleColumn())
 				);
 	}
 	
-	private List<JungleField> readJungleFields() {
-		List<JungleField> result = new LinkedList<>();
+	private int getJungleRow() {
+		return Integer.parseInt(root.getChild("Dschungel").getAttributeValue("zeilen"));
+		
+	}
+	
+	private int getJungleColumn() {
+		return Integer.parseInt(root.getChild("Dschungel").getAttributeValue("spalten"));
+		
+	}
+
+	private JungleField[][] readJungleFields(int row, int column) {
+		JungleField[][] result = new JungleField[row][column]; 
 		root.getChild("Dschungel").getChildren().forEach(field -> {
-			result.add(readJungleField(field));
+			result[getJungleFieldRow(field)][getJungleFieldColumn(field)] = readJungleField(field);
 		});
 		return result;
 	}
@@ -58,14 +68,22 @@ public class XMLSnakeHuntReader {
 	private JungleField readJungleField(Element field) {
 		return new JungleField(
 				field.getAttributeValue("id"),
-				Integer.parseInt(field.getAttributeValue("zeile")),
-				Integer.parseInt(field.getAttributeValue("spalte")),
+				getJungleFieldRow(field),
+				getJungleFieldColumn(field),
 				Integer.parseInt(field.getAttributeValue("verwendbarkeit")),
 				Integer.parseInt(field.getAttributeValue("punkte")),
 				field.getValue().charAt(0)
 				);
 	}
 	
+	private int getJungleFieldColumn(Element field) {
+		return Integer.parseInt(field.getAttributeValue("spalte"));
+	}
+
+	private int getJungleFieldRow(Element field) {
+		return Integer.parseInt(field.getAttributeValue("zeile"));
+	}
+
 	public List<SnakeType> readSnakeTypes() {
 		List<SnakeType> result = new LinkedList<>();
 		root.getChild("Schlangenarten").getChildren().forEach(snakeType -> {

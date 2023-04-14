@@ -5,15 +5,19 @@ import java.util.Objects;
 
 public class SnakePart {
 	private final String fieldId;
-	private final char charachter;
-	private final int row;
-	private final int column;
+	private char charachter;
+	private int row;
+	private int column;
 	
 	public SnakePart(String fieldId, char charachter, int row, int column) {
 		this.fieldId = fieldId;
 		this.charachter = charachter;
 		this.row = row;
 		this.column = column;
+	}
+	
+	public SnakePart(String fieldId) {
+		this.fieldId = fieldId;
 	}
 	
 
@@ -57,6 +61,13 @@ public class SnakePart {
 	@Override
 	public String toString() {
 		return "SnakePart [fieldId=" + fieldId + "]";
+	}
+
+
+	public void loadJungleFieldData(int row, int column, char charachter) {
+		this.row = row;
+		this.column = column;
+		this.charachter = charachter;	
 	}
 	
 	

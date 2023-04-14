@@ -2,6 +2,8 @@ package de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure;
 
 import java.util.Objects;
 
+import de.fernuni.kurs01584.ss23.domain.model.SnakePart;
+
 public class Jump implements NeighborhoodStructure{
 	
 	private final int row;
@@ -27,6 +29,12 @@ public class Jump implements NeighborhoodStructure{
 			return false;
 		Jump other = (Jump) obj;
 		return column == other.column && row == other.row;
+	}
+
+	@Override
+	public boolean isNotNeighbour(SnakePart actualSnakePart, SnakePart previousSnakePart) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

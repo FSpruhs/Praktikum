@@ -2,6 +2,8 @@ package de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure;
 
 import java.util.Objects;
 
+import de.fernuni.kurs01584.ss23.domain.model.SnakePart;
+
 public class Distance implements NeighborhoodStructure {
 	
 	
@@ -26,6 +28,12 @@ public class Distance implements NeighborhoodStructure {
 			return false;
 		Distance other = (Distance) obj;
 		return distance == other.distance;
+	}
+
+	@Override
+	public boolean isNotNeighbour(SnakePart actualSnakePart, SnakePart previousSnakePart) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 	

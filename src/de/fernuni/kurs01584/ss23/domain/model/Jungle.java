@@ -1,5 +1,7 @@
 package de.fernuni.kurs01584.ss23.domain.model;
 
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,7 +31,11 @@ public class Jungle {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(characters, columns, jungleFields, rows);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.deepHashCode(jungleFields);
+		result = prime * result + Objects.hash(characters, columns, rows);
+		return result;
 	}
 
 	@Override
@@ -42,10 +48,17 @@ public class Jungle {
 			return false;
 		Jungle other = (Jungle) obj;
 		return Objects.equals(characters, other.characters) && columns == other.columns
-				&& Objects.equals(jungleFields, other.jungleFields) && rows == other.rows;
+				&& Arrays.deepEquals(jungleFields, other.jungleFields) && rows == other.rows;
 	}
 
 	public JungleField getJungleField(String fieldId) {
+		for (int row = 0; row < rows; row++) {
+			for (int column = 0; column < columns; column++) {
+				if (jungleFields[row][column].getId().equals(fieldId)) {
+					return jungleFields[row][column];
+				}
+			}
+		}
 		return null;
 	}
 
@@ -59,6 +72,11 @@ public class Jungle {
 
 	public char getJungleFieldSign(int row, int column) {
 		return jungleFields[row][column].getCharachter();
+	}
+
+	public void removeAllSnakeParts() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

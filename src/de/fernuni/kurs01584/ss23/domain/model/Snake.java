@@ -12,7 +12,7 @@ public class Snake {
 		this.snakeTypeId = snakeTypeId;
 		this.snakeParts = snakeParts;
 	}
-	
+
 	public String getSnakeTypeId() {
 		return snakeTypeId;
 	}

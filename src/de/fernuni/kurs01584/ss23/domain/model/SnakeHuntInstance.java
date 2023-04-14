@@ -9,15 +9,17 @@ import java.util.Map;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidDurationException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidSnakeTypesException;
+import de.fernuni.kurs01584.ss23.domain.exception.JungleFieldNotFoundException;
 import de.fernuni.kurs01584.ss23.domain.exception.NoSolutionException;
+import de.fernuni.kurs01584.ss23.domain.exception.SnakeTypeNotFoundException;
 import de.fernuni.kurs01584.ss23.domain.ports.in.ValidationInPort;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
 
 public class SnakeHuntInstance implements ValidationInPort {
 	
-	private Jungle jungle;
-	private Map<String, SnakeType> snakeTypes;
-	private Duration durationInSeconds;
+	private final Jungle jungle;
+	private final Map<String, SnakeType> snakeTypes;
+	private final Duration durationInSeconds;
 	private Solution solution;
 	private SnakeSearchAlgorithmus snakeSearchAlgorithmus;
 	
@@ -28,6 +30,7 @@ public class SnakeHuntInstance implements ValidationInPort {
 		this.snakeTypes = snakeTypes;
 		this.durationInSeconds = durationInSeconds;
 		this.solution = solution;
+		loadSolutionData();
 	}
 
 	public SnakeHuntInstance(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds) {
@@ -49,37 +52,86 @@ public class SnakeHuntInstance implements ValidationInPort {
 		}
 		
 	}
+	
+	private void loadSolutionData() {
+		for (Snake snake : solution.getSnakes() ) {
+			SnakeType snakeType = snakeTypes.get(snake.getSnakeTypeId());
+			if (snakeType == null) {
+				throw new SnakeTypeNotFoundException(snake.getSnakeTypeId());
+			}
+			int counter = 0;
+			for (SnakePart snakePart : snake.getSnakeParts()) {
+				JungleField jungleField = jungle.getJungleField(snakePart.getFieldId());
+				if (jungleField == null) {
+					throw new JungleFieldNotFoundException(snakePart.getFieldId());
+				}
+				snakePart.loadJungleFieldData(jungleField.getRow(), jungleField.getColumn(), snakeType.getCharachterAt(counter));
+				counter++;
+			}
+		}
+	}
 
 	@Override
 	public List<Fehlertyp> isValid() {
+		List<Fehlertyp> result = new LinkedList<>();
+		solutionNullCheck();
+		for (Snake snake : solution.getSnakes()) {
+			findSnakeErrors(result, snake);
+		}
+		return result;
+	}
+
+	private void findSnakeErrors(List<Fehlertyp> result, Snake snake) {
+		findLengthError(result, snake);
+		SnakePart previousSnakePart = null;
+		for (SnakePart snakePart : snake.getSnakeParts()) {
+			jungle.placeSnakePart(snakePart, snakePart.getRow(), snakePart.getColumn());
+			findUsageError(result, snakePart);
+			findAllocationError(result, snakePart);
+			findNeighborhoodError(result, snakePart, previousSnakePart, snakeTypes.get(snake.getSnakeTypeId()));
+			previousSnakePart = snakePart;
+		}
+		jungle.removeAllSnakeParts();
+	}
+
+	private void solutionNullCheck() {
 		if (solution == null) {
 			throw new NoSolutionException();
 		}
-		List<Fehlertyp> result = new LinkedList<>();
-		List<Snake> solutionSnakes = solution.getSnakes();
-		for (Snake snake : solutionSnakes) {
-			SnakeType snakeType = snakeTypes.get(snake.getSnakeTypeId());
-			if (snakeType == null) {
-				throw new InvalidSnakeTypesException("Snake Type with id %s does not exist!".formatted(snake.getSnakeTypeId()));
+	}
+
+	private SnakeType getSnakeType(String snakeTypeId) {
+		if (snakeTypes.get(snakeTypeId) == null) {
+			throw new InvalidSnakeTypesException("Snake Type with id %s does not exist!".formatted(snakeTypeId));
+		}
+		return snakeTypes.get(snakeTypeId);
+	}
+
+	private void findLengthError(List<Fehlertyp> result, Snake snake) {
+		if (getSnakeType(snake.getSnakeTypeId()).getSnakeLength() != snake.getLength()) {
+			result.add(Fehlertyp.GLIEDER);
+		}
+	}
+
+	private void findNeighborhoodError(List<Fehlertyp> result, SnakePart snakePart, SnakePart previousSnakePart, SnakeType snakeType) {
+		if (previousSnakePart != null) {
+			if (snakeType.isNotSuccessor(snakePart, previousSnakePart)) {
+				result.add(Fehlertyp.NACHBARSCHAFT);
 			}
-			if (snakeType.getSnakeLength() != snake.getLength()) {
-				result.add(Fehlertyp.GLIEDER);
-			}
-			
-			for (SnakePart snakePart : snake.getSnakeParts()) {
-				jungle.placeSnakePart(snakePart, snakePart.getRow(), snakePart.getColumn());
-				if (jungle.getJungleFieldUsability(snakePart.getRow(), snakePart.getColumn()) < 0) {
-					result.add(Fehlertyp.VERWENDUNG);
-				}
-				if (jungle.getJungleFieldSign(snakePart.getRow(), snakePart.getColumn()) != snakePart.getCharachter()) {
-					result.add(Fehlertyp.ZUORDNUNG);
-				}	
-			}
-			//TODO implement NACHBARSCHAFT Validation
+		}
+	}
+
+	private void findAllocationError(List<Fehlertyp> result, SnakePart snakePart) {
+		if (jungle.getJungleFieldSign(snakePart.getRow(), snakePart.getColumn()) != snakePart.getCharachter()) {
+			result.add(Fehlertyp.ZUORDNUNG);
 		}
 		
-		return result;
+	}
+
+	private void findUsageError(List<Fehlertyp> result, SnakePart snakePart) {
+		if (jungle.getJungleFieldUsability(snakePart.getRow(), snakePart.getColumn()) < 0) {
+			result.add(Fehlertyp.VERWENDUNG);
+		}
 	}
 	
-
 }
