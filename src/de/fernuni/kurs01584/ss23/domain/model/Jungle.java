@@ -1,41 +1,36 @@
 package de.fernuni.kurs01584.ss23.domain.model;
 
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-import javax.sql.RowSet;
+
+import de.fernuni.kurs01584.ss23.domain.exception.JungleFieldNotFoundException;
 
 public class Jungle {
 	
 	private final int rows;
 	private final int columns;
 	private final String characters;
-	private final JungleField[][] jungleFields;
+	private final List<JungleField> jungleFields;
 	
-	public Jungle(int rows, int columns, String characters, JungleField[][]jungleFields) {
+	public Jungle(int rows, int columns, String characters, List<JungleField> jungleFields) {
 		this.rows = rows;
 		this.columns = columns;
 		this.characters = characters;
 		this.jungleFields = jungleFields;
 	}
 	
-	public JungleField[][] getJungleFields() {
+	public List<JungleField> getJungleFields() {
 		return jungleFields;
 	}
 	
 	public JungleField getJungleField(int row, int colum) {
-		return jungleFields[row][colum];
+		return jungleFields.get(row * columns + colum);
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.deepHashCode(jungleFields);
-		result = prime * result + Objects.hash(characters, columns, rows);
-		return result;
+		return Objects.hash(characters, columns, jungleFields, rows);
 	}
 
 	@Override
@@ -48,30 +43,33 @@ public class Jungle {
 			return false;
 		Jungle other = (Jungle) obj;
 		return Objects.equals(characters, other.characters) && columns == other.columns
-				&& Arrays.deepEquals(jungleFields, other.jungleFields) && rows == other.rows;
+				&& Objects.equals(jungleFields, other.jungleFields) && rows == other.rows;
+	}
+
+	@Override
+	public String toString() {
+		return "Jungle [rows=" + rows + ", columns=" + columns + ", characters=" + characters + ", jungleFields="
+				+ jungleFields + "]";
 	}
 
 	public JungleField getJungleField(String fieldId) {
-		for (int row = 0; row < rows; row++) {
-			for (int column = 0; column < columns; column++) {
-				if (jungleFields[row][column].getId().equals(fieldId)) {
-					return jungleFields[row][column];
-				}
-			}
-		}
-		return null;
+		return jungleFields
+				.stream()
+				.filter(jungleField -> jungleField.getId().equals(fieldId))
+				.findFirst()
+				.orElseThrow(() -> new JungleFieldNotFoundException(fieldId));	
 	}
 
 	public void placeSnakePart(SnakePart snakePart, int row, int column) {
-		jungleFields[row][column].placeSnakePart(snakePart);
+		jungleFields.get(row * columns + column).placeSnakePart(snakePart);
 	}
 
 	public int getJungleFieldUsability(int row, int column) {
-		return jungleFields[row][column].getUsability();
+		return jungleFields.get(row * columns + column).getUsability();
 	}
 
 	public char getJungleFieldSign(int row, int column) {
-		return jungleFields[row][column].getCharachter();
+		return jungleFields.get(row * columns + column).getCharachter();
 	}
 
 	public void removeAllSnakeParts() {

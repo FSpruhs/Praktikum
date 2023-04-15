@@ -1,7 +1,6 @@
 package de.fernuni.kurs01584.ss23.domain.model;
 
 import java.time.Duration;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -133,5 +132,4 @@ public class SnakeHuntInstance implements ValidationInPort {
 			result.add(Fehlertyp.VERWENDUNG);
 		}
 	}
-	
 }

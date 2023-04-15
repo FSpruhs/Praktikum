@@ -27,7 +27,14 @@ public class JungleField {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(charachter, column, fieldValue, id, row, usability);
+		return Objects.hash(charachter, column, fieldValue, id, row, snakeParts, usability);
+	}
+
+
+	@Override
+	public String toString() {
+		return "JungleField [id=" + id + ", row=" + row + ", column=" + column + ", fieldValue=" + fieldValue
+				+ ", usability=" + usability + ", charachter=" + charachter + ", snakeParts=" + snakeParts + "]";
 	}
 
 
@@ -41,7 +48,8 @@ public class JungleField {
 			return false;
 		JungleField other = (JungleField) obj;
 		return charachter == other.charachter && column == other.column && fieldValue == other.fieldValue
-				&& Objects.equals(id, other.id) && row == other.row && usability == other.usability;
+				&& Objects.equals(id, other.id) && row == other.row && Objects.equals(snakeParts, other.snakeParts)
+				&& usability == other.usability;
 	}
 
 

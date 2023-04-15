@@ -3,6 +3,7 @@ package de.fernuni.kurs01584.ss23.users;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -57,14 +58,18 @@ public class XMLSnakeHuntReader {
 		
 	}
 
-	private JungleField[][] readJungleFields(int row, int column) {
-		JungleField[][] result = new JungleField[row][column]; 
+	private List<JungleField> readJungleFields(int row, int column) {
+		List<JungleField> result = new ArrayList<JungleField>(); 
 		root.getChild("Dschungel").getChildren().forEach(field -> {
-			result[getJungleFieldRow(field)][getJungleFieldColumn(field)] = readJungleField(field);
+			result.add(readJungleFIeldId(field), readJungleField(field));
 		});
 		return result;
 	}
 	
+	private int readJungleFIeldId(Element field) {
+		return Integer.parseInt(field.getAttributeValue("id").substring(1));
+	}
+
 	private JungleField readJungleField(Element field) {
 		return new JungleField(
 				field.getAttributeValue("id"),

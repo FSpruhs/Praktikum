@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +22,8 @@ public class SnakeHuntInstanceTest {
 	@Test
 	@DisplayName("Test Exception if Solution is null")
 	void solutionIsNull( ) {
-		JungleField[][] jungleFields = new JungleField[1][1];
-		jungleFields[0][0] = new JungleField("F0", 0, 0, 1, 1, 'F');
+		List<JungleField> jungleFields = new ArrayList<>();
+		jungleFields.add(new JungleField("F0", 0, 0, 1, 1, 'F')) ;
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		Jungle jungle = new Jungle(2, 4, signString, jungleFields);
 		SnakeHuntInstance snakeHuntInstance = new SnakeHuntInstance(
@@ -37,15 +38,15 @@ public class SnakeHuntInstanceTest {
 	@Test
 	@DisplayName("Test if multiple \"Glieder\" error is found!")
 	void findLengthError() {
-		JungleField[][] jungleFields = new JungleField[2][4];
-		jungleFields[0][0] = new JungleField("F0", 0, 0, 1, 2, 'F');
-		jungleFields[0][1] = new JungleField("F1", 0, 1, 1, 2, 'E');
-		jungleFields[0][2] = new JungleField("F2", 0, 2, 1, 2, 'R');
-		jungleFields[0][3] = new JungleField("F3", 0, 3, 1, 2, 'N');
-		jungleFields[1][0] = new JungleField("F4", 1, 0, 1, 2, 'X');
-		jungleFields[1][1] = new JungleField("F5", 1, 1, 1, 2, 'I');
-		jungleFields[1][2] = new JungleField("F6", 1, 2, 1, 2, 'N');
-		jungleFields[1][3] = new JungleField("F7", 1, 3, 1, 2, 'U');
+		List<JungleField> jungleFields = new ArrayList<>();
+		jungleFields.add(0, new JungleField("F0", 0, 0, 1, 2, 'F'));
+		jungleFields.add(1, new JungleField("F1", 0, 1, 1, 2, 'E'));
+		jungleFields.add(2, new JungleField("F2", 0, 2, 1, 2, 'R'));
+		jungleFields.add(3, new JungleField("F3", 0, 3, 1, 2, 'N'));
+		jungleFields.add(4, new JungleField("F4", 1, 0, 1, 2, 'X'));
+		jungleFields.add(5, new JungleField("F5", 1, 1, 1, 2, 'I'));
+		jungleFields.add(6, new JungleField("F6", 1, 2, 1, 2, 'N'));
+		jungleFields.add(7, new JungleField("F7", 1, 3, 1, 2, 'U'));
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		Jungle jungle = new Jungle(2, 4, signString, jungleFields);
 		
@@ -80,15 +81,15 @@ public class SnakeHuntInstanceTest {
 	@Test
 	@DisplayName("Test if multiple \"ZUORDNUNG\" error is found!")
 	void findWrongCharachterError() {
-		JungleField[][] jungleFields = new JungleField[2][4];
-		jungleFields[0][0] = new JungleField("F0", 0, 0, 1, 2, 'F');
-		jungleFields[0][1] = new JungleField("F1", 0, 1, 1, 2, 'E');
-		jungleFields[0][2] = new JungleField("F2", 0, 2, 1, 2, 'R');
-		jungleFields[0][3] = new JungleField("F3", 0, 3, 1, 2, 'N');
-		jungleFields[1][0] = new JungleField("F4", 1, 0, 1, 2, 'X');
-		jungleFields[1][1] = new JungleField("F5", 1, 1, 1, 2, 'X');
-		jungleFields[1][2] = new JungleField("F6", 1, 2, 1, 2, 'N');
-		jungleFields[1][3] = new JungleField("F7", 1, 3, 1, 2, 'U');
+		List<JungleField> jungleFields = new ArrayList<>();
+		jungleFields.add(0, new JungleField("F0", 0, 0, 1, 2, 'F'));
+		jungleFields.add(1, new JungleField("F1", 0, 1, 1, 2, 'E'));
+		jungleFields.add(2, new JungleField("F2", 0, 2, 1, 2, 'R'));
+		jungleFields.add(3, new JungleField("F3", 0, 3, 1, 2, 'N'));
+		jungleFields.add(4, new JungleField("F4", 1, 0, 1, 2, 'X'));
+		jungleFields.add(5, new JungleField("F5", 1, 1, 1, 2, 'X'));
+		jungleFields.add(6, new JungleField("F6", 1, 2, 1, 2, 'N'));
+		jungleFields.add(7, new JungleField("F7", 1, 3, 1, 2, 'U'));
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		Jungle jungle = new Jungle(2, 4, signString, jungleFields);
 		
@@ -125,15 +126,15 @@ public class SnakeHuntInstanceTest {
 	@Test
 	@DisplayName("Test if multiple \"VERWENDUNG\" error is found!")
 	void findUsabilityError() {
-		JungleField[][] jungleFields = new JungleField[2][4];
-		jungleFields[0][0] = new JungleField("F0", 0, 0, 1, 2, 'F');
-		jungleFields[0][1] = new JungleField("F1", 0, 1, 1, 2, 'E');
-		jungleFields[0][2] = new JungleField("F2", 0, 2, 1, 1, 'R');
-		jungleFields[0][3] = new JungleField("F3", 0, 3, 1, 2, 'N');
-		jungleFields[1][0] = new JungleField("F4", 1, 0, 1, 2, 'X');
-		jungleFields[1][1] = new JungleField("F5", 1, 1, 1, 2, 'I');
-		jungleFields[1][2] = new JungleField("F6", 1, 2, 1, 1, 'N');
-		jungleFields[1][3] = new JungleField("F7", 1, 3, 1, 2, 'U');
+		List<JungleField> jungleFields = new ArrayList<>();
+		jungleFields.add(0, new JungleField("F0", 0, 0, 1, 2, 'F'));
+		jungleFields.add(1, new JungleField("F1", 0, 1, 1, 2, 'E'));
+		jungleFields.add(2, new JungleField("F2", 0, 2, 1, 1, 'R'));
+		jungleFields.add(3, new JungleField("F3", 0, 3, 1, 2, 'N'));
+		jungleFields.add(4, new JungleField("F4", 1, 0, 1, 2, 'X'));
+		jungleFields.add(5, new JungleField("F5", 1, 1, 1, 2, 'I'));
+		jungleFields.add(6, new JungleField("F6", 1, 2, 1, 1, 'N'));
+		jungleFields.add(7, new JungleField("F7", 1, 3, 1, 2, 'U'));
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		Jungle jungle = new Jungle(2, 4, signString, jungleFields);
 		
@@ -170,15 +171,15 @@ public class SnakeHuntInstanceTest {
 	@Test
 	@DisplayName("Test if multiple \"NACHBARSCHAFT\" error is found!")
 	void findNeighbourhoodError() {
-		JungleField[][] jungleFields = new JungleField[2][4];
-		jungleFields[0][0] = new JungleField("F0", 0, 0, 1, 2, 'F');
-		jungleFields[0][1] = new JungleField("F1", 0, 1, 1, 2, 'E');
-		jungleFields[0][2] = new JungleField("F2", 0, 2, 1, 1, 'R');
-		jungleFields[0][3] = new JungleField("F3", 0, 3, 1, 2, 'N');
-		jungleFields[1][0] = new JungleField("F4", 1, 0, 1, 2, 'X');
-		jungleFields[1][1] = new JungleField("F5", 1, 1, 1, 2, 'I');
-		jungleFields[1][2] = new JungleField("F6", 1, 2, 1, 1, 'N');
-		jungleFields[1][3] = new JungleField("F7", 1, 3, 1, 2, 'U');
+		List<JungleField> jungleFields = new ArrayList<>();
+		jungleFields.add(0, new JungleField("F0", 0, 0, 1, 1, 'F'));
+		jungleFields.add(1, new JungleField("F1", 0, 1, 1, 1, 'E'));
+		jungleFields.add(2, new JungleField("F2", 0, 2, 1, 1, 'R'));
+		jungleFields.add(3, new JungleField("F3", 0, 3, 1, 1, 'N'));
+		jungleFields.add(4, new JungleField("F4", 1, 0, 1, 1, 'X'));
+		jungleFields.add(5, new JungleField("F5", 1, 1, 1, 1, 'I'));
+		jungleFields.add(6, new JungleField("F6", 1, 2, 1, 1, 'N'));
+		jungleFields.add(7, new JungleField("F7", 1, 3, 1, 1, 'U'));
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		Jungle jungle = new Jungle(2, 4, signString, jungleFields);
 		
