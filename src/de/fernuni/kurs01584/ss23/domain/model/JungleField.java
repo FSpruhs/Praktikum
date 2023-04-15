@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleFieldException;
 
-public class JungleField {
+public class JungleField implements Comparable<JungleField>{
 	
 	private final String id;
 	private final Coordinate coordinate;
@@ -99,6 +99,25 @@ public class JungleField {
 
 	public int getFieldValue() {
 		return fieldValue;
+	}
+
+
+	public void removeSnakeParts() {
+		snakeParts.clear();
+	}
+
+
+	@Override
+	public int compareTo(JungleField j) {
+        if (fieldValue > j.getFieldValue()) {
+            return 1;
+        }
+        else if (fieldValue == j.getFieldValue()) {
+            return 0;
+        }
+        else {
+            return -1;
+        }
 	}
 	
 	

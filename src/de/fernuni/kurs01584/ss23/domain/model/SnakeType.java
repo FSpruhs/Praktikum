@@ -71,6 +71,22 @@ public class SnakeType {
 		return snakeValue;
 		
 	}
+	
+	public int getCount() {
+		return count;
+	}
+	
+	public String getId() {
+		return id;
+	}
+	
+	public String getCharacterBand() {
+		return characterband;
+	}
+
+	public NeighborhoodStructure getNeighborhoodStructure() {
+		return neighborhoodStructure;
+	}
 
 	
 	

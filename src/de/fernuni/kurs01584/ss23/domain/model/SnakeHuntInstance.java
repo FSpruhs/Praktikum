@@ -142,4 +142,9 @@ public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, Sh
 	public Jungle showJungle() {
 		return jungle;
 	}
+
+	@Override
+	public void solveSnakeHuntInstance() {
+		snakeSearchAlgorithmus.solveSnakeHuntInstance(jungle, snakeTypes, durationInSeconds);
+	}
 }

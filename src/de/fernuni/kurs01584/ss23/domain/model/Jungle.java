@@ -1,5 +1,6 @@
 package de.fernuni.kurs01584.ss23.domain.model;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -97,8 +98,25 @@ public class Jungle {
 	}
 
 	public void removeAllSnakeParts() {
-		// TODO Auto-generated method stub
-		
+		jungleFields.stream().forEach(jungleField -> jungleField.removeSnakeParts());
+	}
+
+	public List<JungleField> getUsabiliyFieldsByChar(char firstChar) {
+		LinkedList<JungleField> result = new LinkedList<>();
+		for (JungleField jungleField : jungleFields) {
+			if (jungleField.getCharachter() == firstChar && jungleField.getUsability() > 0) {
+				result.add(jungleField);
+			}
+		}
+		return result;
+	}
+	
+	public int getColumns() {
+		return columns;
+	}
+
+	public int getRows() {
+		return rows;
 	}
 
 }

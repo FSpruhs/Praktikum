@@ -3,14 +3,22 @@ package de.fernuni.kurs01584.ss23.domain.model;
 import java.util.List;
 import java.util.Objects;
 
+import de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure.NeighborhoodStructure;
+
 public class Snake {
 	
 	private final String snakeTypeId;
-	private final List<SnakePart> snakeParts;
+	private List<SnakePart> snakeParts;
+	private NeighborhoodStructure neighborhoodStructure;
 	
 	public Snake(String snakeTypeId, List<SnakePart> snakeParts) {
 		this.snakeTypeId = snakeTypeId;
 		this.snakeParts = snakeParts;
+	}
+	
+	public Snake(String snakeTypeId, NeighborhoodStructure neighborhoodStructure) {
+		this.snakeTypeId = snakeTypeId;
+		this.neighborhoodStructure = neighborhoodStructure;
 	}
 
 	public String getSnakeTypeId() {
@@ -45,6 +53,14 @@ public class Snake {
 	@Override
 	public String toString() {
 		return "Snake [snakeTypeId=" + snakeTypeId + ", snakeParts=" + snakeParts + "]";
+	}
+
+	public void addSnakePart(SnakePart snakePart) {
+		snakeParts.add(snakePart);
+	}
+	
+	public NeighborhoodStructure getNeighborhoodStructure() {
+		return neighborhoodStructure;
 	}
 
 }
