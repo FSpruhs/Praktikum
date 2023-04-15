@@ -4,24 +4,22 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleFieldException;
 
 public class JungleField {
 	
 	private final String id;
-	private final int row;
-	private final int column;
+	private final Coordinate coordinate;
 	private final int fieldValue;
 	private final int usability;
 	private final char charachter;
 	private List<SnakePart> snakeParts = new LinkedList<>();
 	
 	
-	public JungleField(String id, int row, int column, int fieldValue, int usability, char charachter) {
+	public JungleField(String id, Coordinate coordinate, int fieldValue, int usability, char charachter) {
 		
-		if (row < 0 || column < 0 || fieldValue < 0 || usability < 0) {
-			throw new InvalidJungleFieldException("Row, Column, fieldValue and usability must be greater than 0!");
+		if (fieldValue < 0 || usability < 0) {
+			throw new InvalidJungleFieldException("FieldValue and usability must be greater than 0!");
 		}
 		
 		if (id == null) {
@@ -34,8 +32,7 @@ public class JungleField {
 		
 		
 		this.id = id;
-		this.row = row;
-		this.column = column;
+		this.coordinate = coordinate;
 		this.fieldValue = fieldValue;
 		this.usability = usability;
 		this.charachter = charachter;
@@ -44,14 +41,14 @@ public class JungleField {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(charachter, column, fieldValue, id, row, snakeParts, usability);
+		return Objects.hash(charachter, coordinate, fieldValue, id, snakeParts, usability);
 	}
 
 
 	@Override
 	public String toString() {
-		return "JungleField [id=" + id + ", row=" + row + ", column=" + column + ", fieldValue=" + fieldValue
-				+ ", usability=" + usability + ", charachter=" + charachter + ", snakeParts=" + snakeParts + "]";
+		return "JungleField [id=" + id + ", coordinate=" + coordinate + ", fieldValue=" + fieldValue + ", usability="
+				+ usability + ", charachter=" + charachter + ", snakeParts=" + snakeParts + "]";
 	}
 
 
@@ -64,9 +61,9 @@ public class JungleField {
 		if (getClass() != obj.getClass())
 			return false;
 		JungleField other = (JungleField) obj;
-		return charachter == other.charachter && column == other.column && fieldValue == other.fieldValue
-				&& Objects.equals(id, other.id) && row == other.row && Objects.equals(snakeParts, other.snakeParts)
-				&& usability == other.usability;
+		return charachter == other.charachter && Objects.equals(coordinate, other.coordinate)
+				&& fieldValue == other.fieldValue && Objects.equals(id, other.id)
+				&& Objects.equals(snakeParts, other.snakeParts) && usability == other.usability;
 	}
 
 
@@ -86,17 +83,22 @@ public class JungleField {
 
 
 	public int getRow() {
-		return row;
+		return coordinate.row();
 	}
 
 
 	public int getColumn() {
-		return column;
+		return coordinate.column();
 	}
 
 
 	public String getId() {
 		return id;
+	}
+
+
+	public int getFieldValue() {
+		return fieldValue;
 	}
 	
 	

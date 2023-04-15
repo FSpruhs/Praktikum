@@ -5,24 +5,22 @@ import java.util.Objects;
 public class SnakePart {
 	private final String fieldId;
 	private char charachter;
-	private int row;
-	private int column;
+	private Coordinate coordinate;
 	
-	public SnakePart(String fieldId, char charachter, int row, int column) {
+	public SnakePart(String fieldId, char charachter, Coordinate coordinate) {
 		this.fieldId = fieldId;
 		this.charachter = charachter;
-		this.row = row;
-		this.column = column;
+		this.coordinate = coordinate;
 	}
 	
 
 	public int getRow() {
-		return row;
+		return coordinate.row();
 	}
 
 
 	public int getColumn() {
-		return column;
+		return coordinate.column();
 	}
 
 
@@ -59,10 +57,14 @@ public class SnakePart {
 	}
 
 
-	public void loadJungleFieldData(int row, int column, char charachter) {
-		this.row = row;
-		this.column = column;
+	public void loadJungleFieldData(Coordinate coordinate, char charachter) {
+		this.coordinate = coordinate;
 		this.charachter = charachter;	
+	}
+
+
+	public Coordinate getCoordinate() {
+		return coordinate;
 	}
 	
 	

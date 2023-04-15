@@ -67,6 +67,11 @@ public class SnakeType {
 		return characterband.charAt(counter);
 	}
 
+	public int getSnakeValue() {
+		return snakeValue;
+		
+	}
+
 	
 	
 

@@ -13,6 +13,7 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
 import de.fernuni.kurs01584.ss23.domain.exception.NeighborhoodStructureNotFoundException;
+import de.fernuni.kurs01584.ss23.domain.model.Coordinate;
 import de.fernuni.kurs01584.ss23.domain.model.Jungle;
 import de.fernuni.kurs01584.ss23.domain.model.JungleField;
 import de.fernuni.kurs01584.ss23.domain.model.Snake;
@@ -77,19 +78,22 @@ public class XMLSnakeHuntReader {
 	private JungleField readJungleField(Element field) {
 		return new JungleField(
 				field.getAttributeValue("id"),
-				getJungleFieldRow(field),
-				getJungleFieldColumn(field),
+				readCoordinate(field),
 				Integer.parseInt(field.getAttributeValue("verwendbarkeit")),
 				Integer.parseInt(field.getAttributeValue("punkte")),
 				field.getValue().charAt(0)
 				);
 	}
 	
-	private int getJungleFieldColumn(Element field) {
+	private Coordinate readCoordinate(Element field) {
+		return new Coordinate(readJungleFieldRow(field), readJungleFieldColumn(field));
+	}
+
+	private int readJungleFieldColumn(Element field) {
 		return Integer.parseInt(field.getAttributeValue("spalte"));
 	}
 
-	private int getJungleFieldRow(Element field) {
+	private int readJungleFieldRow(Element field) {
 		return Integer.parseInt(field.getAttributeValue("zeile"));
 	}
 
@@ -174,8 +178,9 @@ public class XMLSnakeHuntReader {
 		return new SnakePart(
 				snakePart.getAttributeValue("feld"),
 				readSigns().charAt(i),
-				Integer.parseInt(snakePart.getAttributeValue("feld").substring(1)) / getJungleColumn(),
-				Integer.parseInt(snakePart.getAttributeValue("feld").substring(1)) % getJungleColumn()
+				new Coordinate(
+						Integer.parseInt(snakePart.getAttributeValue("feld").substring(1)) / getJungleColumn(),
+						Integer.parseInt(snakePart.getAttributeValue("feld").substring(1)) % getJungleColumn())
 				);
 	}
 }

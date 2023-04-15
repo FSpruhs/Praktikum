@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import de.fernuni.kurs01584.ss23.domain.model.Coordinate;
 import de.fernuni.kurs01584.ss23.domain.model.Jungle;
 import de.fernuni.kurs01584.ss23.domain.model.JungleField;
 import de.fernuni.kurs01584.ss23.domain.model.Snake;
@@ -38,14 +39,14 @@ public class XMLSnakeHuntReaderTest {
 	@DisplayName("Testing reading jungle")
 	void readJungle() {
 		List<JungleField> expectedJungleFields = new ArrayList<>();
-		expectedJungleFields.add(0, new JungleField("F0", 0, 0, 1, 1, 'F'));
-		expectedJungleFields.add(1, new JungleField("F1", 0, 1, 1, 1, 'E'));
-		expectedJungleFields.add(2, new JungleField("F2", 0, 2, 1, 1, 'R'));
-		expectedJungleFields.add(3, new JungleField("F3", 0, 3, 1, 1, 'N'));
-		expectedJungleFields.add(4, new JungleField("F4", 1, 0, 1, 1, 'X'));
-		expectedJungleFields.add(5, new JungleField("F5", 1, 1, 1, 1, 'I'));
-		expectedJungleFields.add(6, new JungleField("F6", 1, 2, 1, 1, 'N'));
-		expectedJungleFields.add(7, new JungleField("F7", 1, 3, 1, 1, 'U'));
+		expectedJungleFields.add(0, new JungleField("F0", new Coordinate(0, 0), 1, 1, 'F'));
+		expectedJungleFields.add(1, new JungleField("F1", new Coordinate(0, 1), 1, 1, 'E'));
+		expectedJungleFields.add(2, new JungleField("F2", new Coordinate(0, 2), 1, 1, 'R'));
+		expectedJungleFields.add(3, new JungleField("F3", new Coordinate(0, 3), 1, 1, 'N'));
+		expectedJungleFields.add(4, new JungleField("F4", new Coordinate(1, 0), 1, 1, 'X'));
+		expectedJungleFields.add(5, new JungleField("F5", new Coordinate(1, 1), 1, 1, 'I'));
+		expectedJungleFields.add(6, new JungleField("F6", new Coordinate(1, 2), 1, 1, 'N'));
+		expectedJungleFields.add(7, new JungleField("F7", new Coordinate(1, 3), 1, 1, 'U'));
 		String expectedSignString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		Jungle expectedJungle = new Jungle(2, 4, expectedSignString, expectedJungleFields);
 		
@@ -72,13 +73,13 @@ public class XMLSnakeHuntReaderTest {
 		
 		List<Snake> expectedSnakes = new LinkedList<>();
 		expectedSnakes.add(new Snake("A0", List.of(
-				new SnakePart("F0", 'F', 0, 0),
-				new SnakePart("F1", 'E', 0, 1),
-				new SnakePart("F2", 'R', 0, 2),
-				new SnakePart("F3", 'N', 0, 3),
-				new SnakePart("F7", 'U', 1, 3),
-				new SnakePart("F6", 'N', 1, 2),
-				new SnakePart("F5", 'I', 1, 1)
+				new SnakePart("F0", 'F', new Coordinate(0, 0)),
+				new SnakePart("F1", 'E', new Coordinate(0, 1)),
+				new SnakePart("F2", 'R', new Coordinate(0, 2)),
+				new SnakePart("F3", 'N', new Coordinate(0, 3)),
+				new SnakePart("F7", 'U', new Coordinate(1, 3)),
+				new SnakePart("F6", 'N', new Coordinate(1, 2)),
+				new SnakePart("F5", 'I', new Coordinate(1, 1))
 				)));
 		
 		Solution expectedSolution = new Solution();

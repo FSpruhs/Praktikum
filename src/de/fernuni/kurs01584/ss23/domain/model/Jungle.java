@@ -44,8 +44,8 @@ public class Jungle {
 		return jungleFields;
 	}
 	
-	public JungleField getJungleField(int row, int colum) {
-		return jungleFields.get(row * columns + colum);
+	public JungleField getJungleField(Coordinate coordinate) {
+		return jungleFields.get(coordinate.row() * columns + coordinate.column());
 	}
 
 	@Override
@@ -80,16 +80,20 @@ public class Jungle {
 				.orElseThrow(() -> new JungleFieldNotFoundException(fieldId));	
 	}
 
-	public void placeSnakePart(SnakePart snakePart, int row, int column) {
-		jungleFields.get(row * columns + column).placeSnakePart(snakePart);
+	public void placeSnakePart(SnakePart snakePart, Coordinate coordinate) {
+		jungleFields.get(coordinate.row() * columns + coordinate.column()).placeSnakePart(snakePart);
 	}
 
-	public int getJungleFieldUsability(int row, int column) {
-		return jungleFields.get(row * columns + column).getUsability();
+	public int getJungleFieldUsability(Coordinate coordinate) {
+		return jungleFields.get(coordinate.row() * columns + coordinate.column()).getUsability();
 	}
 
-	public char getJungleFieldSign(int row, int column) {
-		return jungleFields.get(row * columns + column).getCharachter();
+	public char getJungleFieldSign(Coordinate coordinate) {
+		return jungleFields.get(coordinate.row() * columns + coordinate.column()).getCharachter();
+	}
+	
+	public int getFieldValue(Coordinate coordinate) {
+		return jungleFields.get(coordinate.row() * columns + coordinate.column()).getFieldValue();
 	}
 
 	public void removeAllSnakeParts() {
