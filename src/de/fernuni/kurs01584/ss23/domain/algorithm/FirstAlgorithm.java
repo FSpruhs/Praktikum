@@ -87,12 +87,35 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 	}
 
 
-	private void searchNextSnakePart(Snake snake, String substring) {
+	private int searchNextSnakePart(Snake snake, String substring) {
 		if (substring.equals("")) {
-			return;
+			return 1;
 		}
 		List<JungleField> jungleFields = new LinkedList<>();
-		List<String> fieldStrings = List.of(snake.getNeighborhoodStructure().nextFields(snake.getSnakeParts().get(snake.getSnakeParts().size() - 1), jungle.getRows(), jungle.getColumns()));
+		List<String> fieldStrings = snake.getNeighborhoodStructure().nextFields(snake.getSnakeParts().get(snake.getSnakeParts().size() - 1), jungle.getRows(), jungle.getColumns());
+		for (String fieldString : fieldStrings) {
+			if (jungle.getJungleField(fieldString).getUsability() > 0 && jungle.getJungleField(fieldString).getCharachter() == substring.charAt(0)) {
+				jungleFields.add(jungle.getJungleField(fieldString));
+			}
+		}
+		if (jungleFields.isEmpty()) {
+			return -1;
+		}
+		Collections.sort(jungleFields);
+		for (JungleField jungleField : jungleFields) {
+			SnakePart snakePart = new SnakePart(jungleField.getId(),
+					jungleField.getCharachter(),
+					new Coordinate(Integer.parseInt(jungleField.getId().substring(1)) / jungle.getColumns(),
+							Integer.parseInt(jungleField.getId().substring(1)) % jungle.getColumns()));
+			jungle.placeSnakePart(snakePart, snakePart.getCoordinate());
+			snake.addSnakePart(snakePart);
+			if (searchNextSnakePart(snake, substring.substring(1)) < 0) {
+				jungle.removeSnakePart(snakePart.getCoordinate());
+				snake.removeLastSnakePart();
+			}
+		}
+		return -1;
+		
 		
 	}
 
