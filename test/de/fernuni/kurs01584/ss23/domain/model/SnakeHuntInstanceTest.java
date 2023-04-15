@@ -52,20 +52,20 @@ public class SnakeHuntInstanceTest {
 		
 		List<Snake> snakes = new LinkedList<>();
 		snakes.add(new Snake("A0", List.of(
-				new SnakePart("F0"),
-				new SnakePart("F1"),
-				new SnakePart("F2"),
-				new SnakePart("F3"),
-				new SnakePart("F7"),
-				new SnakePart("F6")
+				new SnakePart("F0", 'F', 0, 0),
+				new SnakePart("F1", 'E', 0, 1),
+				new SnakePart("F2", 'R', 0, 2),
+				new SnakePart("F3", 'N', 0, 3),
+				new SnakePart("F7", 'U', 1, 3),
+				new SnakePart("F6", 'N', 1, 2)
 				)));
 		snakes.add(new Snake("A0", List.of(
-				new SnakePart("F0"),
-				new SnakePart("F1"),
-				new SnakePart("F2"),
-				new SnakePart("F3"),
-				new SnakePart("F7"),
-				new SnakePart("F6")
+				new SnakePart("F0", 'F', 0, 0),
+				new SnakePart("F1", 'E', 0, 1),
+				new SnakePart("F2", 'R', 0, 2),
+				new SnakePart("F3", 'N', 0, 3),
+				new SnakePart("F7", 'U', 1, 3),
+				new SnakePart("F6", 'N', 1, 2)
 				)));
 		Solution solution = new Solution();
 		solution.loadSnakes(snakes);
@@ -95,22 +95,22 @@ public class SnakeHuntInstanceTest {
 		
 		List<Snake> snakes = new LinkedList<>();
 		snakes.add(new Snake("A0", List.of(
-				new SnakePart("F0"),
-				new SnakePart("F1"),
-				new SnakePart("F2"),
-				new SnakePart("F3"),
-				new SnakePart("F7"),
-				new SnakePart("F6"),
-				new SnakePart("F5")
+				new SnakePart("F0", 'F', 0, 0),
+				new SnakePart("F1", 'E', 0, 1),
+				new SnakePart("F2", 'R', 0, 2),
+				new SnakePart("F3", 'N', 0, 3),
+				new SnakePart("F7", 'U', 1, 3),
+				new SnakePart("F6", 'N', 1, 2),
+				new SnakePart("F5", 'I', 1, 1)
 				)));
 		snakes.add(new Snake("A0", List.of(
-				new SnakePart("F0"),
-				new SnakePart("F1"),
-				new SnakePart("F2"),
-				new SnakePart("F3"),
-				new SnakePart("F7"),
-				new SnakePart("F6"),
-				new SnakePart("F5")
+				new SnakePart("F0", 'F', 0, 0),
+				new SnakePart("F1", 'E', 0, 1),
+				new SnakePart("F2", 'R', 0, 2),
+				new SnakePart("F3", 'N', 0, 3),
+				new SnakePart("F7", 'U', 1, 3),
+				new SnakePart("F6", 'N', 1, 2),
+				new SnakePart("F5", 'I', 1, 1)
 				)));
 		Solution solution = new Solution();
 		solution.loadSnakes(snakes);
@@ -140,22 +140,22 @@ public class SnakeHuntInstanceTest {
 		
 		List<Snake> snakes = new LinkedList<>();
 		snakes.add(new Snake("A0", List.of(
-				new SnakePart("F0"),
-				new SnakePart("F1"),
-				new SnakePart("F2"),
-				new SnakePart("F3"),
-				new SnakePart("F7"),
-				new SnakePart("F6"),
-				new SnakePart("F5")
+				new SnakePart("F0", 'F', 0, 0),
+				new SnakePart("F1", 'E', 0, 1),
+				new SnakePart("F2", 'R', 0, 2),
+				new SnakePart("F3", 'N', 0, 3),
+				new SnakePart("F7", 'U', 1, 3),
+				new SnakePart("F6", 'N', 1, 2),
+				new SnakePart("F5", 'I', 1, 1)
 				)));
 		snakes.add(new Snake("A0", List.of(
-				new SnakePart("F0"),
-				new SnakePart("F1"),
-				new SnakePart("F2"),
-				new SnakePart("F3"),
-				new SnakePart("F7"),
-				new SnakePart("F6"),
-				new SnakePart("F5")
+				new SnakePart("F0", 'F', 0, 0),
+				new SnakePart("F1", 'E', 0, 1),
+				new SnakePart("F2", 'R', 0, 2),
+				new SnakePart("F3", 'N', 0, 3),
+				new SnakePart("F7", 'U', 1, 3),
+				new SnakePart("F6", 'N', 1, 2),
+				new SnakePart("F5", 'I', 1, 1)
 				)));
 		Solution solution = new Solution();
 		solution.loadSnakes(snakes);
@@ -185,13 +185,13 @@ public class SnakeHuntInstanceTest {
 		
 		List<Snake> snakes = new LinkedList<>();
 		snakes.add(new Snake("A0", List.of(
-				new SnakePart("F0"),
-				new SnakePart("F1"),
-				new SnakePart("F2"),
-				new SnakePart("F3"),
-				new SnakePart("F7"),
-				new SnakePart("F6"),
-				new SnakePart("F5")
+				new SnakePart("F0", 'F', 0, 0),
+				new SnakePart("F1", 'E', 0, 1),
+				new SnakePart("F2", 'R', 0, 2),
+				new SnakePart("F3", 'N', 0, 3),
+				new SnakePart("F7", 'U', 1, 3),
+				new SnakePart("F6", 'N', 1, 2),
+				new SnakePart("F5", 'I', 1, 1)
 				)));
 		Solution solution = new Solution();
 		solution.loadSnakes(snakes);

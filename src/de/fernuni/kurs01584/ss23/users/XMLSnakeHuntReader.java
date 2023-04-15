@@ -43,11 +43,15 @@ public class XMLSnakeHuntReader {
 		return new Jungle(
 				getJungleRow(),
 				getJungleColumn(),
-				root.getChild("Dschungel").getAttributeValue("zeichen"),
+				readSigns(),
 				readJungleFields(getJungleRow(), getJungleColumn())
 				);
 	}
 	
+	private String readSigns() {
+		return root.getChild("Dschungel").getAttributeValue("zeichen");
+	}
+
 	private int getJungleRow() {
 		return Integer.parseInt(root.getChild("Dschungel").getAttributeValue("zeilen"));
 		
@@ -158,13 +162,20 @@ public class XMLSnakeHuntReader {
 
 	private List<SnakePart> readSnakeParts(Element snake) {
 		List<SnakePart> result = new LinkedList<>();
-		snake.getChildren().forEach(snakePart -> {
-			result.add(readSnakePart(snakePart));
-		});
+		int counter = 0;
+		for (Element snakePart : snake.getChildren()) {
+			result.add(readSnakePart(snakePart, counter));
+			counter++;
+		}
 		return result;
 	}
 
-	private SnakePart readSnakePart(Element snakePart) {
-		return new SnakePart(snakePart.getAttributeValue("feld"));
+	private SnakePart readSnakePart(Element snakePart, int i) {
+		return new SnakePart(
+				snakePart.getAttributeValue("feld"),
+				readSigns().charAt(i),
+				Integer.parseInt(snakePart.getAttributeValue("feld").substring(1)) / getJungleColumn(),
+				Integer.parseInt(snakePart.getAttributeValue("feld").substring(1)) % getJungleColumn()
+				);
 	}
 }

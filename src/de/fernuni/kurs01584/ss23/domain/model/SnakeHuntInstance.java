@@ -8,9 +8,7 @@ import java.util.Map;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidDurationException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidSnakeTypesException;
-import de.fernuni.kurs01584.ss23.domain.exception.JungleFieldNotFoundException;
 import de.fernuni.kurs01584.ss23.domain.exception.NoSolutionException;
-import de.fernuni.kurs01584.ss23.domain.exception.SnakeTypeNotFoundException;
 import de.fernuni.kurs01584.ss23.domain.ports.in.ValidationInPort;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
 
@@ -29,7 +27,6 @@ public class SnakeHuntInstance implements ValidationInPort {
 		this.snakeTypes = snakeTypes;
 		this.durationInSeconds = durationInSeconds;
 		this.solution = solution;
-		loadSolutionData();
 	}
 
 	public SnakeHuntInstance(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds) {
@@ -50,24 +47,6 @@ public class SnakeHuntInstance implements ValidationInPort {
 			throw new InvalidDurationException("Duration in Seconds is Null!");
 		}
 		
-	}
-	
-	private void loadSolutionData() {
-		for (Snake snake : solution.getSnakes() ) {
-			SnakeType snakeType = snakeTypes.get(snake.getSnakeTypeId());
-			if (snakeType == null) {
-				throw new SnakeTypeNotFoundException(snake.getSnakeTypeId());
-			}
-			int counter = 0;
-			for (SnakePart snakePart : snake.getSnakeParts()) {
-				JungleField jungleField = jungle.getJungleField(snakePart.getFieldId());
-				if (jungleField == null) {
-					throw new JungleFieldNotFoundException(snakePart.getFieldId());
-				}
-				snakePart.loadJungleFieldData(jungleField.getRow(), jungleField.getColumn(), snakeType.getCharachterAt(counter));
-				counter++;
-			}
-		}
 	}
 
 	@Override

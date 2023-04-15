@@ -3,7 +3,7 @@ package de.fernuni.kurs01584.ss23.domain.model;
 import java.util.List;
 import java.util.Objects;
 
-
+import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleException;
 import de.fernuni.kurs01584.ss23.domain.exception.JungleFieldNotFoundException;
 
 public class Jungle {
@@ -14,6 +14,26 @@ public class Jungle {
 	private final List<JungleField> jungleFields;
 	
 	public Jungle(int rows, int columns, String characters, List<JungleField> jungleFields) {
+
+		if (rows < 0 || columns < 0) {
+			throw new InvalidJungleException("Rows and Columns must be greater than 0!");
+		}
+		
+		if (characters == null) {
+			throw new InvalidJungleException("Charachters is Null!");
+		}
+		
+		int counter = 0;
+		for (JungleField jungleField : jungleFields) {
+			if (jungleField == null) {
+				throw new InvalidJungleException("Junglefield is Null!");
+			}
+			if (Integer.parseInt(jungleField.getId().substring(1)) !=  counter || !jungleField.getId().substring(0,  1).equals("F")) {
+				throw new InvalidJungleException("Junglefield is Invalid");
+			}
+			counter++;
+		}
+		
 		this.rows = rows;
 		this.columns = columns;
 		this.characters = characters;

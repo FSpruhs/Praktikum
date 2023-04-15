@@ -1,6 +1,5 @@
 package de.fernuni.kurs01584.ss23.domain.model;
 
-import java.lang.reflect.Field;
 import java.util.Objects;
 
 public class SnakePart {
@@ -14,10 +13,6 @@ public class SnakePart {
 		this.charachter = charachter;
 		this.row = row;
 		this.column = column;
-	}
-	
-	public SnakePart(String fieldId) {
-		this.fieldId = fieldId;
 	}
 	
 

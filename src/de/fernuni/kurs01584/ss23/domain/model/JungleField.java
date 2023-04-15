@@ -4,6 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleException;
+import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleFieldException;
+
 public class JungleField {
 	
 	private final String id;
@@ -16,6 +19,20 @@ public class JungleField {
 	
 	
 	public JungleField(String id, int row, int column, int fieldValue, int usability, char charachter) {
+		
+		if (row < 0 || column < 0 || fieldValue < 0 || usability < 0) {
+			throw new InvalidJungleFieldException("Row, Column, fieldValue and usability must be greater than 0!");
+		}
+		
+		if (id == null) {
+			throw new InvalidJungleFieldException("Charachter is Null!");
+		}
+		
+		if (!id.substring(0,1).equals("F") || !id.substring(1).matches("\\d+")) {
+			throw new InvalidJungleFieldException("Invalid id!");
+		}
+		
+		
 		this.id = id;
 		this.row = row;
 		this.column = column;
