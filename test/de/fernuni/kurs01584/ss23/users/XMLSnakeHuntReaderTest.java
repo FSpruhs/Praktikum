@@ -4,8 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,10 +61,10 @@ public class XMLSnakeHuntReaderTest {
 	void readSnakeType() {
 		xmlSnakeHuntReader = new XMLSnakeHuntReader("./res/sj_p5_probleminstanz.xml");
 		
-		List<SnakeType> expected = new LinkedList<>();
-		expected.add(new SnakeType("A0", 1, 3, "FERNUNI", new Distance(1)));
-		expected.add(new SnakeType("A1", 1, 3, "HAGEN", new Jump(2, 1)));
-		expected.add(new SnakeType("A2", 1, 3, "ANACONDA", new Jump(3, 2)));
+		Map<String, SnakeType> expected = new HashMap<>();
+		expected.put("A0", new SnakeType("A0", 1, 3, "FERNUNI", new Distance(1)));
+		expected.put("A1", new SnakeType("A1", 1, 3, "HAGEN", new Jump(2, 1)));
+		expected.put("A2", new SnakeType("A2", 1, 3, "ANACONDA", new Jump(3, 2)));
 		
 		assertEquals(expected, xmlSnakeHuntReader.readSnakeTypes());
 	}

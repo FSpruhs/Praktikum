@@ -6,7 +6,6 @@ import java.util.Objects;
 
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidNeighboorhoodStructureException;
 import de.fernuni.kurs01584.ss23.domain.model.Coordinate;
-import de.fernuni.kurs01584.ss23.domain.model.SnakePart;
 
 public class Distance implements NeighborhoodStructure {
 	

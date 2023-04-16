@@ -144,8 +144,6 @@ public class JumpTest {
 				new Coordinate(4, 4)
 				);
 		List<Coordinate> actual = jump.nextFields(new Coordinate(2, 2), 5, 5);
-		System.out.println(actual);
-		System.out.println(expected);
 		assertTrue(actual.size() == expected.size() && actual.containsAll(expected) && expected.containsAll(actual));
 	}
 	

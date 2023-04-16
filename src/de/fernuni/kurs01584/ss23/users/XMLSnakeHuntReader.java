@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.jdom2.Element;
@@ -97,10 +99,10 @@ public class XMLSnakeHuntReader {
 		return Integer.parseInt(field.getAttributeValue("zeile"));
 	}
 
-	public List<SnakeType> readSnakeTypes() {
-		List<SnakeType> result = new LinkedList<>();
+	public Map<String, SnakeType> readSnakeTypes() {
+		Map<String, SnakeType> result = new HashMap<>();
 		root.getChild("Schlangenarten").getChildren().forEach(snakeType -> {
-			result.add(readSnakeType(snakeType))  ;
+			result.put(snakeType.getAttributeValue("id"), readSnakeType(snakeType));
 		});
 		return result;
 	}

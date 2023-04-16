@@ -88,6 +88,12 @@ public class SnakeType {
 		return neighborhoodStructure;
 	}
 
+	@Override
+	public String toString() {
+		return "SnakeType [id=" + id + ", snakeValue=" + snakeValue + ", count=" + count + ", characterband="
+				+ characterband + ", neighborhoodStructure=" + neighborhoodStructure + "]";
+	}
+
 	
 	
 

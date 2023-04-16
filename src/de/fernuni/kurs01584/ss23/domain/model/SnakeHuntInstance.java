@@ -61,6 +61,7 @@ public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, Sh
 		for (Snake snake : solution.getSnakes()) {
 			findSnakeErrors(result, snake);
 		}
+		jungle.removeAllSnakeParts();
 		return result;
 	}
 
@@ -74,7 +75,6 @@ public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, Sh
 			findNeighborhoodError(result, snakePart, previousSnakePart, snakeTypes.get(snake.getSnakeTypeId()));
 			previousSnakePart = snakePart;
 		}
-		jungle.removeAllSnakeParts();
 	}
 
 	private void solutionNullCheck() {
@@ -112,6 +112,7 @@ public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, Sh
 	}
 
 	private void findUsageError(List<Fehlertyp> result, SnakePart snakePart) {
+		System.out.println(jungle.getJungleFieldUsability(snakePart.getCoordinate()));
 		if (jungle.getJungleFieldUsability(snakePart.getCoordinate()) < 0) {
 			result.add(Fehlertyp.VERWENDUNG);
 		}
