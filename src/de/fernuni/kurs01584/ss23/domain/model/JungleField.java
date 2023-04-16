@@ -119,6 +119,11 @@ public class JungleField implements Comparable<JungleField>{
             return -1;
         }
 	}
+
+
+	public void removeSnakePart(SnakePart snakePart) {
+		snakeParts.remove(snakePart);
+	}
 	
 	
 

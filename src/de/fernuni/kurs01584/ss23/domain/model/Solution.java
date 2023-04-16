@@ -5,10 +5,12 @@ import java.util.Objects;
 
 public class Solution {
 	
+	private int totalPoints;
 	private List<Snake> snakes;
 	
 	public void loadSnakes(List<Snake> snakes) {
 		this.snakes = snakes;
+		totalPoints = 0;
 	}
 	
 	public List<Snake> getSnakes() {
@@ -35,6 +37,15 @@ public class Solution {
 	@Override
 	public String toString() {
 		return "Solution [snakes=" + snakes + "]";
+	}
+
+	public void insertSnake(Snake snake) {
+		snakes.add(snake);
+		
+	}
+
+	public void setTotalPoints(int totalPoints) {
+		this.totalPoints = totalPoints;
 	}
 
 }

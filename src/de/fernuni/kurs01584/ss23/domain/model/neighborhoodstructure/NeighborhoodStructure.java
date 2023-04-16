@@ -2,12 +2,12 @@ package de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure;
 
 import java.util.List;
 
-import de.fernuni.kurs01584.ss23.domain.model.SnakePart;
+import de.fernuni.kurs01584.ss23.domain.model.Coordinate;
 
 public interface NeighborhoodStructure {
 
-	boolean isNotNeighbour(SnakePart actualSnakePart, SnakePart previousSnakePart);
+	boolean isNotNeighbour(Coordinate actualCoordinate, Coordinate previousCoordinate);
 
-	List<String> nextFields(SnakePart snakePart, int rows, int columns);
+	List<Coordinate> nextFields(Coordinate coordinate, int rows, int columns);
 
 }

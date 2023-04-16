@@ -63,4 +63,8 @@ public class Snake {
 		return neighborhoodStructure;
 	}
 
+	public void removeLastSnakePart() {
+		snakeParts.remove(snakeParts.size() - 1);
+	}
+
 }

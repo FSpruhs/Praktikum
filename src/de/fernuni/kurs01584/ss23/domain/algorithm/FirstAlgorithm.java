@@ -1,10 +1,7 @@
 package de.fernuni.kurs01584.ss23.domain.algorithm;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +20,8 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 	
 	private int totalPoints;
 	private List<SnakeHead> snakeHeads;
-	private Solution solution;
+	private Solution tempSolution;
+	private Solution finalSolution;
 	private Jungle jungle;
 
 
@@ -43,18 +41,19 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 			}
 			
 		}
-		for (SnakeHead snakeHead : snakeHeads) {
+		while (!snakeHeads.isEmpty()) {
 			if (actualPoints > totalPoints) {
 				saveSolution();
+				totalPoints = actualPoints;
 			}
 			if (System.nanoTime() - startTimer <= durationInSeconds.getNano()) {
 				return totalPoints;
 			}
 			List<JungleField> startFields = new LinkedList<>();
 			List<Character> chars = new LinkedList<>();
-			for (SnakeHead snakeHeads2 : snakeHeads) {
-				if (!chars.contains(snakeHeads2.getFirstChar()) ) {
-					List<JungleField> jungleFields = jungle.getUsabiliyFieldsByChar(snakeHeads2.getFirstChar());
+			for (SnakeHead snakeHeads : snakeHeads) {
+				if (!chars.contains(snakeHeads.getFirstChar()) ) {
+					List<JungleField> jungleFields = jungle.getUsabiliyFieldsByChar(snakeHeads.getFirstChar());
 					startFields.addAll(jungleFields);
 				}
 			}
@@ -67,19 +66,26 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 					}
 				}
 				Collections.sort(startHeads);
-				for (SnakeHead snakeHead2 : startHeads) {
-					Snake snake = new Snake(snakeHead2.getId(), snakeHead2.getNeighborhoodStructure());
+				for (SnakeHead snakeHead : startHeads) {
+					Snake snake = new Snake(snakeHead.getId(), snakeHead.getNeighborhoodStructure());
 					SnakePart snakePart = new SnakePart(startField.getId(),
 							startField.getCharachter(),
 							new Coordinate(Integer.parseInt(startField.getId().substring(1)) / jungle.getColumns(),
 									Integer.parseInt(startField.getId().substring(1)) % jungle.getColumns()));
 					jungle.placeSnakePart(snakePart, snakePart.getCoordinate());
 					snake.addSnakePart(snakePart);
-					searchNextSnakePart(snake, snakeTypes.get(snake.getSnakeTypeId()).getCharacterBand().substring(1));
-				
+					int totalPoints = searchNextSnakePart(snake, snakeTypes.get(snake.getSnakeTypeId()).getCharacterBand().substring(1));
+					if (totalPoints < 0) {
+						jungle.removeSnakePart(snakePart);
+						snake.removeLastSnakePart();
+					} else {
+						actualPoints = actualPoints + totalPoints + snakeTypes.get(snake.getSnakeTypeId()).getSnakeValue();
+					}
+					snakeHeads.remove(snakeHead);
 				}
 	
 			}
+			
 
 		}
 		
@@ -89,13 +95,14 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 
 	private int searchNextSnakePart(Snake snake, String substring) {
 		if (substring.equals("")) {
-			return 1;
+			tempSolution.insertSnake(snake);
+			return 0;
 		}
 		List<JungleField> jungleFields = new LinkedList<>();
-		List<String> fieldStrings = snake.getNeighborhoodStructure().nextFields(snake.getSnakeParts().get(snake.getSnakeParts().size() - 1), jungle.getRows(), jungle.getColumns());
-		for (String fieldString : fieldStrings) {
-			if (jungle.getJungleField(fieldString).getUsability() > 0 && jungle.getJungleField(fieldString).getCharachter() == substring.charAt(0)) {
-				jungleFields.add(jungle.getJungleField(fieldString));
+		List<Coordinate> fieldCoordinates = snake.getNeighborhoodStructure().nextFields(snake.getSnakeParts().get(snake.getSnakeParts().size() - 1).getCoordinate(), jungle.getRows(), jungle.getColumns());
+		for (Coordinate fieldCoordinate : fieldCoordinates) {
+			if (jungle.getJungleField(fieldCoordinate).getUsability() > 0 && jungle.getJungleField(fieldCoordinate).getCharachter() == substring.charAt(0)) {
+				jungleFields.add(jungle.getJungleField(fieldCoordinate));
 			}
 		}
 		if (jungleFields.isEmpty()) {
@@ -109,20 +116,24 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 							Integer.parseInt(jungleField.getId().substring(1)) % jungle.getColumns()));
 			jungle.placeSnakePart(snakePart, snakePart.getCoordinate());
 			snake.addSnakePart(snakePart);
-			if (searchNextSnakePart(snake, substring.substring(1)) < 0) {
-				jungle.removeSnakePart(snakePart.getCoordinate());
+			int totalPoints = searchNextSnakePart(snake, substring.substring(1));
+			if (totalPoints < 0) {
+				jungle.removeSnakePart(snakePart);
 				snake.removeLastSnakePart();
+			} else {
+				return totalPoints + jungle.getFieldValue(snakePart.getCoordinate());
 			}
 		}
 		return -1;
-		
-		
 	}
 
 
 	private void saveSolution() {
-		// TODO Auto-generated method stub
-		
+		finalSolution = new Solution();
+		finalSolution.setTotalPoints(totalPoints);
+		for (Snake snake : tempSolution.getSnakes()) {
+			finalSolution.insertSnake(snake);
+		}
 	}
 
 }

@@ -60,7 +60,7 @@ public class SnakeType {
 	}
 
 	public boolean isNotSuccessor(SnakePart actualSnakePart, SnakePart previousSnakePart) {
-		return neighborhoodStructure.isNotNeighbour(actualSnakePart, previousSnakePart);
+		return neighborhoodStructure.isNotNeighbour(actualSnakePart.getCoordinate(), previousSnakePart.getCoordinate());
 	}
 
 	public char getCharachterAt(int counter) {

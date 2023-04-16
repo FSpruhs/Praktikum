@@ -119,4 +119,9 @@ public class Jungle {
 		return rows;
 	}
 
+	public void removeSnakePart(SnakePart snakePart) {
+		jungleFields.get(snakePart.getRow() * columns + snakePart.getColumn()).removeSnakePart(snakePart);
+		
+	}
+
 }
