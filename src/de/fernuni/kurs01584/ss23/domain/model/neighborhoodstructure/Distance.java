@@ -41,15 +41,15 @@ public class Distance implements NeighborhoodStructure {
 	@Override
 	public boolean isNotNeighbour(Coordinate actualCoordinate, Coordinate previousCoordinate) {
 		if (actualCoordinate.row() == previousCoordinate.row() && actualCoordinate.column() == previousCoordinate.column()) {
-			return false;
+			return true;
 		}
 		if (actualCoordinate.row() > previousCoordinate.row() + distance || actualCoordinate.row() < previousCoordinate.row() - distance) {
-			return false;
+			return true;
 		}
 		if (actualCoordinate.column() > previousCoordinate.column() + distance || actualCoordinate.column() < previousCoordinate.column() - distance) {
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	@Override

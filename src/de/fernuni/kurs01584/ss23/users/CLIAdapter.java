@@ -1,14 +1,15 @@
 package de.fernuni.kurs01584.ss23.users;
 
-import java.time.Duration;
-import java.util.Map;
+import java.util.List;
 import java.util.logging.Logger;
 
-import de.fernuni.kurs01584.ss23.domain.exception.InvalidDataException;
-import de.fernuni.kurs01584.ss23.domain.model.Jungle;
-import de.fernuni.kurs01584.ss23.domain.model.SnakeHuntInstance;
-import de.fernuni.kurs01584.ss23.domain.model.SnakeType;
-import de.fernuni.kurs01584.ss23.domain.model.Solution;
+import de.fernuni.kurs01584.ss23.domain.ports.in.EvaluateSolutionInPort;
+import de.fernuni.kurs01584.ss23.domain.ports.in.ShowJungleInPort;
+import de.fernuni.kurs01584.ss23.domain.ports.in.ShowSolutionInPort;
+import de.fernuni.kurs01584.ss23.domain.ports.in.SolveInPort;
+import de.fernuni.kurs01584.ss23.domain.ports.in.ValidationInPort;
+import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
+
 
 public class CLIAdapter {
 
@@ -17,7 +18,11 @@ public class CLIAdapter {
 	private String procedure;
 	private String input;
 	private String output;
-	private SnakeHuntInstance snakeHuntInstance;
+	private EvaluateSolutionInPort evaluateSolutionInPort;
+	private ShowSolutionInPort showSolutionInPort;
+	private ShowJungleInPort showJungleInPort;
+	private SolveInPort solveInPort;
+	private ValidationInPort validationInPort;
 	
 	private void readCliArgs(String[] args) {
 		if (!args[0].substring(0, 6).equals("ablauf")) {
@@ -44,40 +49,70 @@ public class CLIAdapter {
 		}
 	}
 	
-	private void inizializeSnakeHuntInstance() {
-		XMLSnakeHuntReader xmlSnakeHuntReader = new XMLSnakeHuntReader(input); 
-		try {
-			Duration duration = xmlSnakeHuntReader.readDurationInSeconds();
-			log.info("Duration inizialized: %s".formatted(duration.toNanos()));
-			Jungle jungle = xmlSnakeHuntReader.readJungle();
-			log.info("Jungle inizialized: %s".formatted(jungle));
-			Map<String, SnakeType> snakeTypes = xmlSnakeHuntReader.readSnakeTypes();
-			log.info("Snake Types inizialized: %s".formatted(snakeTypes));
-			Solution solution = xmlSnakeHuntReader.readSolution();
-			log.info("Solution is: %s".formatted(solution));
-			if (solution == null) {
-				snakeHuntInstance = new SnakeHuntInstance(jungle, snakeTypes, duration);
-			} else {
-				snakeHuntInstance = new SnakeHuntInstance(jungle, snakeTypes, duration, solution);
-			}
-		} catch (InvalidDataException e) {
-			log.warning(e.getMessage());
-			System.exit(0);
-		}
+	public void loadInPorts() {
+		XMLSnakeHuntInizializer xmlSnakeHuntInizializer = new XMLSnakeHuntInizializer(input);
+		evaluateSolutionInPort = xmlSnakeHuntInizializer.getEvaluateSolutionInPort();
+		showSolutionInPort = xmlSnakeHuntInizializer.getShowSolutionInPort();
+		showJungleInPort = xmlSnakeHuntInizializer.getShowJungleInPort();
+		solveInPort = xmlSnakeHuntInizializer.getSolveInPort();
+		validationInPort = xmlSnakeHuntInizializer.getValidationInPort();
 	}
 	
+	
 	private void runProcedure() {
-		// TODO Auto-generated method stub
+		for (char command : procedure.toCharArray()) {
+			switch (command) {
+				case 'l' -> solveInstance();
+				case 'e' -> createInstance();
+				case 'p' -> validateInstance();
+				case 'b' -> evaluateSolution();
+				case 'd' -> showInstance();
+				default -> {
+					log.warning("Unknown command %s.".formatted(command));
+					System.exit(0);
+				}
+			}
+		}
 		
 	}
 	
+	private void showInstance() {
+		// TODO Auto-generated method stub
+	}
+
+	private void evaluateSolution() {
+		// TODO Auto-generated method stub
+	}
+
+	private void validateInstance() {
+		List<Fehlertyp> errorTypes = validationInPort.isValid();
+		StringBuilder output = new StringBuilder();
+		if (errorTypes.isEmpty()) {
+			output.append("Snakehunt solution is valid.");
+		} else {
+			output.append("Snakehunt solution is not valid.\nTotal errors: %s".formatted(errorTypes.size()));
+			output.append("\nFollowing errors found in Solution: ");
+			for (Fehlertyp fehlertyp : errorTypes) {
+				output.append("%s ".formatted(fehlertyp.toString()));
+			}
+		}
+		System.out.println(output.toString());
+	}
+
+	private void createInstance() {
+		// TODO Auto-generated method stub
+	}
+
+	private void solveInstance() {
+		// TODO Auto-generated method stub
+	}
+
 	public static void main(String[] args) {
 		
 		CLIAdapter cliAdapter = new CLIAdapter();
 		cliAdapter.readCliArgs(args);
-		cliAdapter.inizializeSnakeHuntInstance();
+		cliAdapter.loadInPorts();
 		cliAdapter.runProcedure();
-	
 
 	}
 

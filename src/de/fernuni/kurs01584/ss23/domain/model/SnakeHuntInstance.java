@@ -112,7 +112,6 @@ public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, Sh
 	}
 
 	private void findUsageError(List<Fehlertyp> result, SnakePart snakePart) {
-		System.out.println(jungle.getJungleFieldUsability(snakePart.getCoordinate()));
 		if (jungle.getJungleFieldUsability(snakePart.getCoordinate()) < 0) {
 			result.add(Fehlertyp.VERWENDUNG);
 		}

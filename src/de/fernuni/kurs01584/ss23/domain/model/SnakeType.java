@@ -16,10 +16,14 @@ public class SnakeType {
 	public SnakeType(String id, int snakeValue, int count, String characterband,
 			NeighborhoodStructure neighborhoodStructure) {
 		
-		if (characterband == null || neighborhoodStructure == null) {
+		if (neighborhoodStructure == null) {
 			throw new InvalidSnakeTypesException("Characterband and NeigborhoodStructure must not be null!");
 		}
 		
+		if (characterband == null || neighborhoodStructure == null) {
+			throw new InvalidSnakeTypesException("Characterband and NeigborhoodStructure must not be null!");
+		}
+		 	
 		if (snakeValue <= 0 || count <= 0) {
 			throw new InvalidSnakeTypesException("Count and Snake Value must be greater than 0!");
 		}

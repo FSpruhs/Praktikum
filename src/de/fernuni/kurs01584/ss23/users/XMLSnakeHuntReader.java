@@ -36,6 +36,7 @@ public class XMLSnakeHuntReader {
 		sax.setValidation(true);
 		try {
 			this.root = sax.build(new File(fileName)).getRootElement();
+			log.info("Loaded input file %s.".formatted(fileName));
 		} catch (IOException | JDOMException e) {
 			log.warning(e.getMessage());
 			System.exit(0);
@@ -168,18 +169,25 @@ public class XMLSnakeHuntReader {
 
 	private List<SnakePart> readSnakeParts(Element snake) {
 		List<SnakePart> result = new LinkedList<>();
+		String x = "";
+		List<Element> snakeTypes = root.getChild("Schlangenarten").getChildren();
+		for (Element snakeType : snakeTypes) {
+			if (snakeType.getAttributeValue("id").equals(snake.getAttributeValue("art"))) {
+				x = snakeType.getChild("Zeichenkette").getValue();
+			}
+		}
 		int counter = 0;
 		for (Element snakePart : snake.getChildren()) {
-			result.add(readSnakePart(snakePart, counter));
+			result.add(readSnakePart(snakePart, counter, x));
 			counter++;
 		}
 		return result;
 	}
 
-	private SnakePart readSnakePart(Element snakePart, int i) {
+	private SnakePart readSnakePart(Element snakePart, int i, String x) {
 		return new SnakePart(
 				snakePart.getAttributeValue("feld"),
-				readSigns().charAt(i),
+				x.charAt(i),
 				new Coordinate(
 						Integer.parseInt(snakePart.getAttributeValue("feld").substring(1)) / getJungleColumn(),
 						Integer.parseInt(snakePart.getAttributeValue("feld").substring(1)) % getJungleColumn())
