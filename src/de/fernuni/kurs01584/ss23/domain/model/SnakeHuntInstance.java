@@ -26,31 +26,43 @@ public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, Sh
 	
 	
 	public SnakeHuntInstance(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds, Solution solution) {
-		validateInitialData(jungle, snakeTypes, durationInSeconds);
 		this.jungle = jungle;
 		this.snakeTypes = snakeTypes;
 		this.durationInSeconds = durationInSeconds;
 		this.solution = solution;
+		validateSnakeHuntInstance();
 	}
 
 	public SnakeHuntInstance(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds) {
-		validateInitialData(jungle, snakeTypes, durationInSeconds);
 		this.jungle = jungle;
 		this.snakeTypes = snakeTypes;
 		this.durationInSeconds = durationInSeconds;
+		validateSnakeHuntInstance();
 	}
 	
-	private void validateInitialData(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds) {
-		if (jungle == null) {
-			throw new InvalidJungleException("Jungle is Null!");
-		}
-		if (snakeTypes == null || snakeTypes.isEmpty()) {
-			throw new InvalidSnakeTypesException("");
-		}
+	private void validateSnakeHuntInstance() {
+		validateJungle();
+		validateSnakeTypes();
+		validateDuration();
+
+	}
+
+	private void validateDuration() {
 		if (durationInSeconds == null) {
 			throw new InvalidDurationException("Duration in Seconds is Null!");
 		}
-		
+	}
+
+	private void validateSnakeTypes() {
+		if (snakeTypes == null || snakeTypes.isEmpty()) {
+			throw new InvalidSnakeTypesException("Snake Types is Null!");
+		}
+	}
+
+	private void validateJungle() {
+		if (jungle == null) {
+			throw new InvalidJungleException("Jungle is Null!");
+		}
 	}
 
 	@Override
@@ -116,18 +128,18 @@ public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, Sh
 
 	@Override
 	public int evaluateTotalPoints() {
-		if (solution == null) {
-			throw new NoSolutionException();
-		}
-		List<Snake> snakes = solution.getSnakes();
+		solutionNullCheck();
 		int result = 0;
-		for (Snake snake : snakes) {
-			result += snakeTypes.get(snake.getSnakeTypeId()).getSnakeValue();
-			for (SnakePart snakePart : snake.getSnakeParts()) {
-				result += jungle.getFieldValue(snakePart.getCoordinate()) ;
-			}
+		for (Snake snake : solution.getSnakes()) {
+			result += snakeTypes.get(snake.getSnakeTypeId()).getSnakeValue() + sumSnakePartValues(snake);
 		}
 		return result;
+	}
+
+	private int sumSnakePartValues(Snake snake) {
+		return snake.getSnakeParts().stream()
+				.mapToInt(snakePart -> jungle.getFieldValue(snakePart.getCoordinate()))
+				.sum();
 	}
 
 	@Override

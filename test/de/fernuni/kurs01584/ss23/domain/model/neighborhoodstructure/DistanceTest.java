@@ -2,6 +2,7 @@ package de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure;
 
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidNeighboorhoodStructureException;
 import de.fernuni.kurs01584.ss23.domain.model.Coordinate;
+import de.fernuni.kurs01584.ss23.domain.model.JungleSize;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -79,7 +80,7 @@ public class DistanceTest {
 				new Coordinate(4, 3),
 				new Coordinate(4, 4)
 				);
-		List<Coordinate> actual = distance.nextFields(new Coordinate(2, 2), 5, 5);
+		List<Coordinate> actual = distance.nextFields(new Coordinate(2, 2), new JungleSize(5, 5));
 		assertTrue(actual.size() == expected.size() && actual.containsAll(expected) && expected.containsAll(actual));
 	}
 	
@@ -104,7 +105,7 @@ public class DistanceTest {
 				new Coordinate(3, 2),
 				new Coordinate(3, 3)
 				);
-		List<Coordinate> actual = distance.nextFields(new Coordinate(1, 1), 5, 5);
+		List<Coordinate> actual = distance.nextFields(new Coordinate(1, 1), new JungleSize(5, 5));
 		assertTrue(actual.size() == expected.size() && actual.containsAll(expected) && expected.containsAll(actual));
 	}
 	
@@ -129,7 +130,7 @@ public class DistanceTest {
 				new Coordinate(4, 3),
 				new Coordinate(4, 4)
 				);
-		List<Coordinate> actual = distance.nextFields(new Coordinate(3, 3), 5, 5);
+		List<Coordinate> actual = distance.nextFields(new Coordinate(3, 3), new JungleSize(5, 5));
 		assertTrue(actual.size() == expected.size() && actual.containsAll(expected) && expected.containsAll(actual));
 	}
 

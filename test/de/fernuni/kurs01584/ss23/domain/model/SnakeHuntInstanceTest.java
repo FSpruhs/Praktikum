@@ -25,14 +25,12 @@ public class SnakeHuntInstanceTest {
 		List<JungleField> jungleFields = new ArrayList<>();
 		jungleFields.add(new JungleField("F0", new Coordinate(0, 0), 1, 1, 'F')) ;
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		Jungle jungle = new Jungle(2, 4, signString, jungleFields);
+		Jungle jungle = new Jungle(new JungleSize(2, 4), signString, jungleFields);
 		SnakeHuntInstance snakeHuntInstance = new SnakeHuntInstance(
 				jungle,
 				Map.of("A0", new SnakeType("A0", 1, 3, "FERNUNI", new Distance(1))),
 				Duration.ofSeconds(1));
-		assertThrows(NoSolutionException.class, () -> {
-			snakeHuntInstance.isValid();
-		});
+		assertThrows(NoSolutionException.class, snakeHuntInstance::isValid);
 	}
 	
 	@Test
@@ -48,7 +46,7 @@ public class SnakeHuntInstanceTest {
 		jungleFields.add(6, new JungleField("F6", new Coordinate(1, 2), 1, 2, 'N'));
 		jungleFields.add(7, new JungleField("F7", new Coordinate(1, 3), 1, 2, 'U'));
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		Jungle jungle = new Jungle(2, 4, signString, jungleFields);
+		Jungle jungle = new Jungle(new JungleSize(2, 4), signString, jungleFields);
 		
 		List<Snake> snakes = new LinkedList<>();
 		snakes.add(new Snake("A0", List.of(
@@ -91,7 +89,7 @@ public class SnakeHuntInstanceTest {
 		jungleFields.add(6, new JungleField("F6", new Coordinate(1, 2), 1, 2, 'N'));
 		jungleFields.add(7, new JungleField("F7", new Coordinate(1, 3), 1, 2, 'U'));
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		Jungle jungle = new Jungle(2, 4, signString, jungleFields);
+		Jungle jungle = new Jungle(new JungleSize(2, 4), signString, jungleFields);
 		
 		List<Snake> snakes = new LinkedList<>();
 		snakes.add(new Snake("A0", List.of(
@@ -136,7 +134,7 @@ public class SnakeHuntInstanceTest {
 		jungleFields.add(6, new JungleField("F6", new Coordinate(1, 2), 1, 1, 'N'));
 		jungleFields.add(7, new JungleField("F7", new Coordinate(1, 3), 1, 2, 'U'));
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		Jungle jungle = new Jungle(2, 4, signString, jungleFields);
+		Jungle jungle = new Jungle(new JungleSize(2, 4), signString, jungleFields);
 		
 		List<Snake> snakes = new LinkedList<>();
 		snakes.add(new Snake("A0", List.of(
@@ -181,7 +179,7 @@ public class SnakeHuntInstanceTest {
 		jungleFields.add(6, new JungleField("F6", new Coordinate(1, 2), 1, 1, 'N'));
 		jungleFields.add(7, new JungleField("F7", new Coordinate(1, 3), 1, 2, 'U'));
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		Jungle jungle = new Jungle(2, 4, signString, jungleFields);
+		Jungle jungle = new Jungle(new JungleSize(2, 4), signString, jungleFields);
 		
 		List<Snake> snakes = new LinkedList<>();
 		snakes.add(new Snake("A0", List.of(
@@ -217,7 +215,7 @@ public class SnakeHuntInstanceTest {
 		jungleFields.add(6, new JungleField("F6", new Coordinate(1, 2), 7, 2, 'N'));
 		jungleFields.add(7, new JungleField("F7", new Coordinate(1, 3), 8, 2, 'U'));
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		Jungle jungle = new Jungle(2, 4, signString, jungleFields);
+		Jungle jungle = new Jungle(new JungleSize(2, 4), signString, jungleFields);
 		
 		List<Snake> snakes = new LinkedList<>();
 		snakes.add(new Snake("A0", List.of(
@@ -255,14 +253,12 @@ public class SnakeHuntInstanceTest {
 		List<JungleField> jungleFields = new ArrayList<>();
 		jungleFields.add(new JungleField("F0", new Coordinate(0, 0), 1, 1, 'F')) ;
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		Jungle jungle = new Jungle(2, 4, signString, jungleFields);
+		Jungle jungle = new Jungle(new JungleSize(2, 4), signString, jungleFields);
 		SnakeHuntInstance snakeHuntInstance = new SnakeHuntInstance(
 				jungle,
 				Map.of("A0", new SnakeType("A0", 1, 3, "FERNUNI", new Distance(1))),
 				Duration.ofSeconds(1));
-		assertThrows(NoSolutionException.class, () -> {
-			snakeHuntInstance.evaluateTotalPoints();
-		});
+		assertThrows(NoSolutionException.class, snakeHuntInstance::evaluateTotalPoints);
 
 
 	}

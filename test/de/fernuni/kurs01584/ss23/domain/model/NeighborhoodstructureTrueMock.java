@@ -18,7 +18,7 @@ public class NeighborhoodstructureTrueMock implements NeighborhoodStructure{
 	}
 
 	@Override
-	public List<Coordinate> nextFields(Coordinate coordinate, int rows, int columns) {
+	public List<Coordinate> nextFields(Coordinate coordinate, JungleSize jungleSize) {
 		// TODO Auto-generated method stub
 		return null;
 	}

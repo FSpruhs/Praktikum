@@ -6,19 +6,22 @@ import java.util.Objects;
 
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidNeighboorhoodStructureException;
 import de.fernuni.kurs01584.ss23.domain.model.Coordinate;
+import de.fernuni.kurs01584.ss23.domain.model.JungleSize;
 
 public class Distance implements NeighborhoodStructure {
-	
-	
+
+
 	private final int fieldRange;
 
-	public Distance(int distance) {
-		
-		if (distance <= 0) {
-			throw new InvalidNeighboorhoodStructureException("Distance must be greater than 0!");
+	public Distance(int fieldRange) {
+		this.fieldRange = fieldRange;
+		validateDistance(fieldRange);
+	}
+
+	private void validateDistance(int fieldRange) {
+		if (fieldRange <= 0) {
+			throw new InvalidNeighboorhoodStructureException("Field Range must be greater than 0!");
 		}
-		
-		this.fieldRange = distance;
 	}
 
 	@Override
@@ -36,31 +39,61 @@ public class Distance implements NeighborhoodStructure {
 
 	@Override
 	public boolean isNotNeighbour(Coordinate actualCoordinate, Coordinate previousCoordinate) {
-		if (actualCoordinate.row() == previousCoordinate.row() && actualCoordinate.column() == previousCoordinate.column()) {
-			return true;
-		}
-		if (actualCoordinate.row() > previousCoordinate.row() + fieldRange || actualCoordinate.row() < previousCoordinate.row() - fieldRange) {
-			return true;
-		}
-		return actualCoordinate.column() > previousCoordinate.column() + fieldRange || actualCoordinate.column() < previousCoordinate.column() - fieldRange;
+		return isSameCoordinate(actualCoordinate, previousCoordinate) ||
+				isCoordinateOutOfRange(actualCoordinate.row(), previousCoordinate.row()) ||
+				isCoordinateOutOfRange(actualCoordinate.column(), previousCoordinate.column());
+	}
+
+	public boolean isSameCoordinate(Coordinate actualCoordinate, Coordinate previousCoordinate) {
+		return actualCoordinate.row() == previousCoordinate.row() && actualCoordinate.column() == previousCoordinate.column();
+	}
+
+	public boolean isCoordinateOutOfRange(int actualCoordinate, int previousCoordinate) {
+		return istToBig(actualCoordinate, previousCoordinate) || isToSmall(actualCoordinate, previousCoordinate);
+	}
+
+	private boolean isToSmall(int actualCoordinate, int previousCoordinate) {
+		return actualCoordinate < previousCoordinate - fieldRange;
+	}
+
+	private boolean istToBig(int actualCoordinate, int previousCoordinate) {
+		return actualCoordinate > previousCoordinate + fieldRange;
 	}
 
 	@Override
-	public List<Coordinate> nextFields(Coordinate coordinate, int rows, int columns) {
+	public List<Coordinate> nextFields(Coordinate coordinate, JungleSize jungleSize) {
 		List<Coordinate> result = new LinkedList<>();
-
-		int startPosRow = Math.max(coordinate.row() - fieldRange, 0);
-		int startPosColumn = Math.max(coordinate.column() - fieldRange, 0);
-		int endPosRow = Math.min(coordinate.row() + fieldRange, rows - 1);
-		int endPosColumn = Math.min(coordinate.column() + fieldRange, columns - 1);
-
-		for (int rowNum = startPosRow; rowNum <= endPosRow; rowNum++) {
-			for (int colNum = startPosColumn; colNum <= endPosColumn; colNum++) {
-				if (rowNum != coordinate.row() || colNum != coordinate.column()) {
-					result.add(new Coordinate(rowNum, colNum));
-				}
+		for (int rowNum = getStartPosRow(coordinate); rowNum <= getEndPosRow(coordinate, jungleSize.rows()); rowNum++) {
+			for (int colNum = getStartPosColumn(coordinate); colNum <= getEndPosColumn(coordinate, jungleSize.columns()); colNum++) {
+				checkCoordinate(coordinate, result, rowNum, colNum);
 			}
 		}
 		return result;
+	}
+
+	private void checkCoordinate(Coordinate coordinate, List<Coordinate> result, int rowNum, int colNum) {
+		if (isNext(coordinate, rowNum, colNum)) {
+			result.add(new Coordinate(rowNum, colNum));
+		}
+	}
+
+	private boolean isNext(Coordinate coordinate, int rowNum, int colNum) {
+		return rowNum != coordinate.row() || colNum != coordinate.column();
+	}
+
+	private int getEndPosColumn(Coordinate coordinate, int columns) {
+		return Math.min(coordinate.column() + fieldRange, columns - 1);
+	}
+
+	private int getEndPosRow(Coordinate coordinate, int rows) {
+		return Math.min(coordinate.row() + fieldRange, rows - 1);
+	}
+
+	private int getStartPosColumn(Coordinate coordinate) {
+		return Math.max(coordinate.column() - fieldRange, 0);
+	}
+
+	private int getStartPosRow(Coordinate coordinate) {
+		return Math.max(coordinate.row() - fieldRange, 0);
 	}
 }

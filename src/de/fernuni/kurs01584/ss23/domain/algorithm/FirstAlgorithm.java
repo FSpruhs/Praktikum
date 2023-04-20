@@ -70,8 +70,8 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 					Snake snake = new Snake(snakeHead.getId(), snakeHead.getNeighborhoodStructure());
 					SnakePart snakePart = new SnakePart(startField.getId(),
 							startField.getCharacter(),
-							new Coordinate(Integer.parseInt(startField.getId().substring(1)) / jungle.getColumns(),
-									Integer.parseInt(startField.getId().substring(1)) % jungle.getColumns()));
+							new Coordinate(Integer.parseInt(startField.getId().substring(1)) / jungle.getJungleSize().columns(),
+									Integer.parseInt(startField.getId().substring(1)) % jungle.getJungleSize().columns()));
 					jungle.placeSnakePart(snakePart, snakePart.getCoordinate());
 					snake.addSnakePart(snakePart);
 					int totalPoints = searchNextSnakePart(snake, snakeTypes.get(snake.getSnakeTypeId()).getCharacterBand().substring(1));
@@ -99,7 +99,7 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 			return 0;
 		}
 		List<JungleField> jungleFields = new LinkedList<>();
-		List<Coordinate> fieldCoordinates = snake.getNeighborhoodStructure().nextFields(snake.getSnakeParts().get(snake.getSnakeParts().size() - 1).getCoordinate(), jungle.getRows(), jungle.getColumns());
+		List<Coordinate> fieldCoordinates = snake.getNeighborhoodStructure().nextFields(snake.getSnakeParts().get(snake.getSnakeParts().size() - 1).getCoordinate(), jungle.getJungleSize());
 		for (Coordinate fieldCoordinate : fieldCoordinates) {
 			if (jungle.getJungleField(fieldCoordinate).getUsability() > 0 && jungle.getJungleField(fieldCoordinate).getCharacter() == substring.charAt(0)) {
 				jungleFields.add(jungle.getJungleField(fieldCoordinate));
@@ -112,8 +112,8 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 		for (JungleField jungleField : jungleFields) {
 			SnakePart snakePart = new SnakePart(jungleField.getId(),
 					jungleField.getCharacter(),
-					new Coordinate(Integer.parseInt(jungleField.getId().substring(1)) / jungle.getColumns(),
-							Integer.parseInt(jungleField.getId().substring(1)) % jungle.getColumns()));
+					new Coordinate(Integer.parseInt(jungleField.getId().substring(1)) / jungle.getJungleSize().rows(),
+							Integer.parseInt(jungleField.getId().substring(1)) % jungle.getJungleSize().columns()));
 			jungle.placeSnakePart(snakePart, snakePart.getCoordinate());
 			snake.addSnakePart(snakePart);
 			int totalPoints = searchNextSnakePart(snake, substring.substring(1));

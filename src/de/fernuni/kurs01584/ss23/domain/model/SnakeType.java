@@ -15,48 +15,55 @@ public class SnakeType {
 	
 	public SnakeType(String id, int snakeValue, int count, String characterBand,
 			NeighborhoodStructure neighborhoodStructure) {
-		
-		if (characterBand == null || neighborhoodStructure == null) {
-			throw new InvalidSnakeTypesException("Character Band and Neighborhood Structure must not be null!");
-		}
-		 	
-		if (snakeValue <= 0 || count <= 0) {
-			throw new InvalidSnakeTypesException("Count and Snake Value must be greater than 0!");
-		}
-		
-		if (id.charAt(0) != 'A' || !id.substring(1).matches("\\d+")) {
-			throw new InvalidSnakeTypesException("Invalid id");
-		}
-		
-		
+
 		this.id = id;
 		this.snakeValue = snakeValue;
 		this.count = count;
 		this.characterBand = characterBand;
 		this.neighborhoodStructure = neighborhoodStructure;
+		validateSnakeType();
 	}
-	
+
+	private void validateSnakeType() {
+		validateCharacterBand();
+		validateNeighborhoodStructure();
+		validateSnakeValue();
+		validateCount();
+		validateId();
+	}
+
+	private void validateCount() {
+		if (count <= 0) {
+			throw new InvalidSnakeTypesException("Count must be greater than 0!");
+		}
+	}
+
+	private void validateSnakeValue() {
+		if (snakeValue <= 0) {
+			throw new InvalidSnakeTypesException("Snake Value must be greater than 0!");
+		}
+	}
+
+	private void validateNeighborhoodStructure() {
+		if (neighborhoodStructure == null) {
+			throw new InvalidSnakeTypesException("Neighborhood Structure must not be null!");
+		}
+	}
+
+	private void validateCharacterBand() {
+		if (characterBand == null ) {
+			throw new InvalidSnakeTypesException("Character Band Structure must not be null!");
+		}
+	}
+
+	private void validateId() {
+		if (id.charAt(0) != 'A' || !id.substring(1).matches("\\d+")) {
+			throw new InvalidSnakeTypesException("Invalid id");
+		}
+	}
+
 	public int getSnakeLength() {
 		return characterBand.length();
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(characterBand, count, id, neighborhoodStructure, snakeValue);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		SnakeType other = (SnakeType) obj;
-		return Objects.equals(characterBand, other.characterBand) && count == other.count
-				&& Objects.equals(id, other.id) && Objects.equals(neighborhoodStructure, other.neighborhoodStructure)
-				&& snakeValue == other.snakeValue;
 	}
 
 	public boolean isNotSuccessor(SnakePart actualSnakePart, SnakePart previousSnakePart) {
@@ -85,11 +92,25 @@ public class SnakeType {
 
 	@Override
 	public String toString() {
-		return "SnakeType [id=" + id + ", snakeValue=" + snakeValue + ", count=" + count + ", characterBand="
-				+ characterBand + ", neighborhoodStructure=" + neighborhoodStructure + "]";
+		return "SnakeType{" +
+				"id='" + id + '\'' +
+				", snakeValue=" + snakeValue +
+				", count=" + count +
+				", characterBand='" + characterBand + '\'' +
+				", neighborhoodStructure=" + neighborhoodStructure +
+				'}';
 	}
 
-	
-	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		SnakeType snakeType = (SnakeType) o;
+		return snakeValue == snakeType.snakeValue && count == snakeType.count && Objects.equals(id, snakeType.id) && Objects.equals(characterBand, snakeType.characterBand) && Objects.equals(neighborhoodStructure, snakeType.neighborhoodStructure);
+	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, snakeValue, count, characterBand, neighborhoodStructure);
+	}
 }

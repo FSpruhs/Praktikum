@@ -6,22 +6,23 @@ import java.util.Objects;
 
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidNeighboorhoodStructureException;
 import de.fernuni.kurs01584.ss23.domain.model.Coordinate;
+import de.fernuni.kurs01584.ss23.domain.model.JungleSize;
 
 public class Jump implements NeighborhoodStructure{
-	
+
 	private final int row;
 	private final int column;
-	
+
 	public Jump(int row, int column) {
-		
+
 		if (row < 0 || column < 0) {
 			throw new InvalidNeighboorhoodStructureException("Row and Column cant be negative!");
 		}
-		
+
 		if (row == 0 && column == 0) {
 			throw new InvalidNeighboorhoodStructureException("Row and Column cant both be zero!");
 		}
-		
+
 		this.row = row;
 		this.column = column;
 	}
@@ -70,37 +71,37 @@ public class Jump implements NeighborhoodStructure{
 	}
 
 	@Override
-	public List<Coordinate> nextFields(Coordinate coordinate, int rows, int columns) {
+	public List<Coordinate> nextFields(Coordinate coordinate, JungleSize jungleSize) {
 		List<Coordinate> result = new LinkedList<>();
 		if (row == 0 || column == 0) {
 			int distance = Math.max(row, column);
 			if (coordinate.row() - distance >= 0) {
 				result.add(new Coordinate(coordinate.row() - distance, coordinate.column()));
 			}
-			if (coordinate.row() + distance <= rows - 1) {
+			if (coordinate.row() + distance <= jungleSize.rows() - 1) {
 				result.add(new Coordinate(coordinate.row() + distance, coordinate.column()));
 			}
 			if (coordinate.column() - distance >= 0) {
 				result.add(new Coordinate(coordinate.row(), coordinate.column() - distance));
 			}
-			if (coordinate.column() + distance <= columns - 1) {
+			if (coordinate.column() + distance <= jungleSize.columns() - 1) {
 				result.add(new Coordinate(coordinate.row(), coordinate.column() + distance));
 			}
 			return result;
 		}
-		
+
 		if (row == column) {
 			int distance = row;
 			if (coordinate.row() - distance >= 0 && coordinate.column() - distance >= 0) {
 				result.add(new Coordinate(coordinate.row() - distance, coordinate.column() - distance));
 			}
-			if (coordinate.row() + distance <= rows - 1 && coordinate.column() - distance >= 0) {
+			if (coordinate.row() + distance <= jungleSize.rows() - 1 && coordinate.column() - distance >= 0) {
 				result.add(new Coordinate(coordinate.row() + distance, coordinate.column() - distance));
 			}
-			if (coordinate.row() - distance >= 0 && coordinate.column() + distance <= columns - 1) {
+			if (coordinate.row() - distance >= 0 && coordinate.column() + distance <= jungleSize.columns() - 1) {
 				result.add(new Coordinate(coordinate.row() - distance, coordinate.column() + distance));
 			}
-			if (coordinate.row() + distance <= rows - 1 && coordinate.column() + distance <= columns - 1) {
+			if (coordinate.row() + distance <= jungleSize.rows() - 1 && coordinate.column() + distance <= jungleSize.columns() - 1) {
 				result.add(new Coordinate(coordinate.row() + distance, coordinate.column() + distance));
 			}
 			return result;
@@ -109,28 +110,28 @@ public class Jump implements NeighborhoodStructure{
 		if (coordinate.row() - row >= 0 && coordinate.column() - column >= 0) {
 			result.add(new Coordinate(coordinate.row() - row, coordinate.column() - column));
 		}
-		if (coordinate.row() + row <= rows - 1 && coordinate.column() - column >= 0) {
+		if (coordinate.row() + row <= jungleSize.rows() - 1 && coordinate.column() - column >= 0) {
 			result.add(new Coordinate(coordinate.row() + row, coordinate.column() - column));
 		}
-		if (coordinate.row() - row >= 0 && coordinate.column() + column <= columns - 1) {
+		if (coordinate.row() - row >= 0 && coordinate.column() + column <= jungleSize.columns() - 1) {
 			result.add(new Coordinate(coordinate.row() - row, coordinate.column() + column));
 		}
-		if (coordinate.row() + row <= rows - 1 && coordinate.column() + column <= columns - 1) {
+		if (coordinate.row() + row <= jungleSize.rows() - 1 && coordinate.column() + column <= jungleSize.columns() - 1) {
 			result.add(new Coordinate(coordinate.row() + row, coordinate.column() + column));
 		}
 		if (coordinate.row() - column >= 0 && coordinate.column() - row >= 0) {
 			result.add(new Coordinate(coordinate.row() - column, coordinate.column() - row));
 		}
-		if (coordinate.row() + column <= rows - 1 && coordinate.column() - row >= 0) {
+		if (coordinate.row() + column <= jungleSize.rows() - 1 && coordinate.column() - row >= 0) {
 			result.add(new Coordinate(coordinate.row() + column, coordinate.column() - row));
 		}
-		if (coordinate.row() - column >= 0 && coordinate.column() + row <= columns - 1) {
+		if (coordinate.row() - column >= 0 && coordinate.column() + row <= jungleSize.columns() - 1) {
 			result.add(new Coordinate(coordinate.row() - column, coordinate.column() + row));
 		}
-		if (coordinate.row() + column <= rows - 1 && coordinate.column() + row <= columns - 1) {
+		if (coordinate.row() + column <= jungleSize.rows() - 1 && coordinate.column() + row <= jungleSize.columns() - 1) {
 			result.add(new Coordinate(coordinate.row() + column, coordinate.column() + row));
 		}
-		
+
 		return result;
 	}
 

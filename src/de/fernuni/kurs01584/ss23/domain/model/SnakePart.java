@@ -12,41 +12,31 @@ public class SnakePart {
 		this.character = character;
 		this.coordinate = coordinate;
 	}
-	
 
-	public int getRow() {
-		return coordinate.row();
+	@Override
+	public String toString() {
+		return "SnakePart{" +
+				"fieldId='" + fieldId + '\'' +
+				", character=" + character +
+				", coordinate=" + coordinate +
+				'}';
 	}
 
-
-	public int getColumn() {
-		return coordinate.column();
-	}
-
-	public char getCharacter() {
-		return character;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		SnakePart snakePart = (SnakePart) o;
+		return character == snakePart.character && Objects.equals(fieldId, snakePart.fieldId) && Objects.equals(coordinate, snakePart.coordinate);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(fieldId);
+		return Objects.hash(fieldId, character, coordinate);
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		SnakePart other = (SnakePart) obj;
-		return Objects.equals(fieldId, other.fieldId);
-	}
-
-	@Override
-	public String toString() {
-		return "SnakePart [fieldId=" + fieldId + "]";
+	public char getCharacter() {
+		return character;
 	}
 
 	public Coordinate getCoordinate() {

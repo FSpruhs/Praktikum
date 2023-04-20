@@ -34,25 +34,25 @@ public class Snake {
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(snakeParts, snakeTypeId);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Snake snake = (Snake) o;
+		return Objects.equals(snakeTypeId, snake.snakeTypeId) && Objects.equals(snakeParts, snake.snakeParts) && Objects.equals(neighborhoodStructure, snake.neighborhoodStructure);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Snake other = (Snake) obj;
-		return Objects.equals(snakeParts, other.snakeParts) && Objects.equals(snakeTypeId, other.snakeTypeId);
+	public int hashCode() {
+		return Objects.hash(snakeTypeId, snakeParts, neighborhoodStructure);
 	}
 
 	@Override
 	public String toString() {
-		return "Snake [snakeTypeId=" + snakeTypeId + ", snakeParts=" + snakeParts + "]";
+		return "Snake{" +
+				"snakeTypeId='" + snakeTypeId + '\'' +
+				", snakeParts=" + snakeParts +
+				", neighborhoodStructure=" + neighborhoodStructure +
+				'}';
 	}
 
 	public void addSnakePart(SnakePart snakePart) {

@@ -9,17 +9,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import de.fernuni.kurs01584.ss23.domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import de.fernuni.kurs01584.ss23.domain.model.Coordinate;
-import de.fernuni.kurs01584.ss23.domain.model.Jungle;
-import de.fernuni.kurs01584.ss23.domain.model.JungleField;
-import de.fernuni.kurs01584.ss23.domain.model.Snake;
-import de.fernuni.kurs01584.ss23.domain.model.SnakePart;
-import de.fernuni.kurs01584.ss23.domain.model.SnakeType;
-import de.fernuni.kurs01584.ss23.domain.model.Solution;
 import de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure.Distance;
 import de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure.Jump;
 
@@ -51,7 +45,7 @@ public class XMLSnakeHuntReaderTest {
 		expectedJungleFields.add(6, new JungleField("F6", new Coordinate(1, 2), 1, 1, 'N'));
 		expectedJungleFields.add(7, new JungleField("F7", new Coordinate(1, 3), 1, 1, 'U'));
 		String expectedSignString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		Jungle expectedJungle = new Jungle(2, 4, expectedSignString, expectedJungleFields);
+		Jungle expectedJungle = new Jungle(new JungleSize(2, 4), expectedSignString, expectedJungleFields);
 		
 		assertEquals(expectedJungle, xmlSnakeHuntReader.readJungle());
 	}

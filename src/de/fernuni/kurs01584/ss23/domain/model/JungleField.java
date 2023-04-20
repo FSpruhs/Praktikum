@@ -17,50 +17,68 @@ public class JungleField implements Comparable<JungleField>{
 	
 	
 	public JungleField(String id, Coordinate coordinate, int fieldValue, int usability, char character) {
-		
-		if (fieldValue < 0 || usability < 0) {
-			throw new InvalidJungleFieldException("FieldValue and usability must be greater than 0!");
-		}
-		
-		if (id == null) {
-			throw new InvalidJungleFieldException("Character is Null!");
-		}
-		
-		if (id.charAt(0) != 'F' || !id.substring(1).matches("\\d+")) {
-			throw new InvalidJungleFieldException("Invalid id!");
-		}
-		
 		this.id = id;
 		this.coordinate = coordinate;
 		this.fieldValue = fieldValue;
 		this.usability = usability;
 		this.character = character;
+		validateJungleFields();
+	}
+
+	private void validateJungleFields() {
+		validateUsability();
+		validateFieldValue();
+		validateIdIsNotNull();
+		validateId();
+	}
+
+	private void validateUsability() {
+		if (usability < 0) {
+			throw new InvalidJungleFieldException("Usability must be greater than 0!");
+		}
+	}
+
+	private void validateFieldValue() {
+		if (fieldValue < 0) {
+			throw new InvalidJungleFieldException("FieldValue must be greater than 0!");
+		}
+	}
+
+	private void validateIdIsNotNull() {
+		if (id == null) {
+			throw new InvalidJungleFieldException("Id is Null!");
+		}
+	}
+
+	private void validateId() {
+		if (id.charAt(0) != 'F' || !id.substring(1).matches("\\d+")) {
+			throw new InvalidJungleFieldException("Invalid id!");
+		}
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		JungleField that = (JungleField) o;
+		return fieldValue == that.fieldValue && usability == that.usability && character == that.character && Objects.equals(id, that.id) && Objects.equals(coordinate, that.coordinate) && Objects.equals(snakeParts, that.snakeParts);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(character, coordinate, fieldValue, id, snakeParts, usability);
+		return Objects.hash(id, coordinate, fieldValue, usability, character, snakeParts);
 	}
-
 
 	@Override
 	public String toString() {
-		return "JungleField [id=" + id + ", coordinate=" + coordinate + ", fieldValue=" + fieldValue + ", usability="
-				+ usability + ", character=" + character + ", snakeParts=" + snakeParts + "]";
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		JungleField other = (JungleField) obj;
-		return character == other.character && Objects.equals(coordinate, other.coordinate)
-				&& fieldValue == other.fieldValue && Objects.equals(id, other.id)
-				&& Objects.equals(snakeParts, other.snakeParts) && usability == other.usability;
+		return "JungleField{" +
+				"id='" + id + '\'' +
+				", coordinate=" + coordinate +
+				", fieldValue=" + fieldValue +
+				", usability=" + usability +
+				", character=" + character +
+				", snakeParts=" + snakeParts +
+				'}';
 	}
 
 	public void placeSnakePart(SnakePart snakePart) {
@@ -77,17 +95,6 @@ public class JungleField implements Comparable<JungleField>{
 		return character;
 	}
 
-
-	public int getRow() {
-		return coordinate.row();
-	}
-
-
-	public int getColumn() {
-		return coordinate.column();
-	}
-
-
 	public String getId() {
 		return id;
 	}
@@ -101,7 +108,6 @@ public class JungleField implements Comparable<JungleField>{
 	public void removeSnakeParts() {
 		snakeParts.clear();
 	}
-
 
 	@Override
 	public int compareTo(JungleField j) {

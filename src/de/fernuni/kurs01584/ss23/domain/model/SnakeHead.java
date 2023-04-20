@@ -2,6 +2,8 @@ package de.fernuni.kurs01584.ss23.domain.model;
 
 import de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure.NeighborhoodStructure;
 
+import java.util.Objects;
+
 public class SnakeHead implements Comparable<SnakeHead>{
 	
 	private String id;
@@ -28,16 +30,9 @@ public class SnakeHead implements Comparable<SnakeHead>{
 		return snakeValue;
 	}
 
-	public void setSnakeValue(int snakeValue) {
-		this.snakeValue = snakeValue;
-	}
 
 	public char getFirstChar() {
 		return firstChar;
-	}
-
-	public void setFirstChar(char firstChar) {
-		this.firstChar = firstChar;
 	}
 
 	public NeighborhoodStructure getNeighborhoodStructure() {
@@ -49,4 +44,26 @@ public class SnakeHead implements Comparable<SnakeHead>{
 		return Integer.compare(snakeValue, s.getSnakeValue());
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		SnakeHead snakeHead = (SnakeHead) o;
+		return snakeValue == snakeHead.snakeValue && firstChar == snakeHead.firstChar && Objects.equals(id, snakeHead.id) && Objects.equals(neighborhoodStructure, snakeHead.neighborhoodStructure);
+	}
+
+	@Override
+	public String toString() {
+		return "SnakeHead{" +
+				"id='" + id + '\'' +
+				", snakeValue=" + snakeValue +
+				", firstChar=" + firstChar +
+				", neighborhoodStructure=" + neighborhoodStructure +
+				'}';
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, snakeValue, firstChar, neighborhoodStructure);
+	}
 }

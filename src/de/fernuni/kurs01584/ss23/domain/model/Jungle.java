@@ -1,87 +1,77 @@
 package de.fernuni.kurs01584.ss23.domain.model;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleException;
 
 public class Jungle {
-	
-	private final int rows;
-	private final int columns;
+
+	private final JungleSize jungleSize;
 	private final String characters;
 	private final List<JungleField> jungleFields;
 	
-	public Jungle(int rows, int columns, String characters, List<JungleField> jungleFields) {
+	public Jungle(JungleSize jungleSize, String characters, List<JungleField> jungleFields) {
+		this.jungleSize = jungleSize;
+		this.characters = characters;
+		this.jungleFields = jungleFields;
+		validateJungle();
+	}
 
-		if (rows < 0 || columns < 0) {
-			throw new InvalidJungleException("Rows and Columns must be greater than 0!");
+	private void validateJungle() {
+		validateCharacters();
+		validateJungleFields();
+	}
+
+	private void validateJungleFields() {
+		int counter = 0;
+		for (JungleField jungleField : jungleFields) {
+			validateJungleField(counter, jungleField);
+			counter++;
 		}
-		
+	}
+
+	private void validateJungleField(int counter, JungleField jungleField) {
+		validateJungleFieldIsNull(jungleField);
+		validateJungleFieldPosition(counter, jungleField);
+	}
+
+	private void validateJungleFieldPosition(int counter, JungleField jungleField) {
+		if (Integer.parseInt(jungleField.getId().substring(1)) != counter || jungleField.getId().charAt(0) != 'F') {
+			throw new InvalidJungleException("Jungle field is Invalid");
+		}
+	}
+
+	private void validateJungleFieldIsNull(JungleField jungleField) {
+		if (jungleField == null) {
+			throw new InvalidJungleException("Jungle field is Null!");
+		}
+	}
+
+	private void validateCharacters() {
 		if (characters == null) {
 			throw new InvalidJungleException("Characters is Null!");
 		}
-		
-		int counter = 0;
-		for (JungleField jungleField : jungleFields) {
-			if (jungleField == null) {
-				throw new InvalidJungleException("Jungle field is Null!");
-			}
-			if (Integer.parseInt(jungleField.getId().substring(1)) !=  counter || jungleField.getId().charAt(0) != 'F') {
-				throw new InvalidJungleException("Jungle field is Invalid");
-			}
-			counter++;
-		}
-		
-		this.rows = rows;
-		this.columns = columns;
-		this.characters = characters;
-		this.jungleFields = jungleFields;
 	}
-	
+
 	public JungleField getJungleField(Coordinate coordinate) {
-		return jungleFields.get(coordinate.row() * columns + coordinate.column());
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(characters, columns, jungleFields, rows);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Jungle other = (Jungle) obj;
-		return Objects.equals(characters, other.characters) && columns == other.columns
-				&& Objects.equals(jungleFields, other.jungleFields) && rows == other.rows;
-	}
-
-	@Override
-	public String toString() {
-		return "Jungle [rows=" + rows + ", columns=" + columns + ", characters=" + characters + ", jungleFields="
-				+ jungleFields + "]";
+		return jungleFields.get(mapCoordinateToIndex(coordinate));
 	}
 
 	public void placeSnakePart(SnakePart snakePart, Coordinate coordinate) {
-		jungleFields.get(coordinate.row() * columns + coordinate.column()).placeSnakePart(snakePart);
+		jungleFields.get(mapCoordinateToIndex(coordinate)).placeSnakePart(snakePart);
 	}
 
 	public int getJungleFieldUsability(Coordinate coordinate) {
-		return jungleFields.get(coordinate.row() * columns + coordinate.column()).getUsability();
+		return jungleFields.get(mapCoordinateToIndex(coordinate)).getUsability();
 	}
 
 	public char getJungleFieldSign(Coordinate coordinate) {
-		return jungleFields.get(coordinate.row() * columns + coordinate.column()).getCharacter();
+		return jungleFields.get(mapCoordinateToIndex(coordinate)).getCharacter();
 	}
 	
 	public int getFieldValue(Coordinate coordinate) {
-		return jungleFields.get(coordinate.row() * columns + coordinate.column()).getFieldValue();
+		return jungleFields.get(mapCoordinateToIndex(coordinate)).getFieldValue();
 	}
 
 	public void removeAllSnakeParts() {
@@ -89,26 +79,44 @@ public class Jungle {
 	}
 
 	public List<JungleField> getUsabilityFieldsByChar(char firstChar) {
-		LinkedList<JungleField> result = new LinkedList<>();
-		for (JungleField jungleField : jungleFields) {
-			if (jungleField.getCharacter() == firstChar && jungleField.getUsability() > 0) {
-				result.add(jungleField);
-			}
-		}
-		return result;
-	}
-	
-	public int getColumns() {
-		return columns;
+		return jungleFields.stream()
+				.filter(jungleField -> jungleField.getCharacter() == firstChar)
+				.filter(jungleField -> jungleField.getUsability() > 0)
+				.toList();
 	}
 
-	public int getRows() {
-		return rows;
+	public JungleSize getJungleSize() {
+		return jungleSize;
 	}
 
 	public void removeSnakePart(SnakePart snakePart) {
-		jungleFields.get(snakePart.getRow() * columns + snakePart.getColumn()).removeSnakePart(snakePart);
-		
+		jungleFields.get(mapCoordinateToIndex(snakePart.getCoordinate())).removeSnakePart(snakePart);
+	}
+
+	private int mapCoordinateToIndex(Coordinate coordinate) {
+		return coordinate.row() * jungleSize.columns() + coordinate.column();
+	}
+
+	@Override
+	public String toString() {
+		return "Jungle{" +
+				"jungleSize=" + jungleSize +
+				", characters='" + characters + '\'' +
+				", jungleFields=" + jungleFields +
+				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Jungle jungle = (Jungle) o;
+		return Objects.equals(jungleSize, jungle.jungleSize) && Objects.equals(characters, jungle.characters) && Objects.equals(jungleFields, jungle.jungleFields);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(jungleSize, characters, jungleFields);
 	}
 
 }
