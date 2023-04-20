@@ -53,7 +53,7 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 			List<Character> chars = new LinkedList<>();
 			for (SnakeHead snakeHeads : snakeHeads) {
 				if (!chars.contains(snakeHeads.getFirstChar()) ) {
-					List<JungleField> jungleFields = jungle.getUsabiliyFieldsByChar(snakeHeads.getFirstChar());
+					List<JungleField> jungleFields = jungle.getUsabilityFieldsByChar(snakeHeads.getFirstChar());
 					startFields.addAll(jungleFields);
 				}
 			}
@@ -61,7 +61,7 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 			for (JungleField startField : startFields) {
 				List<SnakeHead> startHeads =  new LinkedList<>();
 				for (SnakeHead snakeHead2 : snakeHeads) {
-					if (snakeHead2.getFirstChar() == startField.getCharachter()) {
+					if (snakeHead2.getFirstChar() == startField.getCharacter()) {
 						startHeads.add(snakeHead2);
 					}
 				}
@@ -69,7 +69,7 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 				for (SnakeHead snakeHead : startHeads) {
 					Snake snake = new Snake(snakeHead.getId(), snakeHead.getNeighborhoodStructure());
 					SnakePart snakePart = new SnakePart(startField.getId(),
-							startField.getCharachter(),
+							startField.getCharacter(),
 							new Coordinate(Integer.parseInt(startField.getId().substring(1)) / jungle.getColumns(),
 									Integer.parseInt(startField.getId().substring(1)) % jungle.getColumns()));
 					jungle.placeSnakePart(snakePart, snakePart.getCoordinate());
@@ -101,7 +101,7 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 		List<JungleField> jungleFields = new LinkedList<>();
 		List<Coordinate> fieldCoordinates = snake.getNeighborhoodStructure().nextFields(snake.getSnakeParts().get(snake.getSnakeParts().size() - 1).getCoordinate(), jungle.getRows(), jungle.getColumns());
 		for (Coordinate fieldCoordinate : fieldCoordinates) {
-			if (jungle.getJungleField(fieldCoordinate).getUsability() > 0 && jungle.getJungleField(fieldCoordinate).getCharachter() == substring.charAt(0)) {
+			if (jungle.getJungleField(fieldCoordinate).getUsability() > 0 && jungle.getJungleField(fieldCoordinate).getCharacter() == substring.charAt(0)) {
 				jungleFields.add(jungle.getJungleField(fieldCoordinate));
 			}
 		}
@@ -111,7 +111,7 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 		Collections.sort(jungleFields);
 		for (JungleField jungleField : jungleFields) {
 			SnakePart snakePart = new SnakePart(jungleField.getId(),
-					jungleField.getCharachter(),
+					jungleField.getCharacter(),
 					new Coordinate(Integer.parseInt(jungleField.getId().substring(1)) / jungle.getColumns(),
 							Integer.parseInt(jungleField.getId().substring(1)) % jungle.getColumns()));
 			jungle.placeSnakePart(snakePart, snakePart.getCoordinate());
