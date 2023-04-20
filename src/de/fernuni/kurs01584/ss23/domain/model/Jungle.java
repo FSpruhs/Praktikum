@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Objects;
 
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleException;
-import de.fernuni.kurs01584.ss23.domain.exception.JungleFieldNotFoundException;
 
 public class Jungle {
 	
@@ -21,16 +20,16 @@ public class Jungle {
 		}
 		
 		if (characters == null) {
-			throw new InvalidJungleException("Charachters is Null!");
+			throw new InvalidJungleException("Characters is Null!");
 		}
 		
 		int counter = 0;
 		for (JungleField jungleField : jungleFields) {
 			if (jungleField == null) {
-				throw new InvalidJungleException("Junglefield is Null!");
+				throw new InvalidJungleException("Jungle field is Null!");
 			}
-			if (Integer.parseInt(jungleField.getId().substring(1)) !=  counter || !jungleField.getId().substring(0,  1).equals("F")) {
-				throw new InvalidJungleException("Junglefield is Invalid");
+			if (Integer.parseInt(jungleField.getId().substring(1)) !=  counter || jungleField.getId().charAt(0) != 'F') {
+				throw new InvalidJungleException("Jungle field is Invalid");
 			}
 			counter++;
 		}
@@ -39,10 +38,6 @@ public class Jungle {
 		this.columns = columns;
 		this.characters = characters;
 		this.jungleFields = jungleFields;
-	}
-	
-	public List<JungleField> getJungleFields() {
-		return jungleFields;
 	}
 	
 	public JungleField getJungleField(Coordinate coordinate) {
@@ -73,14 +68,6 @@ public class Jungle {
 				+ jungleFields + "]";
 	}
 
-	public JungleField getJungleField(String fieldId) {
-		return jungleFields
-				.stream()
-				.filter(jungleField -> jungleField.getId().equals(fieldId))
-				.findFirst()
-				.orElseThrow(() -> new JungleFieldNotFoundException(fieldId));	
-	}
-
 	public void placeSnakePart(SnakePart snakePart, Coordinate coordinate) {
 		jungleFields.get(coordinate.row() * columns + coordinate.column()).placeSnakePart(snakePart);
 	}
@@ -90,7 +77,7 @@ public class Jungle {
 	}
 
 	public char getJungleFieldSign(Coordinate coordinate) {
-		return jungleFields.get(coordinate.row() * columns + coordinate.column()).getCharachter();
+		return jungleFields.get(coordinate.row() * columns + coordinate.column()).getCharacter();
 	}
 	
 	public int getFieldValue(Coordinate coordinate) {
@@ -98,13 +85,13 @@ public class Jungle {
 	}
 
 	public void removeAllSnakeParts() {
-		jungleFields.stream().forEach(jungleField -> jungleField.removeSnakeParts());
+		jungleFields.forEach(JungleField::removeSnakeParts);
 	}
 
-	public List<JungleField> getUsabiliyFieldsByChar(char firstChar) {
+	public List<JungleField> getUsabilityFieldsByChar(char firstChar) {
 		LinkedList<JungleField> result = new LinkedList<>();
 		for (JungleField jungleField : jungleFields) {
-			if (jungleField.getCharachter() == firstChar && jungleField.getUsability() > 0) {
+			if (jungleField.getCharacter() == firstChar && jungleField.getUsability() > 0) {
 				result.add(jungleField);
 			}
 		}

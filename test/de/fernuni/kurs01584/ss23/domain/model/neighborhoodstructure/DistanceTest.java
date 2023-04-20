@@ -1,19 +1,17 @@
 package de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.List;
-
+import de.fernuni.kurs01584.ss23.domain.exception.InvalidNeighboorhoodStructureException;
+import de.fernuni.kurs01584.ss23.domain.model.Coordinate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import de.fernuni.kurs01584.ss23.domain.exception.InvalidNeighboorhoodStructureException;
-import de.fernuni.kurs01584.ss23.domain.exception.NoSolutionException;
-import de.fernuni.kurs01584.ss23.domain.model.Coordinate;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DistanceTest {
 	

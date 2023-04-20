@@ -25,13 +25,18 @@ public class CLIAdapter {
 	private ValidationInPort validationInPort;
 	
 	private void readCliArgs(String[] args) {
-		if (!args[0].substring(0, 6).equals("ablauf")) {
-			log.warning("Parameter \"ablauf\" is requierd.");
+		if (args.length < 2) {
+			log.warning("\"ablauf\" and \"eingabe\" parameter required.");
+			System.exit(0);
+		}
+
+		if (!args[0].startsWith("ablauf")) {
+			log.warning("Parameter \"ablauf\" is required.");
 			System.exit(0);
 		}
 		
-		if (!args[1].substring(0, 7).equals("eingabe")) {
-			log.warning("Parameter \"eingabe\" is requierd.");
+		if (!args[1].startsWith("eingabe")) {
+			log.warning("Parameter \"eingabe\" is required.");
 			System.exit(0);
 		}
 		
@@ -44,7 +49,7 @@ public class CLIAdapter {
 			log.info("Output: %s.".formatted(output));
 		}
 		if ((procedure.contains("l") && output == null) || (procedure.contains("e") && output == null) ) {
-			log.warning("Parameter \"ausgabe\" is requierd with prosedure l and e.");
+			log.warning("Parameter \"ausgabe\" is required with procedure l and e.");
 			System.exit(0);
 		}
 	}
@@ -86,17 +91,17 @@ public class CLIAdapter {
 
 	private void validateInstance() {
 		List<Fehlertyp> errorTypes = validationInPort.isValid();
-		StringBuilder output = new StringBuilder();
+		StringBuilder answer = new StringBuilder();
 		if (errorTypes.isEmpty()) {
-			output.append("Snakehunt solution is valid.");
+			answer.append("Snake hunt solution is valid.");
 		} else {
-			output.append("Snakehunt solution is not valid.\nTotal errors: %s".formatted(errorTypes.size()));
-			output.append("\nFollowing errors found in Solution: ");
+			answer.append("Snake hunt solution is not valid.\nTotal errors: %s".formatted(errorTypes.size()));
+			answer.append("\nFollowing errors found in Solution: ");
 			for (Fehlertyp fehlertyp : errorTypes) {
-				output.append("%s ".formatted(fehlertyp.toString()));
+				answer.append("%s ".formatted(fehlertyp.toString()));
 			}
 		}
-		System.out.println(output.toString());
+		System.out.println(answer);
 	}
 
 	private void createInstance() {
@@ -115,7 +120,5 @@ public class CLIAdapter {
 		cliAdapter.runProcedure();
 
 	}
-
-
 	
 }

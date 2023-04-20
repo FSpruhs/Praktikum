@@ -10,7 +10,7 @@ import de.fernuni.kurs01584.ss23.domain.model.Coordinate;
 public class Distance implements NeighborhoodStructure {
 	
 	
-	private final int distance;
+	private final int fieldRange;
 
 	public Distance(int distance) {
 		
@@ -18,24 +18,20 @@ public class Distance implements NeighborhoodStructure {
 			throw new InvalidNeighboorhoodStructureException("Distance must be greater than 0!");
 		}
 		
-		this.distance = distance;
+		this.fieldRange = distance;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Distance distance = (Distance) o;
+		return fieldRange == distance.fieldRange;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(distance);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Distance other = (Distance) obj;
-		return distance == other.distance;
+		return Objects.hash(fieldRange);
 	}
 
 	@Override
@@ -43,34 +39,28 @@ public class Distance implements NeighborhoodStructure {
 		if (actualCoordinate.row() == previousCoordinate.row() && actualCoordinate.column() == previousCoordinate.column()) {
 			return true;
 		}
-		if (actualCoordinate.row() > previousCoordinate.row() + distance || actualCoordinate.row() < previousCoordinate.row() - distance) {
+		if (actualCoordinate.row() > previousCoordinate.row() + fieldRange || actualCoordinate.row() < previousCoordinate.row() - fieldRange) {
 			return true;
 		}
-		if (actualCoordinate.column() > previousCoordinate.column() + distance || actualCoordinate.column() < previousCoordinate.column() - distance) {
-			return true;
-		}
-		return false;
+		return actualCoordinate.column() > previousCoordinate.column() + fieldRange || actualCoordinate.column() < previousCoordinate.column() - fieldRange;
 	}
 
 	@Override
 	public List<Coordinate> nextFields(Coordinate coordinate, int rows, int columns) {
 		List<Coordinate> result = new LinkedList<>();
-		
-        int startPosRow = (coordinate.row() - distance < 0) ? 0 : coordinate.row() - distance;
-        int startPosColumn = (coordinate.column() - distance < 0) ? 0 : coordinate.column() - distance;
-        int endPosRow = (coordinate.row() + distance > rows - 1) ? rows - 1: coordinate.row() + distance;
-        int endPosColumn = (coordinate.column() + distance > columns - 1) ? columns - 1  : coordinate.column() + distance;
-        
-        for (int rowNum = startPosRow; rowNum <= endPosRow; rowNum++) {
-            for (int colNum = startPosColumn; colNum <= endPosColumn; colNum++) {
-            	if (rowNum != coordinate.row() || colNum != coordinate.column()) {
+
+		int startPosRow = Math.max(coordinate.row() - fieldRange, 0);
+		int startPosColumn = Math.max(coordinate.column() - fieldRange, 0);
+		int endPosRow = Math.min(coordinate.row() + fieldRange, rows - 1);
+		int endPosColumn = Math.min(coordinate.column() + fieldRange, columns - 1);
+
+		for (int rowNum = startPosRow; rowNum <= endPosRow; rowNum++) {
+			for (int colNum = startPosColumn; colNum <= endPosColumn; colNum++) {
+				if (rowNum != coordinate.row() || colNum != coordinate.column()) {
 					result.add(new Coordinate(rowNum, colNum));
 				}
-            }
-        }
+			}
+		}
 		return result;
 	}
-	
-	
-
 }

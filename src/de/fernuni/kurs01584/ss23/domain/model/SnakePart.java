@@ -4,12 +4,12 @@ import java.util.Objects;
 
 public class SnakePart {
 	private final String fieldId;
-	private char charachter;
-	private Coordinate coordinate;
+	private final char character;
+	private final Coordinate coordinate;
 	
-	public SnakePart(String fieldId, char charachter, Coordinate coordinate) {
+	public SnakePart(String fieldId, char character, Coordinate coordinate) {
 		this.fieldId = fieldId;
-		this.charachter = charachter;
+		this.character = character;
 		this.coordinate = coordinate;
 	}
 	
@@ -23,16 +23,9 @@ public class SnakePart {
 		return coordinate.column();
 	}
 
-
-	public String getFieldId() {
-		return fieldId;
+	public char getCharacter() {
+		return character;
 	}
-
-
-	public char getCharachter() {
-		return charachter;
-	}
-
 
 	@Override
 	public int hashCode() {
@@ -56,16 +49,8 @@ public class SnakePart {
 		return "SnakePart [fieldId=" + fieldId + "]";
 	}
 
-
-	public void loadJungleFieldData(Coordinate coordinate, char charachter) {
-		this.coordinate = coordinate;
-		this.charachter = charachter;	
-	}
-
-
 	public Coordinate getCoordinate() {
 		return coordinate;
 	}
-	
-	
+
 }

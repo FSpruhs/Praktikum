@@ -12,45 +12,42 @@ public class JungleField implements Comparable<JungleField>{
 	private final Coordinate coordinate;
 	private final int fieldValue;
 	private final int usability;
-	private final char charachter;
-	private List<SnakePart> snakeParts = new LinkedList<>();
+	private final char character;
+	private final List<SnakePart> snakeParts = new LinkedList<>();
 	
 	
-	public JungleField(String id, Coordinate coordinate, int fieldValue, int usability, char charachter) {
+	public JungleField(String id, Coordinate coordinate, int fieldValue, int usability, char character) {
 		
 		if (fieldValue < 0 || usability < 0) {
 			throw new InvalidJungleFieldException("FieldValue and usability must be greater than 0!");
 		}
 		
 		if (id == null) {
-			throw new InvalidJungleFieldException("Charachter is Null!");
+			throw new InvalidJungleFieldException("Character is Null!");
 		}
 		
-		if (!id.substring(0,1).equals("F") || !id.substring(1).matches("\\d+")) {
+		if (id.charAt(0) != 'F' || !id.substring(1).matches("\\d+")) {
 			throw new InvalidJungleFieldException("Invalid id!");
 		}
-		
 		
 		this.id = id;
 		this.coordinate = coordinate;
 		this.fieldValue = fieldValue;
 		this.usability = usability;
-		this.charachter = charachter;
+		this.character = character;
 	}
-
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(charachter, coordinate, fieldValue, id, snakeParts, usability);
+		return Objects.hash(character, coordinate, fieldValue, id, snakeParts, usability);
 	}
 
 
 	@Override
 	public String toString() {
 		return "JungleField [id=" + id + ", coordinate=" + coordinate + ", fieldValue=" + fieldValue + ", usability="
-				+ usability + ", charachter=" + charachter + ", snakeParts=" + snakeParts + "]";
+				+ usability + ", character=" + character + ", snakeParts=" + snakeParts + "]";
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -61,11 +58,10 @@ public class JungleField implements Comparable<JungleField>{
 		if (getClass() != obj.getClass())
 			return false;
 		JungleField other = (JungleField) obj;
-		return charachter == other.charachter && Objects.equals(coordinate, other.coordinate)
+		return character == other.character && Objects.equals(coordinate, other.coordinate)
 				&& fieldValue == other.fieldValue && Objects.equals(id, other.id)
 				&& Objects.equals(snakeParts, other.snakeParts) && usability == other.usability;
 	}
-
 
 	public void placeSnakePart(SnakePart snakePart) {
 		snakeParts.add(snakePart);
@@ -77,8 +73,8 @@ public class JungleField implements Comparable<JungleField>{
 	}
 
 
-	public char getCharachter() {
-		return charachter;
+	public char getCharacter() {
+		return character;
 	}
 
 
@@ -109,22 +105,10 @@ public class JungleField implements Comparable<JungleField>{
 
 	@Override
 	public int compareTo(JungleField j) {
-        if (fieldValue > j.getFieldValue()) {
-            return 1;
-        }
-        else if (fieldValue == j.getFieldValue()) {
-            return 0;
-        }
-        else {
-            return -1;
-        }
+		return Integer.compare(fieldValue, j.getFieldValue());
 	}
-
 
 	public void removeSnakePart(SnakePart snakePart) {
 		snakeParts.remove(snakePart);
 	}
-	
-	
-
 }

@@ -10,25 +10,21 @@ public class SnakeType {
 	private final String id;
 	private final int snakeValue;
 	private final int count;
-	private final String characterband;
+	private final String characterBand;
 	private final NeighborhoodStructure neighborhoodStructure;
 	
-	public SnakeType(String id, int snakeValue, int count, String characterband,
+	public SnakeType(String id, int snakeValue, int count, String characterBand,
 			NeighborhoodStructure neighborhoodStructure) {
 		
-		if (neighborhoodStructure == null) {
-			throw new InvalidSnakeTypesException("Characterband and NeigborhoodStructure must not be null!");
-		}
-		
-		if (characterband == null || neighborhoodStructure == null) {
-			throw new InvalidSnakeTypesException("Characterband and NeigborhoodStructure must not be null!");
+		if (characterBand == null || neighborhoodStructure == null) {
+			throw new InvalidSnakeTypesException("Character Band and Neighborhood Structure must not be null!");
 		}
 		 	
 		if (snakeValue <= 0 || count <= 0) {
 			throw new InvalidSnakeTypesException("Count and Snake Value must be greater than 0!");
 		}
 		
-		if (!id.substring(0, 1).equals("A") || !id.substring(1).matches("\\d+")) {
+		if (id.charAt(0) != 'A' || !id.substring(1).matches("\\d+")) {
 			throw new InvalidSnakeTypesException("Invalid id");
 		}
 		
@@ -36,17 +32,17 @@ public class SnakeType {
 		this.id = id;
 		this.snakeValue = snakeValue;
 		this.count = count;
-		this.characterband = characterband;
+		this.characterBand = characterBand;
 		this.neighborhoodStructure = neighborhoodStructure;
 	}
 	
 	public int getSnakeLength() {
-		return characterband.length();
+		return characterBand.length();
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(characterband, count, id, neighborhoodStructure, snakeValue);
+		return Objects.hash(characterBand, count, id, neighborhoodStructure, snakeValue);
 	}
 
 	@Override
@@ -58,7 +54,7 @@ public class SnakeType {
 		if (getClass() != obj.getClass())
 			return false;
 		SnakeType other = (SnakeType) obj;
-		return Objects.equals(characterband, other.characterband) && count == other.count
+		return Objects.equals(characterBand, other.characterBand) && count == other.count
 				&& Objects.equals(id, other.id) && Objects.equals(neighborhoodStructure, other.neighborhoodStructure)
 				&& snakeValue == other.snakeValue;
 	}
@@ -67,13 +63,8 @@ public class SnakeType {
 		return neighborhoodStructure.isNotNeighbour(actualSnakePart.getCoordinate(), previousSnakePart.getCoordinate());
 	}
 
-	public char getCharachterAt(int counter) {
-		return characterband.charAt(counter);
-	}
-
 	public int getSnakeValue() {
 		return snakeValue;
-		
 	}
 	
 	public int getCount() {
@@ -85,7 +76,7 @@ public class SnakeType {
 	}
 	
 	public String getCharacterBand() {
-		return characterband;
+		return characterBand;
 	}
 
 	public NeighborhoodStructure getNeighborhoodStructure() {
@@ -94,8 +85,8 @@ public class SnakeType {
 
 	@Override
 	public String toString() {
-		return "SnakeType [id=" + id + ", snakeValue=" + snakeValue + ", count=" + count + ", characterband="
-				+ characterband + ", neighborhoodStructure=" + neighborhoodStructure + "]";
+		return "SnakeType [id=" + id + ", snakeValue=" + snakeValue + ", count=" + count + ", characterBand="
+				+ characterBand + ", neighborhoodStructure=" + neighborhoodStructure + "]";
 	}
 
 	

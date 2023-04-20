@@ -66,10 +66,7 @@ public class Jump implements NeighborhoodStructure{
 		if (previousCoordinate.row() - column == actualCoordinate.row() && previousCoordinate.column() + row == actualCoordinate.column()) {
 			return true;
 		}
-		if (previousCoordinate.row() - column == actualCoordinate.row() && previousCoordinate.column() - row == actualCoordinate.column()) {
-			return true;
-		}
-		return false;
+		return previousCoordinate.row() - column == actualCoordinate.row() && previousCoordinate.column() - row == actualCoordinate.column();
 	}
 
 	@Override

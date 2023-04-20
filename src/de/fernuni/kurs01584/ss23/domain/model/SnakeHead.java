@@ -7,7 +7,7 @@ public class SnakeHead implements Comparable<SnakeHead>{
 	private String id;
 	private int snakeValue;
 	private char firstChar;
-	private NeighborhoodStructure neighborhoodStructure;
+	private final NeighborhoodStructure neighborhoodStructure;
 
 	public SnakeHead(int snakeValue, String id, char firstChar, NeighborhoodStructure neighborhoodStructure) {
 		this.id = id;
@@ -44,21 +44,9 @@ public class SnakeHead implements Comparable<SnakeHead>{
 		return neighborhoodStructure;
 	}
 
-	public void setNeighborhoodStructure(NeighborhoodStructure neighborhoodStructure) {
-		this.neighborhoodStructure = neighborhoodStructure;
-	}
-
 	@Override
 	public int compareTo(SnakeHead s) {
-        if (snakeValue > s.getSnakeValue()) {
-            return 1;
-        }
-        else if (snakeValue == s.getSnakeValue()) {
-            return 0;
-        }
-        else {
-            return -1;
-        }
+		return Integer.compare(snakeValue, s.getSnakeValue());
 	}
 
 }

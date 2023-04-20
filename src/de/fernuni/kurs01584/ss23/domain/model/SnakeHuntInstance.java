@@ -1,7 +1,6 @@
 package de.fernuni.kurs01584.ss23.domain.model;
 
 import java.time.Duration;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -97,15 +96,13 @@ public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, Sh
 	}
 
 	private void findNeighborhoodError(List<Fehlertyp> result, SnakePart snakePart, SnakePart previousSnakePart, SnakeType snakeType) {
-		if (previousSnakePart != null) {
-			if (snakeType.isNotSuccessor(snakePart, previousSnakePart)) {
-				result.add(Fehlertyp.NACHBARSCHAFT);
-			}
+		if (previousSnakePart != null && snakeType.isNotSuccessor(snakePart, previousSnakePart)) {
+			result.add(Fehlertyp.NACHBARSCHAFT);
 		}
 	}
 
 	private void findAllocationError(List<Fehlertyp> result, SnakePart snakePart) {
-		if (jungle.getJungleFieldSign(snakePart.getCoordinate()) != snakePart.getCharachter()) {
+		if (jungle.getJungleFieldSign(snakePart.getCoordinate()) != snakePart.getCharacter()) {
 			result.add(Fehlertyp.ZUORDNUNG);
 		}
 		

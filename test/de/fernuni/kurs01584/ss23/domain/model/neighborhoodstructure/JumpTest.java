@@ -1,8 +1,5 @@
 package de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
@@ -13,6 +10,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidNeighboorhoodStructureException;
 import de.fernuni.kurs01584.ss23.domain.model.Coordinate;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JumpTest {
 	
