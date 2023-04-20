@@ -90,7 +90,7 @@ public class Jungle {
 	}
 
 	public void removeSnakePart(SnakePart snakePart) {
-		jungleFields.get(mapCoordinateToIndex(snakePart.getCoordinate())).removeSnakePart(snakePart);
+		jungleFields.get(mapCoordinateToIndex(snakePart.coordinate())).removeSnakePart(snakePart);
 	}
 
 	private int mapCoordinateToIndex(Coordinate coordinate) {

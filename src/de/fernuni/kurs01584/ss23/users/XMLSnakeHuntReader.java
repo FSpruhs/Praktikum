@@ -76,7 +76,7 @@ public class XMLSnakeHuntReader {
 
 	private JungleField readJungleField(Element field) {
 		return new JungleField(
-				readJungleFieldId(field),
+				new FieldId(readJungleFieldId(field)),
 				readCoordinate(field),
 				Integer.parseInt(field.getAttributeValue("verwendbarkeit")),
 				Integer.parseInt(field.getAttributeValue("punkte")),
@@ -204,7 +204,7 @@ public class XMLSnakeHuntReader {
 
 	private SnakePart readSnakePart(Element snakePart, char character) {
 		return new SnakePart(
-				readSnakePartField(snakePart),
+				new FieldId(readSnakePartField(snakePart)),
 				character,
 				new Coordinate(
 						readSnakePartFieldNumber(snakePart) / getJungleColumn(),

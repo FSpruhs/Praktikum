@@ -80,7 +80,7 @@ public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, Sh
 		findLengthError(result, snake);
 		SnakePart previousSnakePart = null;
 		for (SnakePart snakePart : snake.getSnakeParts()) {
-			jungle.placeSnakePart(snakePart, snakePart.getCoordinate());
+			jungle.placeSnakePart(snakePart, snakePart.coordinate());
 			findUsageError(result, snakePart);
 			findAllocationError(result, snakePart);
 			findNeighborhoodError(result, snakePart, previousSnakePart, snakeTypes.get(snake.getSnakeTypeId()));
@@ -114,14 +114,14 @@ public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, Sh
 	}
 
 	private void findAllocationError(List<Fehlertyp> result, SnakePart snakePart) {
-		if (jungle.getJungleFieldSign(snakePart.getCoordinate()) != snakePart.getCharacter()) {
+		if (jungle.getJungleFieldSign(snakePart.coordinate()) != snakePart.character()) {
 			result.add(Fehlertyp.ZUORDNUNG);
 		}
 		
 	}
 
 	private void findUsageError(List<Fehlertyp> result, SnakePart snakePart) {
-		if (jungle.getJungleFieldUsability(snakePart.getCoordinate()) < 0) {
+		if (jungle.getJungleFieldUsability(snakePart.coordinate()) < 0) {
 			result.add(Fehlertyp.VERWENDUNG);
 		}
 	}
@@ -138,7 +138,7 @@ public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, Sh
 
 	private int sumSnakePartValues(Snake snake) {
 		return snake.getSnakeParts().stream()
-				.mapToInt(snakePart -> jungle.getFieldValue(snakePart.getCoordinate()))
+				.mapToInt(snakePart -> jungle.getFieldValue(snakePart.coordinate()))
 				.sum();
 	}
 

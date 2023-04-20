@@ -7,4 +7,5 @@
 .project
 jpa-buddy.xml
 index.pb
-.idea
+.idea/**
+Praktikum.iml

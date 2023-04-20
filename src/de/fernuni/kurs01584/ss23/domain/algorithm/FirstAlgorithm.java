@@ -6,15 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import de.fernuni.kurs01584.ss23.domain.model.Coordinate;
-import de.fernuni.kurs01584.ss23.domain.model.Jungle;
-import de.fernuni.kurs01584.ss23.domain.model.JungleField;
-import de.fernuni.kurs01584.ss23.domain.model.Snake;
-import de.fernuni.kurs01584.ss23.domain.model.SnakeHead;
-import de.fernuni.kurs01584.ss23.domain.model.SnakePart;
-import de.fernuni.kurs01584.ss23.domain.model.SnakeSearchAlgorithmus;
-import de.fernuni.kurs01584.ss23.domain.model.SnakeType;
-import de.fernuni.kurs01584.ss23.domain.model.Solution;
+import de.fernuni.kurs01584.ss23.domain.model.*;
 
 public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 	
@@ -68,11 +60,11 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 				Collections.sort(startHeads);
 				for (SnakeHead snakeHead : startHeads) {
 					Snake snake = new Snake(snakeHead.getId(), snakeHead.getNeighborhoodStructure());
-					SnakePart snakePart = new SnakePart(startField.getId(),
+					SnakePart snakePart = new SnakePart(new FieldId(startField.getId()),
 							startField.getCharacter(),
 							new Coordinate(Integer.parseInt(startField.getId().substring(1)) / jungle.getJungleSize().columns(),
 									Integer.parseInt(startField.getId().substring(1)) % jungle.getJungleSize().columns()));
-					jungle.placeSnakePart(snakePart, snakePart.getCoordinate());
+					jungle.placeSnakePart(snakePart, snakePart.coordinate());
 					snake.addSnakePart(snakePart);
 					int totalPoints = searchNextSnakePart(snake, snakeTypes.get(snake.getSnakeTypeId()).getCharacterBand().substring(1));
 					if (totalPoints < 0) {
@@ -99,7 +91,7 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 			return 0;
 		}
 		List<JungleField> jungleFields = new LinkedList<>();
-		List<Coordinate> fieldCoordinates = snake.getNeighborhoodStructure().nextFields(snake.getSnakeParts().get(snake.getSnakeParts().size() - 1).getCoordinate(), jungle.getJungleSize());
+		List<Coordinate> fieldCoordinates = snake.getNeighborhoodStructure().nextFields(snake.getSnakeParts().get(snake.getSnakeParts().size() - 1).coordinate(), jungle.getJungleSize());
 		for (Coordinate fieldCoordinate : fieldCoordinates) {
 			if (jungle.getJungleField(fieldCoordinate).getUsability() > 0 && jungle.getJungleField(fieldCoordinate).getCharacter() == substring.charAt(0)) {
 				jungleFields.add(jungle.getJungleField(fieldCoordinate));
@@ -110,18 +102,18 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 		}
 		Collections.sort(jungleFields);
 		for (JungleField jungleField : jungleFields) {
-			SnakePart snakePart = new SnakePart(jungleField.getId(),
+			SnakePart snakePart = new SnakePart(new FieldId(jungleField.getId()),
 					jungleField.getCharacter(),
 					new Coordinate(Integer.parseInt(jungleField.getId().substring(1)) / jungle.getJungleSize().rows(),
 							Integer.parseInt(jungleField.getId().substring(1)) % jungle.getJungleSize().columns()));
-			jungle.placeSnakePart(snakePart, snakePart.getCoordinate());
+			jungle.placeSnakePart(snakePart, snakePart.coordinate());
 			snake.addSnakePart(snakePart);
 			int totalPoints = searchNextSnakePart(snake, substring.substring(1));
 			if (totalPoints < 0) {
 				jungle.removeSnakePart(snakePart);
 				snake.removeLastSnakePart();
 			} else {
-				return totalPoints + jungle.getFieldValue(snakePart.getCoordinate());
+				return totalPoints + jungle.getFieldValue(snakePart.coordinate());
 			}
 		}
 		return -1;

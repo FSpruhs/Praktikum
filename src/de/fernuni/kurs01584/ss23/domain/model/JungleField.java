@@ -7,17 +7,17 @@ import java.util.Objects;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleFieldException;
 
 public class JungleField implements Comparable<JungleField>{
-	
-	private final String id;
+
+	private final FieldId fieldId;
 	private final Coordinate coordinate;
 	private final int fieldValue;
 	private final int usability;
 	private final char character;
 	private final List<SnakePart> snakeParts = new LinkedList<>();
-	
-	
-	public JungleField(String id, Coordinate coordinate, int fieldValue, int usability, char character) {
-		this.id = id;
+
+
+	public JungleField(FieldId fieldId, Coordinate coordinate, int fieldValue, int usability, char character) {
+		this.fieldId = fieldId;
 		this.coordinate = coordinate;
 		this.fieldValue = fieldValue;
 		this.usability = usability;
@@ -28,8 +28,6 @@ public class JungleField implements Comparable<JungleField>{
 	private void validateJungleFields() {
 		validateUsability();
 		validateFieldValue();
-		validateIdIsNotNull();
-		validateId();
 	}
 
 	private void validateUsability() {
@@ -44,35 +42,23 @@ public class JungleField implements Comparable<JungleField>{
 		}
 	}
 
-	private void validateIdIsNotNull() {
-		if (id == null) {
-			throw new InvalidJungleFieldException("Id is Null!");
-		}
-	}
-
-	private void validateId() {
-		if (id.charAt(0) != 'F' || !id.substring(1).matches("\\d+")) {
-			throw new InvalidJungleFieldException("Invalid id!");
-		}
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		JungleField that = (JungleField) o;
-		return fieldValue == that.fieldValue && usability == that.usability && character == that.character && Objects.equals(id, that.id) && Objects.equals(coordinate, that.coordinate) && Objects.equals(snakeParts, that.snakeParts);
+		return fieldValue == that.fieldValue && usability == that.usability && character == that.character && Objects.equals(fieldId, that.fieldId) && Objects.equals(coordinate, that.coordinate) && Objects.equals(snakeParts, that.snakeParts);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, coordinate, fieldValue, usability, character, snakeParts);
+		return Objects.hash(fieldId, coordinate, fieldValue, usability, character, snakeParts);
 	}
 
 	@Override
 	public String toString() {
 		return "JungleField{" +
-				"id='" + id + '\'' +
+				"fieldId=" + fieldId +
 				", coordinate=" + coordinate +
 				", fieldValue=" + fieldValue +
 				", usability=" + usability +
@@ -96,7 +82,7 @@ public class JungleField implements Comparable<JungleField>{
 	}
 
 	public String getId() {
-		return id;
+		return fieldId.id();
 	}
 
 
