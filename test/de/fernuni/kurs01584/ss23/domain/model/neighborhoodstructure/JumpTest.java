@@ -32,22 +32,22 @@ public class JumpTest {
 		});
 	}
 	
-	@DisplayName("positive Test for Jump(2,1).")
-	@ParameterizedTest
-	@CsvSource({"1, 0", "0, 1", "1, 4", "4, 1", "3, 0", "0, 3", "3, 4", "4, 3"})
-	void isNeighbourPositiv(int row, int column) {
-		Jump jump = new Jump(2, 1);
-		Coordinate actualCoordinate = new Coordinate(2, 2);
-		assertTrue(jump.isNotNeighbour(actualCoordinate, new Coordinate(row, column)));
-	}
-	
 	@DisplayName("negative Test for Jump(2,1).")
 	@ParameterizedTest
-	@CsvSource({"0, 0", "0, 2", "0, 4", "1, 1", "1, 2", "1, 3", "2, 0", "2, 1", "2, 3", "2, 4", "3, 1", "3, 2", "3, 3", "4, 0", "4, 2", "4, 4"})
+	@CsvSource({"1, 0", "0, 1", "1, 4", "4, 1", "3, 0", "0, 3", "3, 4", "4, 3"})
 	void isNeighbourNegative(int row, int column) {
 		Jump jump = new Jump(2, 1);
 		Coordinate actualCoordinate = new Coordinate(2, 2);
 		assertFalse(jump.isNotNeighbour(actualCoordinate, new Coordinate(row, column)));
+	}
+
+	@DisplayName("positiv Test for Jump(2,1).")
+	@ParameterizedTest
+	@CsvSource({"0, 0", "0, 2", "0, 4", "1, 1", "1, 2", "1, 3", "2, 0", "2, 1", "2, 3", "2, 4", "3, 1", "3, 2", "3, 3", "4, 0", "4, 2", "4, 4"})
+	void isNeighbourPositiv(int row, int column) {
+		Jump jump = new Jump(2, 1);
+		Coordinate actualCoordinate = new Coordinate(2, 2);
+		assertTrue(jump.isNotNeighbour(actualCoordinate, new Coordinate(row, column)));
 	}
 	@Test
 	@DisplayName("Next Fields when actual is in the middle with jump 2,1.")

@@ -86,22 +86,26 @@ public class CLIAdapter {
 	}
 
 	private void evaluateSolution() {
-		// TODO Auto-generated method stub
+		System.out.printf("Total points of the Solution are: %s%n", evaluateSolutionInPort.evaluateTotalPoints());
 	}
 
 	private void validateInstance() {
 		List<Fehlertyp> errorTypes = validationInPort.isValid();
-		StringBuilder answer = new StringBuilder();
+		StringBuilder result = new StringBuilder();
 		if (errorTypes.isEmpty()) {
-			answer.append("Snake hunt solution is valid.");
+			result.append("Snake hunt solution is valid.");
 		} else {
-			answer.append("Snake hunt solution is not valid.\nTotal errors: %s".formatted(errorTypes.size()));
-			answer.append("\nFollowing errors found in Solution: ");
-			for (Fehlertyp fehlertyp : errorTypes) {
-				answer.append("%s ".formatted(fehlertyp.toString()));
-			}
+			createErrorMessage(errorTypes, result);
 		}
-		System.out.println(answer);
+		System.out.println(result);
+	}
+
+	private void createErrorMessage(List<Fehlertyp> errorTypes, StringBuilder result) {
+		result.append("Snake hunt solution is not valid.%nTotal errors: %s".formatted(errorTypes.size()));
+		result.append("\nFollowing errors found in Solution: ");
+		for (Fehlertyp fehlertyp : errorTypes) {
+			result.append("%s ".formatted(fehlertyp.toString()));
+		}
 	}
 
 	private void createInstance() {
