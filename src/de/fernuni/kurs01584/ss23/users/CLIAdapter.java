@@ -3,6 +3,9 @@ package de.fernuni.kurs01584.ss23.users;
 import java.util.List;
 import java.util.logging.Logger;
 
+import de.fernuni.kurs01584.ss23.domain.model.Jungle;
+import de.fernuni.kurs01584.ss23.domain.model.JungleField;
+import de.fernuni.kurs01584.ss23.domain.model.JungleSize;
 import de.fernuni.kurs01584.ss23.domain.ports.in.EvaluateSolutionInPort;
 import de.fernuni.kurs01584.ss23.domain.ports.in.ShowJungleInPort;
 import de.fernuni.kurs01584.ss23.domain.ports.in.ShowSolutionInPort;
@@ -82,7 +85,18 @@ public class CLIAdapter {
 	}
 	
 	private void showInstance() {
-		// TODO Auto-generated method stub
+		Jungle jungle = showJungleInPort.showJungle();
+		List<JungleField> jungleFields = jungle.getJungleFields();
+		JungleSize jungleSize = jungle.getJungleSize();
+		int counter = 0;
+		for (JungleField jungleField : jungleFields) {
+
+			if (counter % jungleSize.columns() == 0) {
+				System.out.println();
+			}
+			System.out.print(jungleField.getCharacter());
+			counter++;
+		}
 	}
 
 	private void evaluateSolution() {

@@ -119,4 +119,7 @@ public class Jungle {
 		return Objects.hash(jungleSize, characters, jungleFields);
 	}
 
+    public List<JungleField> getJungleFields() {
+		return jungleFields;
+    }
 }
