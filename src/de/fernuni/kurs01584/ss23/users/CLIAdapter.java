@@ -1,32 +1,28 @@
 package de.fernuni.kurs01584.ss23.users;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
-import de.fernuni.kurs01584.ss23.domain.model.Jungle;
-import de.fernuni.kurs01584.ss23.domain.model.JungleField;
-import de.fernuni.kurs01584.ss23.domain.model.JungleSize;
-import de.fernuni.kurs01584.ss23.domain.ports.in.EvaluateSolutionInPort;
-import de.fernuni.kurs01584.ss23.domain.ports.in.ShowJungleInPort;
-import de.fernuni.kurs01584.ss23.domain.ports.in.ShowSolutionInPort;
-import de.fernuni.kurs01584.ss23.domain.ports.in.SolveInPort;
-import de.fernuni.kurs01584.ss23.domain.ports.in.ValidationInPort;
+import de.fernuni.kurs01584.ss23.domain.model.*;
+import de.fernuni.kurs01584.ss23.domain.ports.in.*;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
 
 
 public class CLIAdapter {
 
 	private static final Logger log = Logger.getLogger(CLIAdapter.class.getName());
-	
+
 	private String procedure;
 	private String input;
 	private String output;
 	private EvaluateSolutionInPort evaluateSolutionInPort;
 	private ShowSolutionInPort showSolutionInPort;
+	private ShowSnakeTypesInPort showSnakeTypesInPort;
 	private ShowJungleInPort showJungleInPort;
 	private SolveInPort solveInPort;
 	private ValidationInPort validationInPort;
-	
+
 	private void readCliArgs(String[] args) {
 		if (args.length < 2) {
 			log.warning("\"ablauf\" and \"eingabe\" parameter required.");
@@ -37,12 +33,12 @@ public class CLIAdapter {
 			log.warning("Parameter \"ablauf\" is required.");
 			System.exit(0);
 		}
-		
+
 		if (!args[1].startsWith("eingabe")) {
 			log.warning("Parameter \"eingabe\" is required.");
 			System.exit(0);
 		}
-		
+
 		procedure = args[0].substring(7);
 		input = args[1].substring(8);
 		log.info("Procedure: %s.".formatted(procedure));
@@ -56,17 +52,18 @@ public class CLIAdapter {
 			System.exit(0);
 		}
 	}
-	
+
 	public void loadInPorts() {
 		XMLSnakeHuntInizializer xmlSnakeHuntInizializer = new XMLSnakeHuntInizializer(input);
 		evaluateSolutionInPort = xmlSnakeHuntInizializer.getEvaluateSolutionInPort();
 		showSolutionInPort = xmlSnakeHuntInizializer.getShowSolutionInPort();
 		showJungleInPort = xmlSnakeHuntInizializer.getShowJungleInPort();
+		showSnakeTypesInPort = xmlSnakeHuntInizializer.getShowSnakeTypeInPort();
 		solveInPort = xmlSnakeHuntInizializer.getSolveInPort();
 		validationInPort = xmlSnakeHuntInizializer.getValidationInPort();
 	}
-	
-	
+
+
 	private void runProcedure() {
 		for (char command : procedure.toCharArray()) {
 			switch (command) {
@@ -81,21 +78,64 @@ public class CLIAdapter {
 				}
 			}
 		}
-		
+
 	}
-	
+
 	private void showInstance() {
 		Jungle jungle = showJungleInPort.showJungle();
-		List<JungleField> jungleFields = jungle.getJungleFields();
 		JungleSize jungleSize = jungle.getJungleSize();
-		int counter = 0;
-		for (JungleField jungleField : jungleFields) {
-
-			if (counter % jungleSize.columns() == 0) {
+		System.out.println("------------------------Jungle data------------------------");
+		System.out.println("Rows: %s".formatted(jungleSize.rows()));
+		System.out.println("Columns: %s".formatted(jungleSize.columns()));
+		System.out.println("Character band: %s".formatted(jungle.getCharacters()));
+		System.out.println();
+		System.out.println("------------------------Snake Types------------------------");
+		for (SnakeType snakeType : showSnakeTypesInPort.showSnakeTypes()) {
+			System.out.println("Snake Type:");
+			System.out.println("Character band: %s".formatted(snakeType.getCharacterBand()));
+			System.out.println("Neighborhood Structure: %s".formatted(snakeType.getNeighborhoodStructure().getName()));
+			System.out.println("Value: %s".formatted(snakeType.getSnakeValue()));
+			System.out.println("Count: %s".formatted(snakeType.getCount()));
+			System.out.println();
+		}
+		System.out.println("------------------------Jungle Fields------------------------");
+		System.out.println("(Value, Character, Usability)\n");
+		for (int i = 0; i < jungleSize.rows() ; i++) {
+			System.out.print("+-------".repeat(jungleSize.columns()));
+			System.out.println("+");
+			System.out.print("|       ".repeat(jungleSize.columns()));
+			System.out.println("|");
+			for (int j = 0; j < jungleSize.columns(); j++) {
+				JungleField jungleField = jungle.getJungleField(new Coordinate(i, j));
+				System.out.print("| %s \033[1m%s\033[0m %s ".formatted(jungleField.getFieldValue(), jungleField.getCharacter(), jungleField.getUsability()));
+			}
+			System.out.println("|");
+			System.out.print("|       ".repeat(jungleSize.columns()));
+			System.out.println("|");
+		}
+		System.out.print("+-------".repeat(jungleSize.columns()));
+		System.out.println("+");
+		if (showSolutionInPort.showSolution() != null) {
+			System.out.println("\n------------------------Solution------------------------");
+			for (Snake snake : showSolutionInPort.showSolution().getSnakes()) {
+				String[][] result = new String[jungleSize.rows()][jungleSize.columns()];
+				Arrays.stream(result).forEach(row -> Arrays.fill(row, " . "));
+				int counter = 1;
+				for (SnakePart snakePart : snake.getSnakeParts()) {
+					System.out.println(snakePart);
+					result[snakePart.coordinate().row()][snakePart.coordinate().column()] = counter < 10 ? " " + counter + " " :" " + counter;
+					counter++;
+				}
+				System.out.println("Snake Length: %s".formatted(snake.getSnakeParts().size()));
+				for (int i = 0; i < jungleSize.rows() ; i++) {
+					for (int j = 0; j < jungleSize.columns() ; j++) {
+						System.out.print(result[i][j]);
+					}
+					System.out.println();
+				}
 				System.out.println();
 			}
-			System.out.print(jungleField.getCharacter());
-			counter++;
+
 		}
 	}
 
@@ -131,12 +171,12 @@ public class CLIAdapter {
 	}
 
 	public static void main(String[] args) {
-		
+
 		CLIAdapter cliAdapter = new CLIAdapter();
 		cliAdapter.readCliArgs(args);
 		cliAdapter.loadInPorts();
 		cliAdapter.runProcedure();
 
 	}
-	
+
 }

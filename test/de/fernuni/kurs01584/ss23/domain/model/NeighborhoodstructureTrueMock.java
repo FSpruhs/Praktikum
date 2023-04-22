@@ -23,4 +23,9 @@ public class NeighborhoodstructureTrueMock implements NeighborhoodStructure{
 		return null;
 	}
 
+	@Override
+	public String getName() {
+		return "Mock";
+	}
+
 }

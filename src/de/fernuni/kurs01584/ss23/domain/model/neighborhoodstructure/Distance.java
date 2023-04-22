@@ -71,6 +71,11 @@ public class Distance implements NeighborhoodStructure {
 		return result;
 	}
 
+	@Override
+	public String getName() {
+		return "Distance";
+	}
+
 	private void checkCoordinate(Coordinate coordinate, List<Coordinate> result, int rowNum, int colNum) {
 		if (isNext(coordinate, rowNum, colNum)) {
 			result.add(new Coordinate(rowNum, colNum));

@@ -17,4 +17,9 @@ public class NeighborhoodstructureFalseMock implements NeighborhoodStructure{
 		return null;
 	}
 
+	@Override
+	public String getName() {
+		return "Mock";
+	}
+
 }

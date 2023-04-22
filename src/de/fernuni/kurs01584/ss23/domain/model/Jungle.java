@@ -97,6 +97,10 @@ public class Jungle {
 		return coordinate.row() * jungleSize.columns() + coordinate.column();
 	}
 
+	public String getCharacters() {
+		return characters;
+	}
+
 	@Override
 	public String toString() {
 		return "Jungle{" +

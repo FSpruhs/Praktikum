@@ -9,14 +9,10 @@ import de.fernuni.kurs01584.ss23.domain.exception.InvalidDurationException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidSnakeTypesException;
 import de.fernuni.kurs01584.ss23.domain.exception.NoSolutionException;
-import de.fernuni.kurs01584.ss23.domain.ports.in.EvaluateSolutionInPort;
-import de.fernuni.kurs01584.ss23.domain.ports.in.ShowJungleInPort;
-import de.fernuni.kurs01584.ss23.domain.ports.in.ShowSolutionInPort;
-import de.fernuni.kurs01584.ss23.domain.ports.in.SolveInPort;
-import de.fernuni.kurs01584.ss23.domain.ports.in.ValidationInPort;
+import de.fernuni.kurs01584.ss23.domain.ports.in.*;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
 
-public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, ShowSolutionInPort, EvaluateSolutionInPort, SolveInPort {
+public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, ShowSolutionInPort, ShowSnakeTypesInPort,EvaluateSolutionInPort, SolveInPort {
 	
 	private final Jungle jungle;
 	private final Map<String, SnakeType> snakeTypes;
@@ -154,5 +150,10 @@ public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, Sh
 	@Override
 	public void solveSnakeHuntInstance() {
 		snakeSearchAlgorithmus.solveSnakeHuntInstance(jungle, snakeTypes, durationInSeconds);
+	}
+
+	@Override
+	public List<SnakeType> showSnakeTypes() {
+		return snakeTypes.values().stream().toList();
 	}
 }

@@ -9,11 +9,7 @@ import de.fernuni.kurs01584.ss23.domain.model.Jungle;
 import de.fernuni.kurs01584.ss23.domain.model.SnakeHuntInstance;
 import de.fernuni.kurs01584.ss23.domain.model.SnakeType;
 import de.fernuni.kurs01584.ss23.domain.model.Solution;
-import de.fernuni.kurs01584.ss23.domain.ports.in.EvaluateSolutionInPort;
-import de.fernuni.kurs01584.ss23.domain.ports.in.ShowJungleInPort;
-import de.fernuni.kurs01584.ss23.domain.ports.in.ShowSolutionInPort;
-import de.fernuni.kurs01584.ss23.domain.ports.in.SolveInPort;
-import de.fernuni.kurs01584.ss23.domain.ports.in.ValidationInPort;
+import de.fernuni.kurs01584.ss23.domain.ports.in.*;
 
 public class XMLSnakeHuntInizializer {
 	
@@ -66,6 +62,10 @@ public class XMLSnakeHuntInizializer {
 	}
 	
 	public ValidationInPort getValidationInPort() {
+		return snakeHuntInstance;
+	}
+
+	public ShowSnakeTypesInPort getShowSnakeTypeInPort() {
 		return snakeHuntInstance;
 	}
 }

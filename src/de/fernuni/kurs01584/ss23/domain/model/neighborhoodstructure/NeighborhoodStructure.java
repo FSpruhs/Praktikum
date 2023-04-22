@@ -11,4 +11,6 @@ public interface NeighborhoodStructure {
 
 	List<Coordinate> nextFields(Coordinate coordinate, JungleSize jungleSize);
 
+	String getName();
+
 }
