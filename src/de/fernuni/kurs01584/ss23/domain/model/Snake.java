@@ -15,6 +15,12 @@ public class Snake {
 		this.snakeTypeId = snakeTypeId;
 		this.snakeParts = snakeParts;
 	}
+
+	public Snake(String snakeTypeId, List<SnakePart> snakeParts, NeighborhoodStructure neighborhoodStructure) {
+		this.snakeTypeId = snakeTypeId;
+		this.snakeParts = snakeParts;
+		this.neighborhoodStructure = neighborhoodStructure;
+	}
 	
 	public Snake(String snakeTypeId, NeighborhoodStructure neighborhoodStructure) {
 		this.snakeTypeId = snakeTypeId;

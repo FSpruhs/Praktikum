@@ -8,4 +8,5 @@ public interface ShowSnakeTypesInPort {
 
     List<SnakeType> showSnakeTypes();
 
+    SnakeType showSnakeTypesById(String snakeTypeId);
 }

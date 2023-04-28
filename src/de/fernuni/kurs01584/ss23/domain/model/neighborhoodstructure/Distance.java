@@ -61,6 +61,13 @@ public class Distance implements NeighborhoodStructure {
 	}
 
 	@Override
+	public String toString() {
+		return "Distance{" +
+				"fieldRange=" + fieldRange +
+				'}';
+	}
+
+	@Override
 	public List<Coordinate> nextFields(Coordinate coordinate, JungleSize jungleSize) {
 		List<Coordinate> result = new LinkedList<>();
 		for (int rowNum = getStartPosRow(coordinate); rowNum <= getEndPosRow(coordinate, jungleSize.rows()); rowNum++) {

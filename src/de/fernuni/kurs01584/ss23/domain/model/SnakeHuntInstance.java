@@ -1,5 +1,6 @@
 package de.fernuni.kurs01584.ss23.domain.model;
 
+import java.io.File;
 import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +11,7 @@ import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidSnakeTypesException;
 import de.fernuni.kurs01584.ss23.domain.exception.NoSolutionException;
 import de.fernuni.kurs01584.ss23.domain.ports.in.*;
+import de.fernuni.kurs01584.ss23.domain.ports.out.SaveSnakeHuntInstanceOutPort;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
 
 public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, ShowSolutionInPort, ShowSnakeTypesInPort,EvaluateSolutionInPort, SolveInPort {
@@ -19,20 +21,24 @@ public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, Sh
 	private final Duration durationInSeconds;
 	private Solution solution;
 	private SnakeSearchAlgorithmus snakeSearchAlgorithmus;
+	private final SaveSnakeHuntInstanceOutPort repository;
 	
 	
-	public SnakeHuntInstance(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds, Solution solution) {
+	public SnakeHuntInstance(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds, Solution solution, SaveSnakeHuntInstanceOutPort saveSnakeHuntInstanceOutPort) {
 		this.jungle = jungle;
 		this.snakeTypes = snakeTypes;
 		this.durationInSeconds = durationInSeconds;
 		this.solution = solution;
+		this.repository = saveSnakeHuntInstanceOutPort;
+
 		validateSnakeHuntInstance();
 	}
 
-	public SnakeHuntInstance(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds) {
+	public SnakeHuntInstance(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds, SaveSnakeHuntInstanceOutPort saveSnakeHuntInstanceOutPort) {
 		this.jungle = jungle;
 		this.snakeTypes = snakeTypes;
 		this.durationInSeconds = durationInSeconds;
+		this.repository = saveSnakeHuntInstanceOutPort;
 		validateSnakeHuntInstance();
 	}
 	
@@ -155,5 +161,20 @@ public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, Sh
 	@Override
 	public List<SnakeType> showSnakeTypes() {
 		return snakeTypes.values().stream().toList();
+	}
+
+	@Override
+	public SnakeType showSnakeTypesById(String snakeTypeId) {
+		return snakeTypes.get(snakeTypeId);
+	}
+
+	private void saveSnakeHuntInstance(File file) {
+		repository.save(
+				file,
+				jungle,
+				snakeTypes,
+				durationInSeconds,
+				solution
+		);
 	}
 }

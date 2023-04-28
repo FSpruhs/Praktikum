@@ -37,6 +37,14 @@ public class Jump implements NeighborhoodStructure{
 	}
 
 	@Override
+	public String toString() {
+		return "Jump{" +
+				"row=" + row +
+				", column=" + column +
+				'}';
+	}
+
+	@Override
 	public int hashCode() {
 		return Objects.hash(column, row);
 	}

@@ -10,6 +10,7 @@ import de.fernuni.kurs01584.ss23.domain.model.SnakeHuntInstance;
 import de.fernuni.kurs01584.ss23.domain.model.SnakeType;
 import de.fernuni.kurs01584.ss23.domain.model.Solution;
 import de.fernuni.kurs01584.ss23.domain.ports.in.*;
+import de.fernuni.kurs01584.ss23.infrastructure.SnakeHuntRepository;
 
 public class XMLSnakeHuntInizializer {
 	
@@ -35,9 +36,9 @@ public class XMLSnakeHuntInizializer {
 			Solution solution = xmlSnakeHuntReader.readSolution();
 			log.info("Solution is: %s".formatted(solution));
 			if (solution == null) {
-				snakeHuntInstance = new SnakeHuntInstance(jungle, snakeTypes, duration);
+				snakeHuntInstance = new SnakeHuntInstance(jungle, snakeTypes, duration, new SnakeHuntRepository());
 			} else {
-				snakeHuntInstance = new SnakeHuntInstance(jungle, snakeTypes, duration, solution);
+				snakeHuntInstance = new SnakeHuntInstance(jungle, snakeTypes, duration, solution, new SnakeHuntRepository());
 			}
 		} catch (InvalidDataException e) {
 			log.warning(e.getMessage());

@@ -163,8 +163,13 @@ public class XMLSnakeHuntReader {
 	private Snake readSnake(Element snake) {
 		return new Snake(
 				readeSnakeType(snake),
-				readSnakeParts(snake)
+				readSnakeParts(snake),
+				getNeighborhoodStructureById(snake)
 				);
+	}
+
+	private NeighborhoodStructure getNeighborhoodStructureById(Element snake) {
+		return readNeighborhoodStructure(readSnakeTypeByType(readeSnakeType(snake)).getChild("Nachbarschaftsstruktur"));
 	}
 
 	private List<SnakePart> readSnakeParts(Element snake) {

@@ -85,17 +85,17 @@ public class CLIAdapter {
 		Jungle jungle = showJungleInPort.showJungle();
 		JungleSize jungleSize = jungle.getJungleSize();
 		System.out.println("------------------------Jungle data------------------------");
-		System.out.println("Rows: %s".formatted(jungleSize.rows()));
-		System.out.println("Columns: %s".formatted(jungleSize.columns()));
-		System.out.println("Character band: %s".formatted(jungle.getCharacters()));
+		System.out.printf("Rows: %s%n", jungleSize.rows());
+		System.out.printf("Columns: %s%n", jungleSize.columns());
+		System.out.printf("Character band: %s%n", jungle.getCharacters());
 		System.out.println();
 		System.out.println("------------------------Snake Types------------------------");
 		for (SnakeType snakeType : showSnakeTypesInPort.showSnakeTypes()) {
-			System.out.println("Snake Type:");
-			System.out.println("Character band: %s".formatted(snakeType.getCharacterBand()));
-			System.out.println("Neighborhood Structure: %s".formatted(snakeType.getNeighborhoodStructure().getName()));
-			System.out.println("Value: %s".formatted(snakeType.getSnakeValue()));
-			System.out.println("Count: %s".formatted(snakeType.getCount()));
+			System.out.printf("Snake Type: %s%n", snakeType.getId());
+			System.out.printf("Character band: %s%n", snakeType.getCharacterBand());
+			System.out.printf("Neighborhood Structure: %s%n", snakeType.getNeighborhoodStructure().getName());
+			System.out.printf("Value: %s%n", snakeType.getSnakeValue());
+			System.out.printf("Count: %s%n", snakeType.getCount());
 			System.out.println();
 		}
 		System.out.println("------------------------Jungle Fields------------------------");
@@ -107,7 +107,7 @@ public class CLIAdapter {
 			System.out.println("|");
 			for (int j = 0; j < jungleSize.columns(); j++) {
 				JungleField jungleField = jungle.getJungleField(new Coordinate(i, j));
-				System.out.print("| %s \033[1m%s\033[0m %s ".formatted(jungleField.getFieldValue(), jungleField.getCharacter(), jungleField.getUsability()));
+				System.out.printf("| %s \033[1m%s\033[0m %s ", jungleField.getFieldValue(), jungleField.getCharacter(), jungleField.getUsability());
 			}
 			System.out.println("|");
 			System.out.print("|       ".repeat(jungleSize.columns()));
@@ -120,13 +120,24 @@ public class CLIAdapter {
 			for (Snake snake : showSolutionInPort.showSolution().getSnakes()) {
 				String[][] result = new String[jungleSize.rows()][jungleSize.columns()];
 				Arrays.stream(result).forEach(row -> Arrays.fill(row, " . "));
+				System.out.printf("SnakeType: %s%n", snake.getSnakeTypeId());
+				System.out.printf("Character band: %s%n", showSnakeTypesInPort.showSnakeTypesById(snake.getSnakeTypeId()).getCharacterBand());
+				System.out.printf("Neighborhood Structure: %s%n", showSnakeTypesInPort.showSnakeTypesById(snake.getSnakeTypeId()).getNeighborhoodStructure().getName());
+				System.out.printf("Snake Length: %s%n", snake.getSnakeParts().size());
 				int counter = 1;
+				System.out.print("Snakeparts: ");
 				for (SnakePart snakePart : snake.getSnakeParts()) {
-					System.out.println(snakePart);
+					System.out.printf("(%s, %s, %s)", snakePart.coordinate().row(), snakePart.character(), snakePart.coordinate().column());
+					if (counter != snake.getSnakeParts().size()) {
+						System.out.print(" -> ");
+					}
+					if (counter % 10 == 0) {
+						System.out.println();
+					}
 					result[snakePart.coordinate().row()][snakePart.coordinate().column()] = counter < 10 ? " " + counter + " " :" " + counter;
 					counter++;
 				}
-				System.out.println("Snake Length: %s".formatted(snake.getSnakeParts().size()));
+				System.out.printf("\nSnake Length: %s%n", snake.getSnakeParts().size());
 				for (int i = 0; i < jungleSize.rows() ; i++) {
 					for (int j = 0; j < jungleSize.columns() ; j++) {
 						System.out.print(result[i][j]);
