@@ -16,8 +16,8 @@ public class CLIAdapter {
 	private static final String SEPARATOR = "-------------------------- %s --------------------------%n";
 
 	private String procedure;
-	private String input;
-	private String output;
+	private File input;
+	private File output;
 	private EvaluateSolutionInPort evaluateSolutionInPort;
 	private ShowSolutionInPort showSolutionInPort;
 	private ShowSnakeTypesInPort showSnakeTypesInPort;
@@ -51,13 +51,13 @@ public class CLIAdapter {
 
 	private void readOutput(String[] args) {
 		if (args.length >= 3) {
-			output = args[2].substring(8);
+			output = new File(args[2].substring(8));
 			log.info("Output: %s.".formatted(output));
 		}
 	}
 
 	private void readInput(String[] args) {
-		input = args[1].substring(8);
+		input = new File(args[1].substring(8));
 		log.info("Input: %s.".formatted(input));
 	}
 
@@ -257,7 +257,7 @@ public class CLIAdapter {
 	}
 
 	private void solveInstance() {
-		saveSnakeHuntInstanceInPort.save(new File(output));
+		saveSnakeHuntInstanceInPort.save(output);
 	}
 
 	public static void main(String[] args) {

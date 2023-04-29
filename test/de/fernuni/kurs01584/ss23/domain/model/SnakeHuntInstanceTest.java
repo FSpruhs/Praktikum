@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import de.fernuni.kurs01584.ss23.infrastructure.SnakeHuntRepository;
+import de.fernuni.kurs01584.ss23.infrastructure.SnakeHuntRepositoryAdapter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +31,7 @@ public class SnakeHuntInstanceTest {
 				jungle,
 				Map.of("A0", new SnakeType("A0", 1, 3, "FERNUNI", new Distance(1))),
 				Duration.ofSeconds(1),
-				new SnakeHuntRepository()
+				new SnakeHuntRepositoryAdapter()
 				);
 		assertThrows(NoSolutionException.class, snakeHuntInstance::isValid);
 	}
@@ -76,7 +76,7 @@ public class SnakeHuntInstanceTest {
 				Map.of("A0", new SnakeType("A0", 1, 3, "FERNUNI", new NeighborhoodstructureFalseMock())),
 				Duration.ofSeconds(1),
 				solution,
-				new SnakeHuntRepository());
+				new SnakeHuntRepositoryAdapter());
 		assertEquals(List.of(Fehlertyp.GLIEDER, Fehlertyp.GLIEDER), snakeHuntInstance.isValid());
 	}
 	
@@ -122,7 +122,7 @@ public class SnakeHuntInstanceTest {
 				Map.of("A0", new SnakeType("A0", 1, 3, "FERNUNI", new NeighborhoodstructureFalseMock())),
 				Duration.ofSeconds(1),
 				solution,
-				new SnakeHuntRepository());
+				new SnakeHuntRepositoryAdapter());
 		assertEquals(List.of(Fehlertyp.ZUORDNUNG, Fehlertyp.ZUORDNUNG), snakeHuntInstance.isValid());
 	}
 	
@@ -168,7 +168,7 @@ public class SnakeHuntInstanceTest {
 				Map.of("A0", new SnakeType("A0", 1, 3, "FERNUNI", new NeighborhoodstructureFalseMock())),
 				Duration.ofSeconds(1),
 				solution,
-				new SnakeHuntRepository());
+				new SnakeHuntRepositoryAdapter());
 		assertEquals(List.of(Fehlertyp.VERWENDUNG, Fehlertyp.VERWENDUNG), snakeHuntInstance.isValid());
 	}
 	
@@ -205,7 +205,7 @@ public class SnakeHuntInstanceTest {
 				Map.of("A0", new SnakeType("A0", 1, 3, "FERNUNI", new NeighborhoodstructureTrueMock())),
 				Duration.ofSeconds(1),
 				solution,
-				new SnakeHuntRepository());
+				new SnakeHuntRepositoryAdapter());
 		assertEquals(List.of(Fehlertyp.NACHBARSCHAFT, Fehlertyp.NACHBARSCHAFT), snakeHuntInstance.isValid());
 	}
 	
@@ -251,7 +251,7 @@ public class SnakeHuntInstanceTest {
 				Map.of("A0", new SnakeType("A0", 9, 3, "FERNUNI", new NeighborhoodstructureFalseMock())),
 				Duration.ofSeconds(1),
 				solution,
-				new SnakeHuntRepository());
+				new SnakeHuntRepositoryAdapter());
 		assertEquals(80, snakeHuntInstance.evaluateTotalPoints());
 	}
 	
@@ -266,7 +266,7 @@ public class SnakeHuntInstanceTest {
 				jungle,
 				Map.of("A0", new SnakeType("A0", 1, 3, "FERNUNI", new Distance(1))),
 				Duration.ofSeconds(1),
-				new SnakeHuntRepository());
+				new SnakeHuntRepositoryAdapter());
 		assertThrows(NoSolutionException.class, snakeHuntInstance::evaluateTotalPoints);
 
 

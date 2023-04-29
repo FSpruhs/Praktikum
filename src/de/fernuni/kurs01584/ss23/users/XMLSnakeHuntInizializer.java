@@ -1,5 +1,6 @@
 package de.fernuni.kurs01584.ss23.users;
 
+import java.io.File;
 import java.time.Duration;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -10,16 +11,16 @@ import de.fernuni.kurs01584.ss23.domain.model.SnakeHuntInstance;
 import de.fernuni.kurs01584.ss23.domain.model.SnakeType;
 import de.fernuni.kurs01584.ss23.domain.model.Solution;
 import de.fernuni.kurs01584.ss23.domain.ports.in.*;
-import de.fernuni.kurs01584.ss23.infrastructure.SnakeHuntRepository;
+import de.fernuni.kurs01584.ss23.infrastructure.SnakeHuntRepositoryAdapter;
 
 public class XMLSnakeHuntInizializer {
 	
 	private static final Logger log = Logger.getLogger(XMLSnakeHuntInizializer.class.getName());
 	
-	private final String xmlFilePath;
+	private final File xmlFilePath;
 	private SnakeHuntInstance snakeHuntInstance;
 	
-	public XMLSnakeHuntInizializer(String xmlFilePath) {
+	public XMLSnakeHuntInizializer(File xmlFilePath) {
 		this.xmlFilePath = xmlFilePath;
 		inizializeSnakeHuntInstance();
 	}
@@ -36,9 +37,9 @@ public class XMLSnakeHuntInizializer {
 			Solution solution = xmlSnakeHuntReader.readSolution();
 			log.info("Solution is: %s".formatted(solution));
 			if (solution == null) {
-				snakeHuntInstance = new SnakeHuntInstance(jungle, snakeTypes, duration, new SnakeHuntRepository());
+				snakeHuntInstance = new SnakeHuntInstance(jungle, snakeTypes, duration, new SnakeHuntRepositoryAdapter());
 			} else {
-				snakeHuntInstance = new SnakeHuntInstance(jungle, snakeTypes, duration, solution, new SnakeHuntRepository());
+				snakeHuntInstance = new SnakeHuntInstance(jungle, snakeTypes, duration, solution, new SnakeHuntRepositoryAdapter());
 			}
 		} catch (InvalidDataException e) {
 			log.warning(e.getMessage());

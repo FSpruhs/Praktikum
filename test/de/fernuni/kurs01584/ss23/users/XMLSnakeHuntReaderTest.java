@@ -2,6 +2,7 @@ package de.fernuni.kurs01584.ss23.users;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public class XMLSnakeHuntReaderTest {
 	
 	@BeforeEach
 	void setUp() {
-		xmlSnakeHuntReader = new XMLSnakeHuntReader("./res/sj_p1_probleminstanz.xml");
+		xmlSnakeHuntReader = new XMLSnakeHuntReader(new File("./res/sj_p1_probleminstanz.xml"));
 	}
 
 	@Test
@@ -53,7 +54,7 @@ public class XMLSnakeHuntReaderTest {
 	@Test
 	@DisplayName("Testing read Snaktype with Jump and Distance Neighborhood structure")
 	void readSnakeType() {
-		xmlSnakeHuntReader = new XMLSnakeHuntReader("./res/sj_p5_probleminstanz.xml");
+		xmlSnakeHuntReader = new XMLSnakeHuntReader(new File("./res/sj_p5_probleminstanz.xml"));
 		
 		Map<String, SnakeType> expected = new HashMap<>();
 		expected.put("A0", new SnakeType("A0", 1, 3, "FERNUNI", new Distance(1)));
@@ -66,7 +67,7 @@ public class XMLSnakeHuntReaderTest {
 	@Test
 	@DisplayName("Testing read Solution with Solution")
 	void readSolution( ) {
-		xmlSnakeHuntReader = new XMLSnakeHuntReader("./res/sj_p1_loesung.xml");
+		xmlSnakeHuntReader = new XMLSnakeHuntReader(new File("./res/sj_p1_loesung.xml"));
 		
 		List<Snake> expectedSnakes = new LinkedList<>();
 		expectedSnakes.add(new Snake("A0", List.of(
@@ -88,7 +89,7 @@ public class XMLSnakeHuntReaderTest {
 	@Test
 	@DisplayName("Testing read Solution without Solution")
 	void readSolutionWithoutSolution( ) {
-		xmlSnakeHuntReader = new XMLSnakeHuntReader("./res/sj_p1_probleminstanz.xml");
+		xmlSnakeHuntReader = new XMLSnakeHuntReader(new File("./res/sj_p1_probleminstanz.xml"));
 		assertNull(xmlSnakeHuntReader.readSolution());
 	}
 }

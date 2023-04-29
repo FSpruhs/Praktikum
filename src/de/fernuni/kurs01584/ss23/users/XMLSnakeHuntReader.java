@@ -26,12 +26,12 @@ public class XMLSnakeHuntReader {
 	private static final Logger log = Logger.getLogger(XMLSnakeHuntReader.class.getName());
 	private Element root;
 	
-	public XMLSnakeHuntReader(String fileName) {
+	public XMLSnakeHuntReader(File file) {
 		SAXBuilder sax = new SAXBuilder();
 		sax.setValidation(true);
 		try {
-			this.root = sax.build(new File(fileName)).getRootElement();
-			log.info("Loaded input file %s.".formatted(fileName));
+			this.root = sax.build(file).getRootElement();
+			log.info("Loaded input file %s.".formatted(file.getName()));
 		} catch (IOException | JDOMException e) {
 			log.warning(e.getMessage());
 			System.exit(0);
