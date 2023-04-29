@@ -94,6 +94,11 @@ public class Jump implements NeighborhoodStructure{
 		return "Jump";
 	}
 
+	@Override
+	public List<Integer> getParameter() {
+		return List.of(row, column);
+	}
+
 	private List<Coordinate> nextFieldsWithDifferentCoordinateValue(Coordinate coordinate, JungleSize jungleSize) {
 		List<Coordinate> result = new LinkedList<>();
 		result.addAll(addFields(coordinate, jungleSize, row, column));

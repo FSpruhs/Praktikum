@@ -14,7 +14,13 @@ import de.fernuni.kurs01584.ss23.domain.ports.in.*;
 import de.fernuni.kurs01584.ss23.domain.ports.out.SaveSnakeHuntInstanceOutPort;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
 
-public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, ShowSolutionInPort, ShowSnakeTypesInPort,EvaluateSolutionInPort, SolveInPort {
+public class SnakeHuntInstance implements ValidationInPort,
+		ShowJungleInPort,
+		ShowSolutionInPort,
+		ShowSnakeTypesInPort,
+		EvaluateSolutionInPort,
+		SolveInPort,
+		SaveSnakeHuntInstanceInPort {
 	
 	private final Jungle jungle;
 	private final Map<String, SnakeType> snakeTypes;
@@ -168,7 +174,8 @@ public class SnakeHuntInstance implements ValidationInPort, ShowJungleInPort, Sh
 		return snakeTypes.get(snakeTypeId);
 	}
 
-	private void saveSnakeHuntInstance(File file) {
+	@Override
+	public void save(File file) {
 		repository.save(
 				file,
 				jungle,

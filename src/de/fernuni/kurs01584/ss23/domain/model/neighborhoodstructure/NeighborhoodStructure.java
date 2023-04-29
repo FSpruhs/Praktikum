@@ -13,4 +13,6 @@ public interface NeighborhoodStructure {
 
 	String getName();
 
+	List<Integer> getParameter();
+
 }

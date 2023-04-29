@@ -28,4 +28,9 @@ public class NeighborhoodstructureTrueMock implements NeighborhoodStructure{
 		return "Mock";
 	}
 
+	@Override
+	public List<Integer> getParameter() {
+		return null;
+	}
+
 }

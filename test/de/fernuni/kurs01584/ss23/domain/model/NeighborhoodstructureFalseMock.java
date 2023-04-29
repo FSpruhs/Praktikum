@@ -22,4 +22,9 @@ public class NeighborhoodstructureFalseMock implements NeighborhoodStructure{
 		return "Mock";
 	}
 
+	@Override
+	public List<Integer> getParameter() {
+		return null;
+	}
+
 }

@@ -83,6 +83,11 @@ public class Distance implements NeighborhoodStructure {
 		return "Distance";
 	}
 
+	@Override
+	public List<Integer> getParameter() {
+		return List.of(fieldRange);
+	}
+
 	private void checkCoordinate(Coordinate coordinate, List<Coordinate> result, int rowNum, int colNum) {
 		if (isNext(coordinate, rowNum, colNum)) {
 			result.add(new Coordinate(rowNum, colNum));
