@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import de.fernuni.kurs01584.ss23.domain.model.*;
-import de.fernuni.kurs01584.ss23.users.CLIAdapter;
 
 public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 
@@ -16,8 +15,7 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 
 	private int totalPoints;
 	private final List<SnakeHead> snakeHeads = new LinkedList<>();
-	private final Solution tempSolution = new Solution();
-	private Solution finalSolution;
+	private final Solution solution = new Solution();
 	private Jungle jungle;
 
 
@@ -32,20 +30,10 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 		while (!snakeHeads.isEmpty()) {
 			saveSolutionWithMorePoints(actualPoints);
 			if (System.nanoTime() - startTimer >= durationInSeconds.toNanos()) {
-				log.info("Snake search finished. Time is over.");
-				return tempSolution;
+				log.info("Snake search finished. Time is over. Duration: %s ns".formatted(System.nanoTime() - startTimer));
+				return solution;
 			}
-			List<JungleField> startFields = new LinkedList<>();
-			List<Character> chars = new LinkedList<>();
-			for (SnakeHead snakeHeads : snakeHeads) {
-				if (!chars.contains(snakeHeads.getFirstChar()) ) {
-					List<JungleField> jungleFields = jungle.getUsabilityFieldsByChar(snakeHeads.getFirstChar());
-					startFields.addAll(jungleFields);
-					chars.add(snakeHeads.getFirstChar());
-				}
-			}
-			Collections.sort(startFields);
-			for (JungleField startField : startFields) {
+			for (JungleField startField : createStartFields()) {
 				List<SnakeHead> startHeads = new LinkedList<>();
 				for (SnakeHead snakeHead : snakeHeads) {
 					if (snakeHead.getFirstChar() == startField.getCharacter()) {
@@ -79,12 +67,25 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 
 		}
 		log.info("Snake search finished. All Snakes are found.");
-		return tempSolution;
+		return solution;
+	}
+
+	private List<JungleField> createStartFields() {
+		List<JungleField> startFields = new LinkedList<>();
+		List<Character> chars = new LinkedList<>();
+		for (SnakeHead snakeHeads : snakeHeads) {
+			if (!chars.contains(snakeHeads.getFirstChar()) ) {
+				List<JungleField> jungleFields = jungle.getUsabilityFieldsByChar(snakeHeads.getFirstChar());
+				startFields.addAll(jungleFields);
+				chars.add(snakeHeads.getFirstChar());
+			}
+		}
+		Collections.sort(startFields);
+		return startFields;
 	}
 
 	private void saveSolutionWithMorePoints(int actualPoints) {
 		if (actualPoints > totalPoints) {
-			saveSolution();
 			totalPoints = actualPoints;
 		}
 	}
@@ -105,7 +106,7 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 
 	private int searchNextSnakePart(Snake snake, String substring) {
 		if (substring.equals("")) {
-			tempSolution.insertSnake(snake);
+			solution.insertSnake(snake);
 			return 0;
 		}
 		List<JungleField> jungleFields = new LinkedList<>();
@@ -137,13 +138,5 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 		return -1;
 	}
 
-
-	private void saveSolution() {
-		finalSolution = new Solution();
-		finalSolution.setTotalPoints(totalPoints);
-		for (Snake snake : tempSolution.getSnakes()) {
-			finalSolution.insertSnake(snake);
-		}
-	}
 
 }
