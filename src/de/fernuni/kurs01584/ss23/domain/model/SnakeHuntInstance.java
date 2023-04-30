@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import de.fernuni.kurs01584.ss23.domain.algorithm.FirstAlgorithm;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidDurationException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidSnakeTypesException;
@@ -19,14 +20,13 @@ public class SnakeHuntInstance implements ValidationInPort,
 		ShowSolutionInPort,
 		ShowSnakeTypesInPort,
 		EvaluateSolutionInPort,
-		SolveInPort,
-		SaveSnakeHuntInstanceInPort {
+		SolveInPort {
 	
 	private final Jungle jungle;
 	private final Map<String, SnakeType> snakeTypes;
 	private final Duration durationInSeconds;
 	private Solution solution;
-	private SnakeSearchAlgorithmus snakeSearchAlgorithmus;
+	private SnakeSearchAlgorithmus snakeSearchAlgorithmus = new FirstAlgorithm();
 	private final SaveSnakeHuntInstanceOutPort repository;
 	
 	
@@ -161,7 +161,7 @@ public class SnakeHuntInstance implements ValidationInPort,
 
 	@Override
 	public void solveSnakeHuntInstance() {
-		snakeSearchAlgorithmus.solveSnakeHuntInstance(jungle, snakeTypes, durationInSeconds);
+		solution = snakeSearchAlgorithmus.solveSnakeHuntInstance(jungle, snakeTypes, durationInSeconds);
 	}
 
 	@Override
@@ -174,7 +174,7 @@ public class SnakeHuntInstance implements ValidationInPort,
 		return snakeTypes.get(snakeTypeId);
 	}
 
-	@Override
+
 	public void save(File file) {
 		repository.save(
 				file,

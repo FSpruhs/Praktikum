@@ -24,7 +24,6 @@ public class CLIAdapter {
 	private ShowJungleInPort showJungleInPort;
 	private SolveInPort solveInPort;
 	private ValidationInPort validationInPort;
-	private SaveSnakeHuntInstanceInPort saveSnakeHuntInstanceInPort;
 
 	private void readCliArgs(String[] args) {
 		validateCLIArgs(args);
@@ -91,7 +90,6 @@ public class CLIAdapter {
 		showSnakeTypesInPort = xmlSnakeHuntInizializer.getShowSnakeTypeInPort();
 		solveInPort = xmlSnakeHuntInizializer.getSolveInPort();
 		validationInPort = xmlSnakeHuntInizializer.getValidationInPort();
-		saveSnakeHuntInstanceInPort = xmlSnakeHuntInizializer.getSaveSnakeHuntInstanceInPort();
 	}
 
 
@@ -257,7 +255,7 @@ public class CLIAdapter {
 	}
 
 	private void solveInstance() {
-		saveSnakeHuntInstanceInPort.save(output);
+		solveInPort.solveSnakeHuntInstance();
 	}
 
 	public static void main(String[] args) {

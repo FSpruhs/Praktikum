@@ -1,12 +1,13 @@
 package de.fernuni.kurs01584.ss23.domain.model;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
 public class Solution {
 	
 	private int totalPoints;
-	private List<Snake> snakes;
+	private List<Snake> snakes = new LinkedList<>();
 	
 	public void loadSnakes(List<Snake> snakes) {
 		this.snakes = snakes;

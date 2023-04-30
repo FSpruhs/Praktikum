@@ -5,41 +5,35 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import de.fernuni.kurs01584.ss23.domain.model.*;
+import de.fernuni.kurs01584.ss23.users.CLIAdapter;
 
 public class FirstAlgorithm implements SnakeSearchAlgorithmus{
-	
+
+	private static final Logger log = Logger.getLogger(FirstAlgorithm.class.getName());
+
 	private int totalPoints;
-	private List<SnakeHead> snakeHeads;
-	private Solution tempSolution;
+	private final List<SnakeHead> snakeHeads = new LinkedList<>();
+	private final Solution tempSolution = new Solution();
 	private Solution finalSolution;
 	private Jungle jungle;
 
 
 	@Override
-	public int solveSnakeHuntInstance(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds) {
+	public Solution solveSnakeHuntInstance(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds) {
 		long startTimer = System.nanoTime();
+		log.info("Start snake hunt search at %s".formatted(startTimer));
 		this.jungle = jungle;
 		totalPoints = 0;
 		int actualPoints = 0;
-		for (SnakeType snakeType : snakeTypes.values()) {
-			for (int i = 0; i < snakeType.getCount() ; i++) {
-				snakeHeads.add(new SnakeHead(snakeType.getSnakeValue(),
-						snakeType.getId(),
-						snakeType.getCharacterBand().charAt(0),
-						snakeType.getNeighborhoodStructure()
-						));
-			}
-			
-		}
+		createSnakeHeads(snakeTypes);
 		while (!snakeHeads.isEmpty()) {
-			if (actualPoints > totalPoints) {
-				saveSolution();
-				totalPoints = actualPoints;
-			}
-			if (System.nanoTime() - startTimer <= durationInSeconds.getNano()) {
-				return totalPoints;
+			saveSolutionWithMorePoints(actualPoints);
+			if (System.nanoTime() - startTimer >= durationInSeconds.toNanos()) {
+				log.info("Snake search finished. Time is over.");
+				return tempSolution;
 			}
 			List<JungleField> startFields = new LinkedList<>();
 			List<Character> chars = new LinkedList<>();
@@ -47,41 +41,65 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 				if (!chars.contains(snakeHeads.getFirstChar()) ) {
 					List<JungleField> jungleFields = jungle.getUsabilityFieldsByChar(snakeHeads.getFirstChar());
 					startFields.addAll(jungleFields);
+					chars.add(snakeHeads.getFirstChar());
 				}
 			}
 			Collections.sort(startFields);
 			for (JungleField startField : startFields) {
-				List<SnakeHead> startHeads =  new LinkedList<>();
-				for (SnakeHead snakeHead2 : snakeHeads) {
-					if (snakeHead2.getFirstChar() == startField.getCharacter()) {
-						startHeads.add(snakeHead2);
+				List<SnakeHead> startHeads = new LinkedList<>();
+				for (SnakeHead snakeHead : snakeHeads) {
+					if (snakeHead.getFirstChar() == startField.getCharacter()) {
+						startHeads.add(snakeHead);
 					}
 				}
 				Collections.sort(startHeads);
 				for (SnakeHead snakeHead : startHeads) {
-					Snake snake = new Snake(snakeHead.getId(), snakeHead.getNeighborhoodStructure());
-					SnakePart snakePart = new SnakePart(new FieldId(startField.getId()),
-							startField.getCharacter(),
-							new Coordinate(Integer.parseInt(startField.getId().substring(1)) / jungle.getJungleSize().columns(),
-									Integer.parseInt(startField.getId().substring(1)) % jungle.getJungleSize().columns()));
-					jungle.placeSnakePart(snakePart, snakePart.coordinate());
-					snake.addSnakePart(snakePart);
-					int totalPoints = searchNextSnakePart(snake, snakeTypes.get(snake.getSnakeTypeId()).getCharacterBand().substring(1));
-					if (totalPoints < 0) {
-						jungle.removeSnakePart(snakePart);
-						snake.removeLastSnakePart();
-					} else {
-						actualPoints = actualPoints + totalPoints + snakeTypes.get(snake.getSnakeTypeId()).getSnakeValue();
+					if (startField.getUsability() > 0) {
+						Snake snake = new Snake(snakeHead.getId(), snakeHead.getNeighborhoodStructure(), new LinkedList<>());
+						SnakePart snakePart = new SnakePart(new FieldId(startField.getId()),
+								startField.getCharacter(),
+								new Coordinate(Integer.parseInt(startField.getId().substring(1)) / jungle.getJungleSize().columns(),
+										Integer.parseInt(startField.getId().substring(1)) % jungle.getJungleSize().columns()));
+						jungle.placeSnakePart(snakePart, snakePart.coordinate());
+						snake.addSnakePart(snakePart);
+						int totalPoints = searchNextSnakePart(snake, snakeTypes.get(snake.getSnakeTypeId()).getCharacterBand().substring(1));
+						if (totalPoints < 0) {
+							jungle.removeSnakePart(snakePart);
+							snake.removeLastSnakePart();
+						} else {
+							actualPoints = actualPoints + totalPoints + snakeTypes.get(snake.getSnakeTypeId()).getSnakeValue();
+							snakeHeads.remove(snakeHead);
+						}
+
 					}
-					snakeHeads.remove(snakeHead);
+
 				}
-	
 			}
 			
 
 		}
-		
-		return totalPoints;
+		log.info("Snake search finished. All Snakes are found.");
+		return tempSolution;
+	}
+
+	private void saveSolutionWithMorePoints(int actualPoints) {
+		if (actualPoints > totalPoints) {
+			saveSolution();
+			totalPoints = actualPoints;
+		}
+	}
+
+	private void createSnakeHeads(Map<String, SnakeType> snakeTypes) {
+		for (SnakeType snakeType : snakeTypes.values()) {
+			for (int i = 0; i < snakeType.getCount(); i++) {
+				snakeHeads.add(new SnakeHead(snakeType.getSnakeValue(),
+						snakeType.getId(),
+						snakeType.getCharacterBand().charAt(0),
+						snakeType.getNeighborhoodStructure()
+						));
+			}
+
+		}
 	}
 
 
@@ -104,7 +122,7 @@ public class FirstAlgorithm implements SnakeSearchAlgorithmus{
 		for (JungleField jungleField : jungleFields) {
 			SnakePart snakePart = new SnakePart(new FieldId(jungleField.getId()),
 					jungleField.getCharacter(),
-					new Coordinate(Integer.parseInt(jungleField.getId().substring(1)) / jungle.getJungleSize().rows(),
+					new Coordinate(Integer.parseInt(jungleField.getId().substring(1)) / jungle.getJungleSize().columns(),
 							Integer.parseInt(jungleField.getId().substring(1)) % jungle.getJungleSize().columns()));
 			jungle.placeSnakePart(snakePart, snakePart.coordinate());
 			snake.addSnakePart(snakePart);

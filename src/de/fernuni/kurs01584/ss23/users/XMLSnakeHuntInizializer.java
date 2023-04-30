@@ -71,8 +71,5 @@ public class XMLSnakeHuntInizializer {
 		return snakeHuntInstance;
 	}
 
-	public SaveSnakeHuntInstanceInPort getSaveSnakeHuntInstanceInPort() {
-		return snakeHuntInstance;
-	}
 }
 

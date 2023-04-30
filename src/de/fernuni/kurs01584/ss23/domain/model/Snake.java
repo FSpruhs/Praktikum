@@ -22,9 +22,10 @@ public class Snake {
 		this.neighborhoodStructure = neighborhoodStructure;
 	}
 	
-	public Snake(String snakeTypeId, NeighborhoodStructure neighborhoodStructure) {
+	public Snake(String snakeTypeId, NeighborhoodStructure neighborhoodStructure, List<SnakePart> snakeParts) {
 		this.snakeTypeId = snakeTypeId;
 		this.neighborhoodStructure = neighborhoodStructure;
+		this.snakeParts = snakeParts;
 	}
 
 	public String getSnakeTypeId() {
