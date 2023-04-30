@@ -104,6 +104,10 @@ public class JungleField implements Comparable<JungleField>{
 		snakeParts.remove(snakePart);
 	}
 
+	public void clearJungleField() {
+		snakeParts.clear();
+	}
+
 	public Coordinate getCoordinate() {
 		return coordinate;
 	}

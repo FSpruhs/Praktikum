@@ -18,6 +18,12 @@ public class Jungle {
 		validateJungle();
 	}
 
+	public void clearJungle() {
+		for (JungleField jungleField : jungleFields) {
+			jungleField.clearJungleField();
+		}
+	}
+
 	private void validateJungle() {
 		validateCharacters();
 		validateJungleFields();

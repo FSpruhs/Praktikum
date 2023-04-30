@@ -26,7 +26,7 @@ public class SnakeHuntInstance implements ValidationInPort,
 	private final Map<String, SnakeType> snakeTypes;
 	private final Duration durationInSeconds;
 	private Solution solution;
-	private SnakeSearchAlgorithmus snakeSearchAlgorithmus = new FirstAlgorithm();
+	private final SnakeSearchAlgorithmus snakeSearchAlgorithmus = new FirstAlgorithm();
 	private final SaveSnakeHuntInstanceOutPort repository;
 	
 	
@@ -156,6 +156,7 @@ public class SnakeHuntInstance implements ValidationInPort,
 
 	@Override
 	public Jungle showJungle() {
+		//jungle.clearJungle();
 		return jungle;
 	}
 
