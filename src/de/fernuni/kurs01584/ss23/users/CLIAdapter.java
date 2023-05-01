@@ -132,7 +132,7 @@ public class CLIAdapter {
 	private void printSnakeParts(Snake snake, String[][] solutionGrid) {
 		System.out.print("Snakeparts: ");
 		int counter = 1;
-		for (SnakePart snakePart : snake.getSnakeParts()) {
+		for (SnakePart snakePart : snake.snakeParts()) {
 			printSnakePart(snake, counter, snakePart);
 			solutionGrid[snakePart.coordinate().row()][snakePart.coordinate().column()] = counter < 10 ? " " + counter + " " :" " + counter;
 			counter++;
@@ -142,7 +142,7 @@ public class CLIAdapter {
 
 	private void printSnakePart(Snake snake, int counter, SnakePart snakePart) {
 		System.out.printf("(%s, %s, %s)", snakePart.coordinate().row(), snakePart.character(), snakePart.coordinate().column());
-		if (counter != snake.getSnakeParts().size()) {
+		if (counter != snake.snakeParts().size()) {
 			System.out.print(" -> ");
 		}
 		if (counter % 10 == 0) {
@@ -167,10 +167,10 @@ public class CLIAdapter {
 	}
 
 	private void printSolutionData(Snake snake) {
-		System.out.printf("SnakeType: %s%n", snake.getSnakeTypeId());
-		System.out.printf("Character band: %s%n", showSnakeTypesInPort.showSnakeTypesById(snake.getSnakeTypeId()).getCharacterBand());
-		System.out.printf("Neighborhood Structure: %s%n", showSnakeTypesInPort.showSnakeTypesById(snake.getSnakeTypeId()).getNeighborhoodStructure().getName());
-		System.out.printf("Snake Length: %s%n", snake.getSnakeParts().size());
+		System.out.printf("SnakeType: %s%n", snake.snakeTypeId());
+		System.out.printf("Character band: %s%n", showSnakeTypesInPort.showSnakeTypesById(snake.snakeTypeId()).getCharacterBand());
+		System.out.printf("Neighborhood Structure: %s%n", showSnakeTypesInPort.showSnakeTypesById(snake.snakeTypeId()).getNeighborhoodStructure().getName());
+		System.out.printf("Snake Length: %s%n", snake.snakeParts().size());
 	}
 
 	private void printJungleFields(Jungle jungle) {

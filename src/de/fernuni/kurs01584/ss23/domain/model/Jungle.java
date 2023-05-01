@@ -43,7 +43,7 @@ public class Jungle {
 	}
 
 	private void validateJungleFieldPosition(int counter, JungleField jungleField) {
-		if (Integer.parseInt(jungleField.getId().substring(1)) != counter || jungleField.getId().charAt(0) != 'F') {
+		if (Integer.parseInt(jungleField.getId().id().substring(1)) != counter || jungleField.getId().id().charAt(0) != 'F') {
 			throw new InvalidJungleException("Jungle field is Invalid");
 		}
 	}
@@ -64,8 +64,8 @@ public class Jungle {
 		return jungleFields.get(mapCoordinateToIndex(coordinate));
 	}
 
-	public void placeSnakePart(SnakePart snakePart, Coordinate coordinate) {
-		jungleFields.get(mapCoordinateToIndex(coordinate)).placeSnakePart(snakePart);
+	public void placeSnakePart(SnakePart snakePart) {
+		jungleFields.get(mapCoordinateToIndex(snakePart.coordinate())).placeSnakePart(snakePart);
 	}
 
 	public int getJungleFieldUsability(Coordinate coordinate) {
@@ -82,13 +82,6 @@ public class Jungle {
 
 	public void removeAllSnakeParts() {
 		jungleFields.forEach(JungleField::removeSnakeParts);
-	}
-
-	public List<JungleField> getUsabilityFieldsByChar(char firstChar) {
-		return jungleFields.stream()
-				.filter(jungleField -> jungleField.getCharacter() == firstChar)
-				.filter(jungleField -> jungleField.getUsability() > 0)
-				.toList();
 	}
 
 	public JungleSize getJungleSize() {

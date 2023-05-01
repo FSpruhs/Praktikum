@@ -52,8 +52,8 @@ public class SnakeHuntRepositoryAdapter implements SaveSnakeHuntInstanceOutPort 
 
     private Element snakeToXML(Snake snake) {
         Element result = new Element("Schlange");
-        result.setAttribute("art", snake.getSnakeTypeId());
-        for (SnakePart snakePart : snake.getSnakeParts()) {
+        result.setAttribute("art", snake.snakeTypeId());
+        for (SnakePart snakePart : snake.snakeParts()) {
             result.addContent(snakePartToXML(snakePart));
         }
         return result;
@@ -113,7 +113,7 @@ public class SnakeHuntRepositoryAdapter implements SaveSnakeHuntInstanceOutPort 
 
     private Element jungleFieldToXML(JungleField jungleField) {
         Element result = new Element("Feld");
-        result.setAttribute("id", jungleField.getId());
+        result.setAttribute("id", jungleField.getId().id());
         result.setAttribute("zeile", String.valueOf(jungleField.getCoordinate().row()));
         result.setAttribute("spalte", String.valueOf(jungleField.getCoordinate().column()));
         result.setAttribute("verwendbarkeit", String.valueOf(jungleField.getUsability()));

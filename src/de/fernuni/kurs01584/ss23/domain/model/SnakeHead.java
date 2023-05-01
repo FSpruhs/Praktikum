@@ -7,8 +7,8 @@ import java.util.Objects;
 public class SnakeHead implements Comparable<SnakeHead>{
 	
 	private String id;
-	private int snakeValue;
-	private char firstChar;
+	private final int snakeValue;
+	private final char firstChar;
 	private final NeighborhoodStructure neighborhoodStructure;
 
 	public SnakeHead(int snakeValue, String id, char firstChar, NeighborhoodStructure neighborhoodStructure) {

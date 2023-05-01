@@ -6,8 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import de.fernuni.kurs01584.ss23.domain.algorithm.FirstAlgorithm;
-import de.fernuni.kurs01584.ss23.domain.algorithm.SecondAlgorithem;
+import de.fernuni.kurs01584.ss23.domain.algorithm.SecondAlgorithm;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidDurationException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidSnakeTypesException;
@@ -27,7 +26,7 @@ public class SnakeHuntInstance implements ValidationInPort,
 	private final Map<String, SnakeType> snakeTypes;
 	private final Duration durationInSeconds;
 	private Solution solution;
-	private final SnakeSearchAlgorithmus snakeSearchAlgorithmus = new SecondAlgorithem();
+	private final SnakeSearchAlgorithmus snakeSearchAlgorithmus = new SecondAlgorithm();
 	private final SaveSnakeHuntInstanceOutPort repository;
 	
 	
@@ -87,11 +86,11 @@ public class SnakeHuntInstance implements ValidationInPort,
 	private void findSnakeErrors(List<Fehlertyp> result, Snake snake) {
 		findLengthError(result, snake);
 		SnakePart previousSnakePart = null;
-		for (SnakePart snakePart : snake.getSnakeParts()) {
-			jungle.placeSnakePart(snakePart, snakePart.coordinate());
+		for (SnakePart snakePart : snake.snakeParts()) {
+			jungle.placeSnakePart(snakePart);
 			findUsageError(result, snakePart);
 			findAllocationError(result, snakePart);
-			findNeighborhoodError(result, snakePart, previousSnakePart, snakeTypes.get(snake.getSnakeTypeId()));
+			findNeighborhoodError(result, snakePart, previousSnakePart, snakeTypes.get(snake.snakeTypeId()));
 			previousSnakePart = snakePart;
 		}
 	}
@@ -110,7 +109,7 @@ public class SnakeHuntInstance implements ValidationInPort,
 	}
 
 	private void findLengthError(List<Fehlertyp> result, Snake snake) {
-		if (getSnakeType(snake.getSnakeTypeId()).getSnakeLength() != snake.getLength()) {
+		if (getSnakeType(snake.snakeTypeId()).getSnakeLength() != snake.getLength()) {
 			result.add(Fehlertyp.GLIEDER);
 		}
 	}
@@ -139,13 +138,13 @@ public class SnakeHuntInstance implements ValidationInPort,
 		solutionNullCheck();
 		int result = 0;
 		for (Snake snake : solution.getSnakes()) {
-			result += snakeTypes.get(snake.getSnakeTypeId()).getSnakeValue() + sumSnakePartValues(snake);
+			result += snakeTypes.get(snake.snakeTypeId()).getSnakeValue() + sumSnakePartValues(snake);
 		}
 		return result;
 	}
 
 	private int sumSnakePartValues(Snake snake) {
-		return snake.getSnakeParts().stream()
+		return snake.snakeParts().stream()
 				.mapToInt(snakePart -> jungle.getFieldValue(snakePart.coordinate()))
 				.sum();
 	}

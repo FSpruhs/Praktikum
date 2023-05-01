@@ -81,8 +81,9 @@ public class JungleField implements Comparable<JungleField>{
 		return character;
 	}
 
-	public String getId() {
-		return fieldId.id();
+
+	public FieldId getId() {
+		return fieldId;
 	}
 
 

@@ -5,13 +5,18 @@ import java.util.List;
 import java.util.Objects;
 
 public class Solution {
-	
-	private int totalPoints;
+
 	private List<Snake> snakes = new LinkedList<>();
-	
+
+	public Solution() {
+	}
+
+	public Solution(List<Snake> snakes) {
+		this.snakes = snakes;
+	}
+
 	public void loadSnakes(List<Snake> snakes) {
 		this.snakes = snakes;
-		totalPoints = 0;
 	}
 	
 	public List<Snake> getSnakes() {
@@ -43,10 +48,6 @@ public class Solution {
 	public void insertSnake(Snake snake) {
 		snakes.add(snake);
 		
-	}
-
-	public void setTotalPoints(int totalPoints) {
-		this.totalPoints = totalPoints;
 	}
 
 	public void removeSnake(Snake snake) {
