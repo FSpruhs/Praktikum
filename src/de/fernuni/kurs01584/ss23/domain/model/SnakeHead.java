@@ -9,13 +9,11 @@ public class SnakeHead implements Comparable<SnakeHead>{
 	private String id;
 	private final int snakeValue;
 	private final char firstChar;
-	private final NeighborhoodStructure neighborhoodStructure;
 
 	public SnakeHead(int snakeValue, String id, char firstChar, NeighborhoodStructure neighborhoodStructure) {
 		this.id = id;
 		this.snakeValue = snakeValue;
 		this.firstChar = firstChar;
-		this.neighborhoodStructure = neighborhoodStructure;
 	}
 
 	public String getId() {
@@ -35,10 +33,6 @@ public class SnakeHead implements Comparable<SnakeHead>{
 		return firstChar;
 	}
 
-	public NeighborhoodStructure getNeighborhoodStructure() {
-		return neighborhoodStructure;
-	}
-
 	@Override
 	public int compareTo(SnakeHead s) {
 		return Integer.compare(snakeValue, s.getSnakeValue());
@@ -49,7 +43,12 @@ public class SnakeHead implements Comparable<SnakeHead>{
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		SnakeHead snakeHead = (SnakeHead) o;
-		return snakeValue == snakeHead.snakeValue && firstChar == snakeHead.firstChar && Objects.equals(id, snakeHead.id) && Objects.equals(neighborhoodStructure, snakeHead.neighborhoodStructure);
+		return snakeValue == snakeHead.snakeValue && firstChar == snakeHead.firstChar && Objects.equals(id, snakeHead.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, snakeValue, firstChar);
 	}
 
 	@Override
@@ -58,12 +57,7 @@ public class SnakeHead implements Comparable<SnakeHead>{
 				"id='" + id + '\'' +
 				", snakeValue=" + snakeValue +
 				", firstChar=" + firstChar +
-				", neighborhoodStructure=" + neighborhoodStructure +
 				'}';
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, snakeValue, firstChar, neighborhoodStructure);
-	}
 }

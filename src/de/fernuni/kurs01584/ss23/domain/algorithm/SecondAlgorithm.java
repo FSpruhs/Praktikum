@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 public class SecondAlgorithm implements SnakeSearchAlgorithmus {
 
     private static final Logger log = Logger.getLogger(SecondAlgorithm.class.getName());
-
     private Solution finalSolution = new Solution();
     private final Solution tempSolution = new Solution();
     private Jungle jungle;
@@ -19,17 +18,18 @@ public class SecondAlgorithm implements SnakeSearchAlgorithmus {
     private Map<String, SnakeType> snakeTypes;
     private List<SnakeHead> snakeHeads;
     private Map<Character, List<JungleField>> jungleFieldMap;
+    private SolutionValueCalculator solutionValueCalculator;
 
 
     @Override
-    public Solution solveSnakeHuntInstance(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds) {
-        initializeSnakeSearch(jungle, snakeTypes, durationInSeconds);
+    public Solution solveSnakeHuntInstance(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds, SolutionValueCalculator solutionValueCalculator) {
+        initializeSnakeSearch(jungle, snakeTypes, durationInSeconds, solutionValueCalculator);
         searchSnake();
         return finalSolution;
     }
 
     private int searchSnake() {
-        int tempSolutionPoints = evaluateTotalPoints(tempSolution);
+        int tempSolutionPoints = solutionValueCalculator.evaluateTotalPoints(tempSolution, snakeTypes, jungle);
         if (totalPoints < tempSolutionPoints) {
             totalPoints = tempSolutionPoints;
             saveSolution(tempSolution);
@@ -39,7 +39,7 @@ public class SecondAlgorithm implements SnakeSearchAlgorithmus {
             return -1;
         }
         for (JungleField startField : createStartFields()) {
-            for (SnakeHead snakeHead : createStartHeads(startField)) {
+            for (SnakeHead snakeHead : createStartHeads(startField.getCharacter())) {
                 if (startSnakeSearch(startField, snakeHead) < 0) {
                     return -1;
                 }
@@ -50,10 +50,10 @@ public class SecondAlgorithm implements SnakeSearchAlgorithmus {
 
     private int startSnakeSearch(JungleField startField, SnakeHead snakeHead) {
         if (startField.getUsability() > 0) {
-            Snake snake = new Snake(snakeHead.getId(), new LinkedList<>(),snakeHead.getNeighborhoodStructure());
+            Snake snake = toSnake(snakeHead.getId());
             SnakePart snakePart = placeSnakePart(startField, snake);
             int solution = searchNextSnakePart(snake, getCharacterBandWithoutFirstChar(snake));
-            this.jungle.removeSnakePart(snakePart);
+            jungle.removeSnakePart(snakePart);
             snake.removeLastSnakePart();
             if (solution < 0) {
                 return -1;
@@ -62,8 +62,15 @@ public class SecondAlgorithm implements SnakeSearchAlgorithmus {
         return 0;
     }
 
-    private List<SnakeHead> createStartHeads(JungleField startField) {
-        return snakeHeads.stream().filter(snakeHead -> snakeHead.getFirstChar() == startField.getCharacter()).sorted().toList();
+    private Snake toSnake(String snakeTypeId) {
+        return new Snake(snakeTypeId, new LinkedList<>(), snakeTypes.get(snakeTypeId).getNeighborhoodStructure());
+    }
+
+    private List<SnakeHead> createStartHeads(char character) {
+        return snakeHeads.stream()
+                .filter(snakeHead -> snakeHead.getFirstChar() == character)
+                .sorted().
+                toList();
     }
 
     private List<JungleField> createStartFields() {
@@ -105,7 +112,7 @@ public class SecondAlgorithm implements SnakeSearchAlgorithmus {
         return new SnakePart(snakePart.fieldId(), snakePart.character(), snakePart.coordinate());
     }
 
-    private void initializeSnakeSearch(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds) {
+    private void initializeSnakeSearch(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds, SolutionValueCalculator solutionValueCalculator) {
         this.startTimer = System.nanoTime();
         log.info("Start snake hunt search at %s".formatted(startTimer));
         this.jungle = jungle;
@@ -113,6 +120,7 @@ public class SecondAlgorithm implements SnakeSearchAlgorithmus {
         this.snakeTypes = snakeTypes;
         this.snakeHeads = createSnakeHeads();
         this.jungleFieldMap = createJungleFieldMap();
+        this.solutionValueCalculator = solutionValueCalculator;
     }
 
     private Map<Character, List<JungleField>> createJungleFieldMap() {
@@ -141,12 +149,15 @@ public class SecondAlgorithm implements SnakeSearchAlgorithmus {
     private int searchNextSnakePart(Snake snake, String remainingChars) {
         if (remainingChars.equals("")) {
             tempSolution.insertSnake(snake);
-            snakeHeads.remove(snakeHeads.stream().filter(snakeHead -> snakeHead.getId().equals(snake.snakeTypeId())).findFirst().orElseThrow());
+            snakeHeads.remove(snakeHeads.stream()
+                    .filter(snakeHead -> snakeHead.getId().equals(snake.snakeTypeId()))
+                    .findFirst()
+                    .orElseThrow());
             if (searchSnake() < 0) {
                 return -1;
             }
             SnakeType snakeType = snakeTypes.get(snake.snakeTypeId());
-            snakeHeads.add(new SnakeHead(snakeType.getSnakeValue(), snakeType.getId(), snakeType.getCharacterBand().charAt(0),snakeType.getNeighborhoodStructure()));
+            snakeHeads.add(new SnakeHead(snakeType.getSnakeValue(), snakeType.getId(), snakeType.getCharacterBand().charAt(0), snakeType.getNeighborhoodStructure()));
             tempSolution.removeSnake(snake);
             return 0;
         }
@@ -196,19 +207,5 @@ public class SecondAlgorithm implements SnakeSearchAlgorithmus {
             }
         }
         return result;
-    }
-
-    public int evaluateTotalPoints(Solution solution) {
-        int result = 0;
-        for (Snake snake : solution.getSnakes()) {
-            result += snakeTypes.get(snake.snakeTypeId()).getSnakeValue() + sumSnakePartValues(snake);
-        }
-        return result;
-    }
-
-    private int sumSnakePartValues(Snake snake) {
-        return snake.snakeParts().stream()
-                .mapToInt(snakePart -> jungle.getFieldValue(snakePart.coordinate()))
-                .sum();
     }
 }

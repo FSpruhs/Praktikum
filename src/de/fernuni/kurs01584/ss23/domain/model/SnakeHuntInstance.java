@@ -27,6 +27,7 @@ public class SnakeHuntInstance implements ValidationInPort,
 	private final Duration durationInSeconds;
 	private Solution solution;
 	private final SnakeSearchAlgorithmus snakeSearchAlgorithmus = new SecondAlgorithm();
+	private final SolutionValueCalculator solutionValueCalculator = new SolutionValueCalculator();
 	private final SaveSnakeHuntInstanceOutPort repository;
 	
 	
@@ -136,17 +137,7 @@ public class SnakeHuntInstance implements ValidationInPort,
 	@Override
 	public int evaluateTotalPoints() {
 		solutionNullCheck();
-		int result = 0;
-		for (Snake snake : solution.getSnakes()) {
-			result += snakeTypes.get(snake.snakeTypeId()).getSnakeValue() + sumSnakePartValues(snake);
-		}
-		return result;
-	}
-
-	private int sumSnakePartValues(Snake snake) {
-		return snake.snakeParts().stream()
-				.mapToInt(snakePart -> jungle.getFieldValue(snakePart.coordinate()))
-				.sum();
+		return solutionValueCalculator.evaluateTotalPoints(solution, snakeTypes, jungle);
 	}
 
 	@Override
@@ -156,13 +147,12 @@ public class SnakeHuntInstance implements ValidationInPort,
 
 	@Override
 	public Jungle showJungle() {
-		//jungle.clearJungle();
 		return jungle;
 	}
 
 	@Override
 	public void solveSnakeHuntInstance() {
-		solution = snakeSearchAlgorithmus.solveSnakeHuntInstance(jungle, snakeTypes, durationInSeconds);
+		solution = snakeSearchAlgorithmus.solveSnakeHuntInstance(jungle, snakeTypes, durationInSeconds, solutionValueCalculator);
 	}
 
 	@Override
