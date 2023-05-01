@@ -49,4 +49,11 @@ public class Solution {
 		this.totalPoints = totalPoints;
 	}
 
+	public void removeSnake(Snake snake) {
+		snakes.remove(snake);
+	}
+
+	public void addNewSnake(Snake newSnake) {
+		snakes.add(newSnake);
+	}
 }
