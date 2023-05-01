@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import de.fernuni.kurs01584.ss23.adapters.users.XMLSnakeHuntReader;
 import de.fernuni.kurs01584.ss23.domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -1,23 +1,23 @@
-package de.fernuni.kurs01584.ss23.users;
+package de.fernuni.kurs01584.ss23.adapters.users;
 
 import java.io.File;
 import java.time.Duration;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import de.fernuni.kurs01584.ss23.adapters.infrastructure.SnakeHuntRepositoryAdapter;
+import de.fernuni.kurs01584.ss23.application.ports.in.*;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidDataException;
 import de.fernuni.kurs01584.ss23.domain.model.*;
-import de.fernuni.kurs01584.ss23.domain.ports.in.*;
-import de.fernuni.kurs01584.ss23.infrastructure.SnakeHuntRepositoryAdapter;
 
-public class XMLSnakeHuntInizializer {
+public class SnakeHuntInitializer {
 	
-	private static final Logger log = Logger.getLogger(XMLSnakeHuntInizializer.class.getName());
+	private static final Logger log = Logger.getLogger(SnakeHuntInitializer.class.getName());
 	
 	private final File xmlFilePath;
 	private SnakeHuntInstance snakeHuntInstance;
 	
-	public XMLSnakeHuntInizializer(File xmlFilePath) {
+	public SnakeHuntInitializer(File xmlFilePath) {
 		this.xmlFilePath = xmlFilePath;
 		inizializeSnakeHuntInstance();
 	}

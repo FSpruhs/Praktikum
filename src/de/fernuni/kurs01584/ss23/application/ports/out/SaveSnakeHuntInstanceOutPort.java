@@ -1,4 +1,4 @@
-package de.fernuni.kurs01584.ss23.domain.ports.out;
+package de.fernuni.kurs01584.ss23.application.ports.out;
 
 import de.fernuni.kurs01584.ss23.domain.model.Jungle;
 import de.fernuni.kurs01584.ss23.domain.model.SnakeType;

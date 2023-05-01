@@ -6,13 +6,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import de.fernuni.kurs01584.ss23.domain.algorithm.SecondAlgorithm;
+import de.fernuni.kurs01584.ss23.application.ports.in.*;
+import de.fernuni.kurs01584.ss23.application.algorithm.SecondAlgorithm;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidDurationException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidSnakeTypesException;
 import de.fernuni.kurs01584.ss23.domain.exception.NoSolutionException;
-import de.fernuni.kurs01584.ss23.domain.ports.in.*;
-import de.fernuni.kurs01584.ss23.domain.ports.out.SaveSnakeHuntInstanceOutPort;
+import de.fernuni.kurs01584.ss23.application.ports.out.SaveSnakeHuntInstanceOutPort;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
 
 public class SnakeHuntInstance implements ValidationInPort,
@@ -151,8 +151,9 @@ public class SnakeHuntInstance implements ValidationInPort,
 	}
 
 	@Override
-	public void solveSnakeHuntInstance() {
+	public boolean solveSnakeHuntInstance(File file) {
 		solution = snakeSearchAlgorithmus.solveSnakeHuntInstance(jungle, snakeTypes, durationInSeconds, solutionValueCalculator);
+		return !solution.getSnakes().isEmpty();
 	}
 
 	@Override

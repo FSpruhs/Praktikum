@@ -6,9 +6,10 @@ import java.util.Objects;
 
 public class Solution {
 
-	private List<Snake> snakes = new LinkedList<>();
+	private List<Snake> snakes;
 
 	public Solution() {
+		this.snakes = new LinkedList<>();
 	}
 
 	public Solution(List<Snake> snakes) {

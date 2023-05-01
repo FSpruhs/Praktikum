@@ -1,7 +1,8 @@
-package de.fernuni.kurs01584.ss23.infrastructure;
+package de.fernuni.kurs01584.ss23.adapters.infrastructure;
 
+import de.fernuni.kurs01584.ss23.adapters.XMLDictionary;
 import de.fernuni.kurs01584.ss23.domain.model.*;
-import de.fernuni.kurs01584.ss23.domain.ports.out.SaveSnakeHuntInstanceOutPort;
+import de.fernuni.kurs01584.ss23.application.ports.out.SaveSnakeHuntInstanceOutPort;
 import org.jdom2.Attribute;
 import org.jdom2.DocType;
 import org.jdom2.Document;
@@ -43,7 +44,7 @@ public class SnakeHuntRepositoryAdapter implements SaveSnakeHuntInstanceOutPort 
     }
 
     private Element solutionToXML(Solution solution) {
-        Element result = new Element("Schlangen");
+        Element result = new Element(XMLDictionary.SNAKES);
         for (Snake snake : solution.getSnakes()) {
             result.addContent(snakeToXML(snake));
         }
@@ -51,8 +52,8 @@ public class SnakeHuntRepositoryAdapter implements SaveSnakeHuntInstanceOutPort 
     }
 
     private Element snakeToXML(Snake snake) {
-        Element result = new Element("Schlange");
-        result.setAttribute("art", snake.snakeTypeId().value());
+        Element result = new Element(XMLDictionary.SNAKES);
+        result.setAttribute(XMLDictionary.KIND, snake.snakeTypeId().value());
         for (SnakePart snakePart : snake.snakeParts()) {
             result.addContent(snakePartToXML(snakePart));
         }
@@ -60,13 +61,13 @@ public class SnakeHuntRepositoryAdapter implements SaveSnakeHuntInstanceOutPort 
     }
 
     private Element snakePartToXML(SnakePart snakePart) {
-        Element result = new Element("Schlangenglied");
-        result.setAttribute("feld", String.valueOf(snakePart.fieldId().value()));
+        Element result = new Element(XMLDictionary.SNAKE_PART);
+        result.setAttribute(XMLDictionary.FIELD, String.valueOf(snakePart.fieldId().value()));
         return result;
     }
 
     private Element snakeTypesToXML(Map<SnakeTypeId, SnakeType> snakeTypes) {
-        Element result = new Element("Schlangenarten");
+        Element result = new Element(XMLDictionary.SNAKE_TYPE);
         for (SnakeType snakeType : snakeTypes.values()) {
             result.addContent(snakeTypeToXML(snakeType));
         }
@@ -74,37 +75,37 @@ public class SnakeHuntRepositoryAdapter implements SaveSnakeHuntInstanceOutPort 
     }
 
     private Element snakeTypeToXML(SnakeType snakeType) {
-        Element result = new Element("Schlangenart");
-        result.setAttribute("id", snakeType.snakeTypeId().value());
-        result.setAttribute("punkte", String.valueOf(snakeType.snakeValue()));
-        result.setAttribute("anzahl", String.valueOf(snakeType.count()));
+        Element result = new Element(XMLDictionary.SNAKE_TYPE);
+        result.setAttribute(XMLDictionary.ID, snakeType.snakeTypeId().value());
+        result.setAttribute(XMLDictionary.POINTS, String.valueOf(snakeType.snakeValue()));
+        result.setAttribute(XMLDictionary.COUNT, String.valueOf(snakeType.count()));
         result.addContent(characterBandToXML(snakeType));
         result.addContent(neighborhoodStructureToXML(snakeType));
         return result;
     }
 
     private Element characterBandToXML(SnakeType snakeType) {
-        Element result = new Element("Zeichenkette");
+        Element result = new Element(XMLDictionary.CHARACTER_BAND);
         result.setText(snakeType.characterBand());
         return result;
     }
 
     private Element neighborhoodStructureToXML(SnakeType snakeType) {
-        Element result = new Element("Nachbarschaftsstruktur");
-        result.setAttribute("typ", snakeType.neighborhoodStructure().getName().equals("Distance") ? "Distanz" : "Sprung");
+        Element result = new Element(XMLDictionary.NEIGHBORHOOD_STRUCTURE);
+        result.setAttribute(XMLDictionary.TYPE, snakeType.neighborhoodStructure().getName().equals("Distance") ? XMLDictionary.DISTANCE : XMLDictionary.JUMP);
         for (Integer parameter : snakeType.neighborhoodStructure().getParameter()) {
-            Element parameterXML = new Element("Parameter");
-            parameterXML.setAttribute("wert", String.valueOf(parameter));
+            Element parameterXML = new Element(XMLDictionary.PARAMETER);
+            parameterXML.setAttribute(XMLDictionary.VALUE, String.valueOf(parameter));
             result.addContent(parameterXML);
         }
         return result;
     }
 
     private Element jungleToXML(Jungle jungle) {
-        Element result = new Element("Dschungel");
-        result.setAttribute("zeilen", String.valueOf(jungle.getJungleSize().rows()));
-        result.setAttribute("spalten", String.valueOf(jungle.getJungleSize().columns()));
-        result.setAttribute("zeichen", jungle.getCharacters());
+        Element result = new Element(XMLDictionary.JUNGLE);
+        result.setAttribute(XMLDictionary.ROWS, String.valueOf(jungle.getJungleSize().rows()));
+        result.setAttribute(XMLDictionary.COLUMNS, String.valueOf(jungle.getJungleSize().columns()));
+        result.setAttribute(XMLDictionary.SIGN, jungle.getCharacters());
         for (JungleField jungleField : jungle.getJungleFields()) {
             result.addContent(jungleFieldToXML(jungleField));
         }
@@ -112,31 +113,31 @@ public class SnakeHuntRepositoryAdapter implements SaveSnakeHuntInstanceOutPort 
     }
 
     private Element jungleFieldToXML(JungleField jungleField) {
-        Element result = new Element("Feld");
-        result.setAttribute("id", jungleField.getId().value());
-        result.setAttribute("zeile", String.valueOf(jungleField.getCoordinate().row()));
-        result.setAttribute("spalte", String.valueOf(jungleField.getCoordinate().column()));
-        result.setAttribute("verwendbarkeit", String.valueOf(jungleField.getUsability()));
-        result.setAttribute("punkte", String.valueOf(jungleField.getFieldValue()));
+        Element result = new Element(XMLDictionary.FIELD);
+        result.setAttribute(XMLDictionary.ID, jungleField.getId().value());
+        result.setAttribute(XMLDictionary.ROW, String.valueOf(jungleField.getCoordinate().row()));
+        result.setAttribute(XMLDictionary.COLUMN, String.valueOf(jungleField.getCoordinate().column()));
+        result.setAttribute(XMLDictionary.USABILITY, String.valueOf(jungleField.getUsability()));
+        result.setAttribute(XMLDictionary.POINTS, String.valueOf(jungleField.getFieldValue()));
         result.setText(String.valueOf(jungleField.getCharacter()));
         return result;
     }
 
     private Element durationToXML(Duration durationInSeconds) {
-        Element result = new Element("Zeit");
-        result.setAttribute(new Attribute("einheit", "s"));
-        Element target = new Element("Vorgabe");
+        Element result = new Element(XMLDictionary.TIME);
+        result.setAttribute(new Attribute(XMLDictionary.UNIT, "s"));
+        Element target = new Element(XMLDictionary.TARGET);
         target.setText(String.valueOf(durationInSeconds.toSeconds()));
-        Element delivery = new Element("Abgabe");
+        Element delivery = new Element(XMLDictionary.SUBMISSION);
         result.addContent(target);
         result.addContent(delivery);
         return result;
     }
 
     private Document createRootElement() {
-        Element snakeHunt = new Element("Schlangenjagd");
+        Element snakeHunt = new Element(XMLDictionary.SNAKE_HUNT);
         Document document = new Document(snakeHunt);
-        DocType docType = new DocType("Schlangenjagd", "schlangenjagd.dtd");
+        DocType docType = new DocType(XMLDictionary.SNAKE_HUNT, "schlangenjagd.dtd");
         document.setDocType(docType);
         return document;
     }

@@ -1,12 +1,12 @@
-package de.fernuni.kurs01584.ss23.users;
+package de.fernuni.kurs01584.ss23.adapters.users;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
+import de.fernuni.kurs01584.ss23.application.ports.in.*;
 import de.fernuni.kurs01584.ss23.domain.model.*;
-import de.fernuni.kurs01584.ss23.domain.ports.in.*;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
 
 
@@ -83,7 +83,7 @@ public class CLIAdapter {
 	}
 
 	public void loadInPorts() {
-		XMLSnakeHuntInizializer xmlSnakeHuntInizializer = new XMLSnakeHuntInizializer(input);
+		SnakeHuntInitializer xmlSnakeHuntInizializer = new SnakeHuntInitializer(input);
 		evaluateSolutionInPort = xmlSnakeHuntInizializer.getEvaluateSolutionInPort();
 		showSolutionInPort = xmlSnakeHuntInizializer.getShowSolutionInPort();
 		showJungleInPort = xmlSnakeHuntInizializer.getShowJungleInPort();
@@ -255,7 +255,7 @@ public class CLIAdapter {
 	}
 
 	private void solveInstance() {
-		solveInPort.solveSnakeHuntInstance();
+		solveInPort.solveSnakeHuntInstance(output);
 	}
 
 	public static void main(String[] args) {

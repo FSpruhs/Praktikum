@@ -1,4 +1,4 @@
-package de.fernuni.kurs01584.ss23.users;
+package de.fernuni.kurs01584.ss23.adapters.users;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import de.fernuni.kurs01584.ss23.adapters.XMLDictionary;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidSnakeTypesException;
 import de.fernuni.kurs01584.ss23.domain.model.*;
 import org.jdom2.Element;
@@ -47,19 +48,19 @@ public class XMLSnakeHuntReader {
 	}
 	
 	private String readSigns() {
-		return getJungle().getAttributeValue("zeichen");
+		return getJungle().getAttributeValue(XMLDictionary.SIGN);
 	}
 
 	private int getJungleRow() {
-		return Integer.parseInt(getJungle().getAttributeValue("zeilen"));
+		return Integer.parseInt(getJungle().getAttributeValue(XMLDictionary.ROWS));
 	}
 	
 	private int getJungleColumn() {
-		return Integer.parseInt(getJungle().getAttributeValue("spalten"));
+		return Integer.parseInt(getJungle().getAttributeValue(XMLDictionary.COLUMNS));
 	}
 
 	private Element getJungle() {
-		return root.getChild("Dschungel");
+		return root.getChild(XMLDictionary.JUNGLE);
 	}
 
 	private List<JungleField> readJungleFields() {
@@ -78,14 +79,14 @@ public class XMLSnakeHuntReader {
 		return new JungleField(
 				new FieldId(readJungleFieldId(field)),
 				readCoordinate(field),
-				Integer.parseInt(field.getAttributeValue("verwendbarkeit")),
-				Integer.parseInt(field.getAttributeValue("punkte")),
+				Integer.parseInt(field.getAttributeValue(XMLDictionary.USABILITY)),
+				Integer.parseInt(field.getAttributeValue(XMLDictionary.POINTS)),
 				field.getValue().charAt(0)
 				);
 	}
 
 	private String readJungleFieldId(Element field) {
-		return field.getAttributeValue("id");
+		return field.getAttributeValue(XMLDictionary.ID);
 	}
 	
 	private Coordinate readCoordinate(Element field) {
@@ -93,62 +94,62 @@ public class XMLSnakeHuntReader {
 	}
 
 	private int readJungleFieldColumn(Element field) {
-		return Integer.parseInt(field.getAttributeValue("spalte"));
+		return Integer.parseInt(field.getAttributeValue(XMLDictionary.COLUMN));
 	}
 
 	private int readJungleFieldRow(Element field) {
-		return Integer.parseInt(field.getAttributeValue("zeile"));
+		return Integer.parseInt(field.getAttributeValue(XMLDictionary.ROW));
 	}
 
 	public Map<SnakeTypeId, SnakeType> readSnakeTypes() {
 		Map<SnakeTypeId, SnakeType> result = new HashMap<>();
 		readSnakeType().getChildren().forEach(snakeType ->
-			result.put(new SnakeTypeId(snakeType.getAttributeValue("id")), readSnakeType(snakeType))
+			result.put(new SnakeTypeId(snakeType.getAttributeValue(XMLDictionary.ID)), readSnakeType(snakeType))
 		);
 		return result;
 	}
 	
 	private SnakeType readSnakeType(Element snakeType) {
 		return new SnakeType(
-				new SnakeTypeId(snakeType.getAttributeValue("id")),
-				Integer.parseInt(snakeType.getAttributeValue("punkte")),
-				Integer.parseInt(snakeType.getAttributeValue("anzahl")),
-				snakeType.getChild("Zeichenkette").getValue(),
-				readNeighborhoodStructure(snakeType.getChild("Nachbarschaftsstruktur"))
+				new SnakeTypeId(snakeType.getAttributeValue(XMLDictionary.ID)),
+				Integer.parseInt(snakeType.getAttributeValue(XMLDictionary.POINTS)),
+				Integer.parseInt(snakeType.getAttributeValue(XMLDictionary.COUNT)),
+				snakeType.getChild(XMLDictionary.CHARACTER_BAND).getValue(),
+				readNeighborhoodStructure(snakeType.getChild(XMLDictionary.NEIGHBORHOOD_STRUCTURE))
 				);
 	}
 	
 	private NeighborhoodStructure readNeighborhoodStructure(Element neighborhoodStructure) {
-		if (readNeighborhoodType(neighborhoodStructure).equals("Distanz")) {
+		if (readNeighborhoodType(neighborhoodStructure).equals(XMLDictionary.DISTANCE)) {
 			return readDistance(neighborhoodStructure);
 		} 
-		if (readNeighborhoodType(neighborhoodStructure).equals("Sprung")) {
+		if (readNeighborhoodType(neighborhoodStructure).equals(XMLDictionary.JUMP)) {
 			return readJump(neighborhoodStructure);
 		}
 		throw new NeighborhoodStructureNotFoundException(readNeighborhoodType(neighborhoodStructure));
 	}
 
 	private String readNeighborhoodType(Element neighborhoodStructure) {
-		return neighborhoodStructure.getAttributeValue("typ");
+		return neighborhoodStructure.getAttributeValue(XMLDictionary.TYPE);
 	}
 	
 	private NeighborhoodStructure readDistance(Element neighborhoodStructure) {
-		return new Distance(Integer.parseInt(neighborhoodStructure.getChild("Parameter").getAttributeValue("wert")));
+		return new Distance(Integer.parseInt(neighborhoodStructure.getChild(XMLDictionary.PARAMETER).getAttributeValue(XMLDictionary.VALUE)));
 	}
 
 	private NeighborhoodStructure readJump(Element neighborhoodStructure) {
 		return new Jump(
-				Integer.parseInt(neighborhoodStructure.getChildren().get(0).getAttributeValue("wert")),
-				Integer.parseInt(neighborhoodStructure.getChildren().get(1).getAttributeValue("wert"))
+				Integer.parseInt(neighborhoodStructure.getChildren().get(0).getAttributeValue(XMLDictionary.VALUE)),
+				Integer.parseInt(neighborhoodStructure.getChildren().get(1).getAttributeValue(XMLDictionary.VALUE))
 				);
 	}
 	
 	public Duration readDurationInSeconds() {
-		return Duration.ofSeconds( (long) Float.parseFloat(root.getChild("Zeit").getChild("Vorgabe").getValue()));
+		return Duration.ofSeconds( (long) Float.parseFloat(root.getChild(XMLDictionary.TIME).getChild(XMLDictionary.TARGET).getValue()));
 	}
 	
 	public Solution readSolution() {
-		if (root.getChild("Schlangen") != null) {
+		if (root.getChild(XMLDictionary.SNAKES) != null) {
 			Solution result = new Solution();
 			result.loadSnakes(readSnakes());
 			return result;
@@ -157,7 +158,7 @@ public class XMLSnakeHuntReader {
 	}
 
 	private List<Snake> readSnakes() {
-		return root.getChild("Schlangen").getChildren().stream().map(this::readSnake).toList();
+		return root.getChild(XMLDictionary.SNAKES).getChildren().stream().map(this::readSnake).toList();
 	}
 
 	private Snake readSnake(Element snake) {
@@ -169,7 +170,7 @@ public class XMLSnakeHuntReader {
 	}
 
 	private NeighborhoodStructure getNeighborhoodStructureById(Element snake) {
-		return readNeighborhoodStructure(readSnakeTypeByType(readeSnakeType(snake)).getChild("Nachbarschaftsstruktur"));
+		return readNeighborhoodStructure(readSnakeTypeByType(readeSnakeType(snake)).getChild(XMLDictionary.NEIGHBORHOOD_STRUCTURE));
 	}
 
 	private List<SnakePart> readSnakeParts(Element snake) {
@@ -183,11 +184,11 @@ public class XMLSnakeHuntReader {
 	}
 
 	private String getCharacterBandOfSnakeType(Element snake) {
-		return readSnakeTypeByType(readeSnakeType(snake)).getChild("Zeichenkette").getValue();
+		return readSnakeTypeByType(readeSnakeType(snake)).getChild(XMLDictionary.CHARACTER_BAND).getValue();
 	}
 
 	private String readeSnakeType(Element snake) {
-		return snake.getAttributeValue("art");
+		return snake.getAttributeValue(XMLDictionary.KIND);
 	}
 
 	private Element readSnakeTypeByType(String type) {
@@ -200,11 +201,11 @@ public class XMLSnakeHuntReader {
 	}
 
 	private String readSnakeTypeId(Element snakeType) {
-		return snakeType.getAttributeValue("id");
+		return snakeType.getAttributeValue(XMLDictionary.ID);
 	}
 
 	private Element readSnakeType() {
-		return root.getChild("Schlangenarten");
+		return root.getChild(XMLDictionary.SNAKE_TYPE);
 	}
 
 	private SnakePart readSnakePart(Element snakePart, char character) {
@@ -218,7 +219,7 @@ public class XMLSnakeHuntReader {
 	}
 
 	private String readSnakePartField(Element snakePart) {
-		return snakePart.getAttributeValue("feld");
+		return snakePart.getAttributeValue(XMLDictionary.FIELD);
 	}
 
 	private int readSnakePartFieldNumber(Element snakePart) {
