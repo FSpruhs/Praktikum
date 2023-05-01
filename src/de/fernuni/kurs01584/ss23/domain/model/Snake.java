@@ -4,7 +4,7 @@ import java.util.List;
 
 import de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure.NeighborhoodStructure;
 
-public record Snake(String snakeTypeId,
+public record Snake(SnakeTypeId snakeTypeId,
 					List<SnakePart> snakeParts,
 					NeighborhoodStructure neighborhoodStructure) {
 

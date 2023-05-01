@@ -23,7 +23,7 @@ public class SnakeHuntInstance implements ValidationInPort,
 		SolveInPort {
 	
 	private final Jungle jungle;
-	private final Map<String, SnakeType> snakeTypes;
+	private final Map<SnakeTypeId, SnakeType> snakeTypes;
 	private final Duration durationInSeconds;
 	private Solution solution;
 	private final SnakeSearchAlgorithmus snakeSearchAlgorithmus = new SecondAlgorithm();
@@ -31,7 +31,7 @@ public class SnakeHuntInstance implements ValidationInPort,
 	private final SaveSnakeHuntInstanceOutPort repository;
 	
 	
-	public SnakeHuntInstance(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds, Solution solution, SaveSnakeHuntInstanceOutPort saveSnakeHuntInstanceOutPort) {
+	public SnakeHuntInstance(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration durationInSeconds, Solution solution, SaveSnakeHuntInstanceOutPort saveSnakeHuntInstanceOutPort) {
 		this.jungle = jungle;
 		this.snakeTypes = snakeTypes;
 		this.durationInSeconds = durationInSeconds;
@@ -41,7 +41,7 @@ public class SnakeHuntInstance implements ValidationInPort,
 		validateSnakeHuntInstance();
 	}
 
-	public SnakeHuntInstance(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds, SaveSnakeHuntInstanceOutPort saveSnakeHuntInstanceOutPort) {
+	public SnakeHuntInstance(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration durationInSeconds, SaveSnakeHuntInstanceOutPort saveSnakeHuntInstanceOutPort) {
 		this.jungle = jungle;
 		this.snakeTypes = snakeTypes;
 		this.durationInSeconds = durationInSeconds;
@@ -104,13 +104,13 @@ public class SnakeHuntInstance implements ValidationInPort,
 
 	private SnakeType getSnakeType(String snakeTypeId) {
 		if (snakeTypes.get(snakeTypeId) == null) {
-			throw new InvalidSnakeTypesException("Snake Type with id %s does not exist!".formatted(snakeTypeId));
+			throw new InvalidSnakeTypesException("Snake Type with value %s does not exist!".formatted(snakeTypeId));
 		}
 		return snakeTypes.get(snakeTypeId);
 	}
 
 	private void findLengthError(List<Fehlertyp> result, Snake snake) {
-		if (getSnakeType(snake.snakeTypeId()).getSnakeLength() != snake.getLength()) {
+		if (getSnakeType(snake.snakeTypeId().value()).getSnakeLength() != snake.getLength()) {
 			result.add(Fehlertyp.GLIEDER);
 		}
 	}
@@ -161,7 +161,7 @@ public class SnakeHuntInstance implements ValidationInPort,
 	}
 
 	@Override
-	public SnakeType showSnakeTypesById(String snakeTypeId) {
+	public SnakeType showSnakeTypesById(SnakeTypeId snakeTypeId) {
 		return snakeTypes.get(snakeTypeId);
 	}
 

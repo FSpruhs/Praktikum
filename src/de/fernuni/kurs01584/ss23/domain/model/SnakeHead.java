@@ -6,22 +6,18 @@ import java.util.Objects;
 
 public class SnakeHead implements Comparable<SnakeHead>{
 	
-	private String id;
+	private SnakeTypeId snakeTypeId;
 	private final int snakeValue;
 	private final char firstChar;
 
-	public SnakeHead(int snakeValue, String id, char firstChar, NeighborhoodStructure neighborhoodStructure) {
-		this.id = id;
+	public SnakeHead(int snakeValue, SnakeTypeId snakeTypeId, char firstChar, NeighborhoodStructure neighborhoodStructure) {
+		this.snakeTypeId = snakeTypeId;
 		this.snakeValue = snakeValue;
 		this.firstChar = firstChar;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
+	public SnakeTypeId getSnakeTypeId() {
+		return snakeTypeId;
 	}
 
 	public int getSnakeValue() {
@@ -43,18 +39,18 @@ public class SnakeHead implements Comparable<SnakeHead>{
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		SnakeHead snakeHead = (SnakeHead) o;
-		return snakeValue == snakeHead.snakeValue && firstChar == snakeHead.firstChar && Objects.equals(id, snakeHead.id);
+		return snakeValue == snakeHead.snakeValue && firstChar == snakeHead.firstChar && Objects.equals(snakeTypeId, snakeHead.snakeTypeId);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, snakeValue, firstChar);
+		return Objects.hash(snakeTypeId, snakeValue, firstChar);
 	}
 
 	@Override
 	public String toString() {
 		return "SnakeHead{" +
-				"id='" + id + '\'' +
+				"value='" + snakeTypeId + '\'' +
 				", snakeValue=" + snakeValue +
 				", firstChar=" + firstChar +
 				'}';

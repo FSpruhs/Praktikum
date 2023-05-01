@@ -6,10 +6,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidDataException;
-import de.fernuni.kurs01584.ss23.domain.model.Jungle;
-import de.fernuni.kurs01584.ss23.domain.model.SnakeHuntInstance;
-import de.fernuni.kurs01584.ss23.domain.model.SnakeType;
-import de.fernuni.kurs01584.ss23.domain.model.Solution;
+import de.fernuni.kurs01584.ss23.domain.model.*;
 import de.fernuni.kurs01584.ss23.domain.ports.in.*;
 import de.fernuni.kurs01584.ss23.infrastructure.SnakeHuntRepositoryAdapter;
 
@@ -32,7 +29,7 @@ public class XMLSnakeHuntInizializer {
 			log.info("Duration inizialized: %s".formatted(duration.toNanos()));
 			Jungle jungle = xmlSnakeHuntReader.readJungle();
 			log.info("Jungle inizialized: %s".formatted(jungle));
-			Map<String, SnakeType> snakeTypes = xmlSnakeHuntReader.readSnakeTypes();
+			Map<SnakeTypeId, SnakeType> snakeTypes = xmlSnakeHuntReader.readSnakeTypes();
 			log.info("Snake Types inizialized: %s".formatted(snakeTypes));
 			Solution solution = xmlSnakeHuntReader.readSolution();
 			log.info("Solution is: %s".formatted(solution));

@@ -15,14 +15,14 @@ public class SecondAlgorithm implements SnakeSearchAlgorithmus {
     private long startTimer;
     private Duration durationInSeconds;
     private int totalPoints = 0;
-    private Map<String, SnakeType> snakeTypes;
+    private Map<SnakeTypeId, SnakeType> snakeTypes;
     private List<SnakeHead> snakeHeads;
     private Map<Character, List<JungleField>> jungleFieldMap;
     private SolutionValueCalculator solutionValueCalculator;
 
 
     @Override
-    public Solution solveSnakeHuntInstance(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds, SolutionValueCalculator solutionValueCalculator) {
+    public Solution solveSnakeHuntInstance(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration durationInSeconds, SolutionValueCalculator solutionValueCalculator) {
         initializeSnakeSearch(jungle, snakeTypes, durationInSeconds, solutionValueCalculator);
         searchSnake();
         return finalSolution;
@@ -50,7 +50,7 @@ public class SecondAlgorithm implements SnakeSearchAlgorithmus {
 
     private int startSnakeSearch(JungleField startField, SnakeHead snakeHead) {
         if (startField.getUsability() > 0) {
-            Snake snake = toSnake(snakeHead.getId());
+            Snake snake = toSnake(snakeHead.getSnakeTypeId());
             SnakePart snakePart = placeSnakePart(startField, snake);
             int solution = searchNextSnakePart(snake, getCharacterBandWithoutFirstChar(snake));
             jungle.removeSnakePart(snakePart);
@@ -62,8 +62,8 @@ public class SecondAlgorithm implements SnakeSearchAlgorithmus {
         return 0;
     }
 
-    private Snake toSnake(String snakeTypeId) {
-        return new Snake(snakeTypeId, new LinkedList<>(), snakeTypes.get(snakeTypeId).getNeighborhoodStructure());
+    private Snake toSnake(SnakeTypeId snakeTypeId) {
+        return new Snake(snakeTypeId, new LinkedList<>(), snakeTypes.get(snakeTypeId).neighborhoodStructure());
     }
 
     private List<SnakeHead> createStartHeads(char character) {
@@ -112,7 +112,7 @@ public class SecondAlgorithm implements SnakeSearchAlgorithmus {
         return new SnakePart(snakePart.fieldId(), snakePart.character(), snakePart.coordinate());
     }
 
-    private void initializeSnakeSearch(Jungle jungle, Map<String, SnakeType> snakeTypes, Duration durationInSeconds, SolutionValueCalculator solutionValueCalculator) {
+    private void initializeSnakeSearch(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration durationInSeconds, SolutionValueCalculator solutionValueCalculator) {
         this.startTimer = System.nanoTime();
         log.info("Start snake hunt search at %s".formatted(startTimer));
         this.jungle = jungle;
@@ -133,7 +133,7 @@ public class SecondAlgorithm implements SnakeSearchAlgorithmus {
     }
 
     private String getCharacterBandWithoutFirstChar(Snake snake) {
-        return snakeTypes.get(snake.snakeTypeId()).getCharacterBand().substring(1);
+        return snakeTypes.get(snake.snakeTypeId()).characterBand().substring(1);
     }
 
     private SnakePart placeSnakePart(JungleField jungleField, Snake snake) {
@@ -150,14 +150,14 @@ public class SecondAlgorithm implements SnakeSearchAlgorithmus {
         if (remainingChars.equals("")) {
             tempSolution.insertSnake(snake);
             snakeHeads.remove(snakeHeads.stream()
-                    .filter(snakeHead -> snakeHead.getId().equals(snake.snakeTypeId()))
+                    .filter(snakeHead -> snakeHead.getSnakeTypeId().equals(snake.snakeTypeId()))
                     .findFirst()
                     .orElseThrow());
             if (searchSnake() < 0) {
                 return -1;
             }
             SnakeType snakeType = snakeTypes.get(snake.snakeTypeId());
-            snakeHeads.add(new SnakeHead(snakeType.getSnakeValue(), snakeType.getId(), snakeType.getCharacterBand().charAt(0), snakeType.getNeighborhoodStructure()));
+            snakeHeads.add(new SnakeHead(snakeType.snakeValue(), snakeType.snakeTypeId(), snakeType.characterBand().charAt(0), snakeType.neighborhoodStructure()));
             tempSolution.removeSnake(snake);
             return 0;
         }
@@ -197,12 +197,12 @@ public class SecondAlgorithm implements SnakeSearchAlgorithmus {
     private List<SnakeHead> createSnakeHeads() {
         List<SnakeHead> result = new LinkedList<>();
         for (SnakeType snakeType : snakeTypes.values()) {
-            for (int i = 0; i < snakeType.getCount(); i++) {
+            for (int i = 0; i < snakeType.count(); i++) {
                 result.add(new SnakeHead(
-                        snakeType.getSnakeValue(),
-                        snakeType.getId(),
-                        snakeType.getCharacterBand().charAt(0),
-                        snakeType.getNeighborhoodStructure()
+                        snakeType.snakeValue(),
+                        snakeType.snakeTypeId(),
+                        snakeType.characterBand().charAt(0),
+                        snakeType.neighborhoodStructure()
                 ));
             }
         }

@@ -18,12 +18,6 @@ public class Jungle {
 		validateJungle();
 	}
 
-	public void clearJungle() {
-		for (JungleField jungleField : jungleFields) {
-			jungleField.clearJungleField();
-		}
-	}
-
 	private void validateJungle() {
 		validateCharacters();
 		validateJungleFields();
@@ -43,7 +37,7 @@ public class Jungle {
 	}
 
 	private void validateJungleFieldPosition(int counter, JungleField jungleField) {
-		if (Integer.parseInt(jungleField.getId().id().substring(1)) != counter || jungleField.getId().id().charAt(0) != 'F') {
+		if (Integer.parseInt(jungleField.getId().value().substring(1)) != counter || jungleField.getId().value().charAt(0) != 'F') {
 			throw new InvalidJungleException("Jungle field is Invalid");
 		}
 	}

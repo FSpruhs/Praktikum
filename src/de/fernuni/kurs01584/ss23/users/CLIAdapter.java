@@ -167,9 +167,9 @@ public class CLIAdapter {
 	}
 
 	private void printSolutionData(Snake snake) {
-		System.out.printf("SnakeType: %s%n", snake.snakeTypeId());
-		System.out.printf("Character band: %s%n", showSnakeTypesInPort.showSnakeTypesById(snake.snakeTypeId()).getCharacterBand());
-		System.out.printf("Neighborhood Structure: %s%n", showSnakeTypesInPort.showSnakeTypesById(snake.snakeTypeId()).getNeighborhoodStructure().getName());
+		System.out.printf("SnakeType: %s%n", snake.snakeTypeId().value());
+		System.out.printf("Character band: %s%n", showSnakeTypesInPort.showSnakeTypesById(snake.snakeTypeId()).characterBand());
+		System.out.printf("Neighborhood Structure: %s%n", showSnakeTypesInPort.showSnakeTypesById(snake.snakeTypeId()).neighborhoodStructure().getName());
 		System.out.printf("Snake Length: %s%n", snake.snakeParts().size());
 	}
 
@@ -212,11 +212,11 @@ public class CLIAdapter {
 	private void printSnakeTypes() {
 		System.out.printf(SEPARATOR, "Snake Types");
 		for (SnakeType snakeType : showSnakeTypesInPort.showSnakeTypes()) {
-			System.out.printf("Snake Type: %s%n", snakeType.getId());
-			System.out.printf("Character band: %s%n", snakeType.getCharacterBand());
-			System.out.printf("Neighborhood Structure: %s%n", snakeType.getNeighborhoodStructure().getName());
-			System.out.printf("Value: %s%n", snakeType.getSnakeValue());
-			System.out.printf("Count: %s%n%n", snakeType.getCount());
+			System.out.printf("Snake Type: %s%n", snakeType.snakeTypeId());
+			System.out.printf("Character band: %s%n", snakeType.characterBand());
+			System.out.printf("Neighborhood Structure: %s%n", snakeType.neighborhoodStructure().getName());
+			System.out.printf("Value: %s%n", snakeType.snakeValue());
+			System.out.printf("Count: %s%n%n", snakeType.count());
 		}
 	}
 

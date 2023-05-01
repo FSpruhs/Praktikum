@@ -6,10 +6,10 @@ public class SolutionValueCalculator {
 
 
 
-    public int evaluateTotalPoints(Solution solution, Map<String ,SnakeType> snakeTypes, Jungle jungle) {
+    public int evaluateTotalPoints(Solution solution, Map<SnakeTypeId ,SnakeType> snakeTypes, Jungle jungle) {
         int result = 0;
         for (Snake snake : solution.getSnakes()) {
-            result += snakeTypes.get(snake.snakeTypeId()).getSnakeValue() + sumSnakePartValues(snake, jungle);
+            result += snakeTypes.get(snake.snakeTypeId()).snakeValue() + sumSnakePartValues(snake, jungle);
         }
         return result;
     }

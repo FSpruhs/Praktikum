@@ -100,17 +100,17 @@ public class XMLSnakeHuntReader {
 		return Integer.parseInt(field.getAttributeValue("zeile"));
 	}
 
-	public Map<String, SnakeType> readSnakeTypes() {
-		Map<String, SnakeType> result = new HashMap<>();
+	public Map<SnakeTypeId, SnakeType> readSnakeTypes() {
+		Map<SnakeTypeId, SnakeType> result = new HashMap<>();
 		readSnakeType().getChildren().forEach(snakeType ->
-			result.put(snakeType.getAttributeValue("id"), readSnakeType(snakeType))
+			result.put(new SnakeTypeId(snakeType.getAttributeValue("id")), readSnakeType(snakeType))
 		);
 		return result;
 	}
 	
 	private SnakeType readSnakeType(Element snakeType) {
 		return new SnakeType(
-				snakeType.getAttributeValue("id"),
+				new SnakeTypeId(snakeType.getAttributeValue("id")),
 				Integer.parseInt(snakeType.getAttributeValue("punkte")),
 				Integer.parseInt(snakeType.getAttributeValue("anzahl")),
 				snakeType.getChild("Zeichenkette").getValue(),
@@ -162,7 +162,7 @@ public class XMLSnakeHuntReader {
 
 	private Snake readSnake(Element snake) {
 		return new Snake(
-				readeSnakeType(snake),
+				new SnakeTypeId(readeSnakeType(snake)),
 				readSnakeParts(snake),
 				getNeighborhoodStructureById(snake)
 				);
