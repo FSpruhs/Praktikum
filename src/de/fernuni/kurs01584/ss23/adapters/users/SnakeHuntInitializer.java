@@ -48,11 +48,7 @@ public class SnakeHuntInitializer {
 		return snakeHuntInstance;
 	}
 	
-	public ShowJungleInPort getShowJungleInPort() {
-		return snakeHuntInstance;
-	}
-	
-	public ShowSolutionInPort getShowSolutionInPort() {
+	public ShowSnakeHuntIntPort getShowSnakeHuntInPort() {
 		return snakeHuntInstance;
 	}
 	
@@ -64,9 +60,10 @@ public class SnakeHuntInitializer {
 		return snakeHuntInstance;
 	}
 
-	public ShowSnakeTypesInPort getShowSnakeTypeInPort() {
+	public CreateSnakeHuntInPort getCreateSnakeHuntInPort() {
 		return snakeHuntInstance;
 	}
+
 
 }
 

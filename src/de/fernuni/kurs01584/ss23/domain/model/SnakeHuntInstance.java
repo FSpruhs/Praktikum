@@ -2,9 +2,7 @@ package de.fernuni.kurs01584.ss23.domain.model;
 
 import java.io.File;
 import java.time.Duration;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import de.fernuni.kurs01584.ss23.application.ports.in.*;
 import de.fernuni.kurs01584.ss23.application.algorithm.DoubleRecursionAlgorithm;
@@ -16,10 +14,9 @@ import de.fernuni.kurs01584.ss23.application.ports.out.SaveSnakeHuntInstanceOutP
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
 
 public class SnakeHuntInstance implements ValidationInPort,
-		ShowJungleInPort,
-		ShowSolutionInPort,
-		ShowSnakeTypesInPort,
+		ShowSnakeHuntIntPort,
 		EvaluateSolutionInPort,
+		CreateSnakeHuntInPort,
 		SolveInPort {
 	
 	private final Jungle jungle;
@@ -27,7 +24,6 @@ public class SnakeHuntInstance implements ValidationInPort,
 	private final Duration durationInSeconds;
 	private Solution solution;
 	private final SnakeSearchAlgorithmus snakeSearchAlgorithmus = new DoubleRecursionAlgorithm();
-	private final SolutionValueCalculator solutionValueCalculator = new SolutionValueCalculator();
 	private final SaveSnakeHuntInstanceOutPort repository;
 	
 	
@@ -137,7 +133,7 @@ public class SnakeHuntInstance implements ValidationInPort,
 	@Override
 	public int evaluateTotalPoints() {
 		solutionNullCheck();
-		return solutionValueCalculator.evaluateTotalPoints(solution, snakeTypes, jungle);
+		return evaluateTotalPoints(solution, snakeTypes, jungle);
 	}
 
 	@Override
@@ -152,7 +148,7 @@ public class SnakeHuntInstance implements ValidationInPort,
 
 	@Override
 	public boolean solveSnakeHuntInstance(File file) {
-		solution = snakeSearchAlgorithmus.solveSnakeHuntInstance(jungle, snakeTypes, durationInSeconds, solutionValueCalculator);
+		solution = snakeSearchAlgorithmus.solveSnakeHuntInstance(jungle, snakeTypes, durationInSeconds);
 		return !solution.getSnakes().isEmpty();
 	}
 
@@ -176,4 +172,37 @@ public class SnakeHuntInstance implements ValidationInPort,
 				solution
 		);
 	}
+
+	public int evaluateTotalPoints(Solution solution, Map<SnakeTypeId ,SnakeType> snakeTypes, Jungle jungle) {
+		int result = 0;
+		for (Snake snake : solution.getSnakes()) {
+			result += snakeTypes.get(snake.snakeTypeId()).snakeValue() + sumSnakePartValues(snake, jungle);
+		}
+		return result;
+	}
+
+	private int sumSnakePartValues(Snake snake, Jungle jungle) {
+		return snake.snakeParts().stream()
+				.mapToInt(snakePart -> jungle.getFieldValue(snakePart.coordinate()))
+				.sum();
+	}
+
+	@Override
+	public void create() {
+		solution = null;
+		List<JungleField> jungleFields = new ArrayList<>();
+		for (int i = 0; i < jungle.getJungleSize().rows() * jungle.getJungleSize().columns(); i++) {
+			jungleFields.add(null);
+		}
+		Random random = new Random();
+		for (SnakeType snakeType : snakeTypes.values()) {
+			for (int i = 0; i < snakeType.count(); i++) {
+				int startField = random.nextInt(jungle.getJungleSize().rows() * jungle.getJungleSize().columns() + 1);
+				jungleFields.add(startField, new JungleField(new FieldId("F" + startField), new Coordinate(), 1, 1, snakeType.characterBand().charAt(0)));
+
+			}
+		}
+
+	}
+
 }

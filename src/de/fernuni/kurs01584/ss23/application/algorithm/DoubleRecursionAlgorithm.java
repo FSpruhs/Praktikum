@@ -19,12 +19,11 @@ public class DoubleRecursionAlgorithm implements SnakeSearchAlgorithmus {
     private Map<SnakeTypeId, SnakeType> snakeTypes;
     private List<SnakeHead> snakeHeads;
     private Map<Character, List<JungleField>> jungleFieldMap;
-    private SolutionValueCalculator solutionValueCalculator;
 
 
     @Override
-    public Solution solveSnakeHuntInstance(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration durationInSeconds, SolutionValueCalculator solutionValueCalculator) {
-        initializeSnakeSearch(jungle, snakeTypes, durationInSeconds, solutionValueCalculator);
+    public Solution solveSnakeHuntInstance(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration durationInSeconds) {
+        initializeSnakeSearch(jungle, snakeTypes, durationInSeconds);
         searchSnake();
         return finalSolution;
     }
@@ -112,7 +111,7 @@ public class DoubleRecursionAlgorithm implements SnakeSearchAlgorithmus {
         return new SnakePart(snakePart.fieldId(), snakePart.character(), snakePart.coordinate());
     }
 
-    private void initializeSnakeSearch(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration durationInSeconds, SolutionValueCalculator solutionValueCalculator) {
+    private void initializeSnakeSearch(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration durationInSeconds) {
         this.startTimer = System.nanoTime();
         log.info("Start snake hunt search at %s".formatted(startTimer));
         this.jungle = jungle;
@@ -120,7 +119,6 @@ public class DoubleRecursionAlgorithm implements SnakeSearchAlgorithmus {
         this.snakeTypes = snakeTypes;
         this.snakeHeads = createSnakeHeads();
         this.jungleFieldMap = createJungleFieldMap();
-        this.solutionValueCalculator = solutionValueCalculator;
     }
 
     private Map<Character, List<JungleField>> createJungleFieldMap() {

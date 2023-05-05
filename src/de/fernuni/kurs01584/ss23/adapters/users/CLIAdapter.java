@@ -19,11 +19,10 @@ public class CLIAdapter {
 	private File input;
 	private File output;
 	private EvaluateSolutionInPort evaluateSolutionInPort;
-	private ShowSolutionInPort showSolutionInPort;
-	private ShowSnakeTypesInPort showSnakeTypesInPort;
-	private ShowJungleInPort showJungleInPort;
+	private ShowSnakeHuntIntPort showSnakeHuntIntPort;
 	private SolveInPort solveInPort;
 	private ValidationInPort validationInPort;
+	private CreateSnakeHuntInPort createSnakeHuntInPort;
 
 	private void readCliArgs(String[] args) {
 		validateCLIArgs(args);
@@ -83,13 +82,12 @@ public class CLIAdapter {
 	}
 
 	public void loadInPorts() {
-		SnakeHuntInitializer xmlSnakeHuntInizializer = new SnakeHuntInitializer(input);
-		evaluateSolutionInPort = xmlSnakeHuntInizializer.getEvaluateSolutionInPort();
-		showSolutionInPort = xmlSnakeHuntInizializer.getShowSolutionInPort();
-		showJungleInPort = xmlSnakeHuntInizializer.getShowJungleInPort();
-		showSnakeTypesInPort = xmlSnakeHuntInizializer.getShowSnakeTypeInPort();
-		solveInPort = xmlSnakeHuntInizializer.getSolveInPort();
-		validationInPort = xmlSnakeHuntInizializer.getValidationInPort();
+		SnakeHuntInitializer snakeHuntInizializer = new SnakeHuntInitializer(input);
+		evaluateSolutionInPort = snakeHuntInizializer.getEvaluateSolutionInPort();
+		showSnakeHuntIntPort = snakeHuntInizializer.getShowSnakeHuntInPort();
+		solveInPort = snakeHuntInizializer.getSolveInPort();
+		validationInPort = snakeHuntInizializer.getValidationInPort();
+		createSnakeHuntInPort = snakeHuntInizializer.getCreateSnakeHuntInPort();
 	}
 
 
@@ -111,17 +109,17 @@ public class CLIAdapter {
 	}
 
 	private void showInstance() {
-		printJungleData(showJungleInPort.showJungle());
+		printJungleData(showSnakeHuntIntPort.showJungle());
 		printSnakeTypes();
-		printJungleFields(showJungleInPort.showJungle());
-		if (showSolutionInPort.showSolution() != null) {
-			printSolution(showJungleInPort.showJungle().getJungleSize());
+		printJungleFields(showSnakeHuntIntPort.showJungle());
+		if (showSnakeHuntIntPort.showSolution() != null) {
+			printSolution(showSnakeHuntIntPort.showJungle().getJungleSize());
 		}
 	}
 
 	private void printSolution(JungleSize jungleSize) {
 		System.out.printf(SEPARATOR, "Solution");
-		for (Snake snake : showSolutionInPort.showSolution().getSnakes()) {
+		for (Snake snake : showSnakeHuntIntPort.showSolution().getSnakes()) {
 			printSolutionData(snake);
 			String[][] solutionGrid = initializeSolutionGrid(jungleSize);
 			printSnakeParts(snake, solutionGrid);
@@ -168,8 +166,8 @@ public class CLIAdapter {
 
 	private void printSolutionData(Snake snake) {
 		System.out.printf("SnakeType: %s%n", snake.snakeTypeId().value());
-		System.out.printf("Character band: %s%n", showSnakeTypesInPort.showSnakeTypesById(snake.snakeTypeId()).characterBand());
-		System.out.printf("Neighborhood Structure: %s%n", showSnakeTypesInPort.showSnakeTypesById(snake.snakeTypeId()).neighborhoodStructure().getName());
+		System.out.printf("Character band: %s%n", showSnakeHuntIntPort.showSnakeTypesById(snake.snakeTypeId()).characterBand());
+		System.out.printf("Neighborhood Structure: %s%n", showSnakeHuntIntPort.showSnakeTypesById(snake.snakeTypeId()).neighborhoodStructure().getName());
 		System.out.printf("Snake Length: %s%n", snake.snakeParts().size());
 	}
 
@@ -211,7 +209,7 @@ public class CLIAdapter {
 
 	private void printSnakeTypes() {
 		System.out.printf(SEPARATOR, "Snake Types");
-		for (SnakeType snakeType : showSnakeTypesInPort.showSnakeTypes()) {
+		for (SnakeType snakeType : showSnakeHuntIntPort.showSnakeTypes()) {
 			System.out.printf("Snake Type: %s%n", snakeType.snakeTypeId());
 			System.out.printf("Character band: %s%n", snakeType.characterBand());
 			System.out.printf("Neighborhood Structure: %s%n", snakeType.neighborhoodStructure().getName());
@@ -251,7 +249,7 @@ public class CLIAdapter {
 	}
 
 	private void createInstance() {
-		// TODO Auto-generated method stub
+		createSnakeHuntInPort.create();
 	}
 
 	private void solveInstance() {

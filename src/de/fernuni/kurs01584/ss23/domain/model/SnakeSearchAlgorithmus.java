@@ -7,7 +7,6 @@ public interface SnakeSearchAlgorithmus {
 	Solution solveSnakeHuntInstance(
 			Jungle jungle,
 			Map<SnakeTypeId, SnakeType> snakeTypes,
-			Duration durationInSeconds,
-			SolutionValueCalculator solutionValueCalculator
+			Duration durationInSeconds
 	);
 }
