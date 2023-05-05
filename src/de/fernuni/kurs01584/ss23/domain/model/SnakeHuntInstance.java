@@ -11,6 +11,7 @@ import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidSnakeTypesException;
 import de.fernuni.kurs01584.ss23.domain.exception.NoSolutionException;
 import de.fernuni.kurs01584.ss23.application.ports.out.SaveSnakeHuntInstanceOutPort;
+import de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure.NeighborhoodStructure;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
 
 public class SnakeHuntInstance implements ValidationInPort,
@@ -198,11 +199,19 @@ public class SnakeHuntInstance implements ValidationInPort,
 		for (SnakeType snakeType : snakeTypes.values()) {
 			for (int i = 0; i < snakeType.count(); i++) {
 				int startField = random.nextInt(jungle.getJungleSize().rows() * jungle.getJungleSize().columns() + 1);
-				jungleFields.add(startField, new JungleField(new FieldId("F" + startField), new Coordinate(), 1, 1, snakeType.characterBand().charAt(0)));
-
+				jungleFields.add(startField, new JungleField(new FieldId("F" + startField), mapIndexToCoordinate(startField), 1, 1, snakeType.characterBand().charAt(0)));
+				searchNextJungleField(jungleFields, snakeType.neighborhoodStructure(), snakeType.characterBand().substring(1), startField);
 			}
 		}
 
+	}
+
+	private boolean searchNextJungleField(List<JungleField> jungleFields, NeighborhoodStructure neighborhoodStructure, String substring, int startField) {
+		return false;
+	}
+
+	private Coordinate mapIndexToCoordinate(int index) {
+		return new Coordinate(jungle.getJungleSize().rows() * jungle.getJungleSize().columns() / index, jungle.getJungleSize().rows() * jungle.getJungleSize().columns() % index);
 	}
 
 }
