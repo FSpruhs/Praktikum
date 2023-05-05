@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.fernuni.kurs01584.ss23.application.ports.in.*;
-import de.fernuni.kurs01584.ss23.application.algorithm.SecondAlgorithm;
+import de.fernuni.kurs01584.ss23.application.algorithm.DoubleRecursionAlgorithm;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidDurationException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidSnakeTypesException;
@@ -26,7 +26,7 @@ public class SnakeHuntInstance implements ValidationInPort,
 	private final Map<SnakeTypeId, SnakeType> snakeTypes;
 	private final Duration durationInSeconds;
 	private Solution solution;
-	private final SnakeSearchAlgorithmus snakeSearchAlgorithmus = new SecondAlgorithm();
+	private final SnakeSearchAlgorithmus snakeSearchAlgorithmus = new DoubleRecursionAlgorithm();
 	private final SolutionValueCalculator solutionValueCalculator = new SolutionValueCalculator();
 	private final SaveSnakeHuntInstanceOutPort repository;
 	

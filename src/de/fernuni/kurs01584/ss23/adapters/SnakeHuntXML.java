@@ -1,6 +1,6 @@
 package de.fernuni.kurs01584.ss23.adapters;
 
-public class XMLDictionary {
+public class SnakeHuntXML {
 
     public static final String SIGN = "zeichen";
     public static final String ROWS = "zeilen";

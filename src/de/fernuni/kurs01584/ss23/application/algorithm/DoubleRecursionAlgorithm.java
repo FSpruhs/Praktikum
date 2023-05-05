@@ -6,15 +6,16 @@ import java.time.Duration;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class SecondAlgorithm implements SnakeSearchAlgorithmus {
+public class DoubleRecursionAlgorithm implements SnakeSearchAlgorithmus {
 
-    private static final Logger log = Logger.getLogger(SecondAlgorithm.class.getName());
+    private static final Logger log = Logger.getLogger(DoubleRecursionAlgorithm.class.getName());
     private Solution finalSolution = new Solution();
     private final Solution tempSolution = new Solution();
     private Jungle jungle;
     private long startTimer;
     private Duration durationInSeconds;
     private int totalPoints = 0;
+    private int tempPoints = 0;
     private Map<SnakeTypeId, SnakeType> snakeTypes;
     private List<SnakeHead> snakeHeads;
     private Map<Character, List<JungleField>> jungleFieldMap;
@@ -29,9 +30,8 @@ public class SecondAlgorithm implements SnakeSearchAlgorithmus {
     }
 
     private int searchSnake() {
-        int tempSolutionPoints = solutionValueCalculator.evaluateTotalPoints(tempSolution, snakeTypes, jungle);
-        if (totalPoints < tempSolutionPoints) {
-            totalPoints = tempSolutionPoints;
+        if (totalPoints < tempPoints) {
+            totalPoints = tempPoints;
             saveSolution(tempSolution);
         }
         if (System.nanoTime() - startTimer >= durationInSeconds.toNanos()) {
@@ -153,12 +153,15 @@ public class SecondAlgorithm implements SnakeSearchAlgorithmus {
                     .filter(snakeHead -> snakeHead.getSnakeTypeId().equals(snake.snakeTypeId()))
                     .findFirst()
                     .orElseThrow());
+            int snakeValue = getSnakeValue(snake);
+            tempPoints += snakeValue;
             if (searchSnake() < 0) {
                 return -1;
             }
             SnakeType snakeType = snakeTypes.get(snake.snakeTypeId());
             snakeHeads.add(new SnakeHead(snakeType.snakeValue(), snakeType.snakeTypeId(), snakeType.characterBand().charAt(0), snakeType.neighborhoodStructure()));
             tempSolution.removeSnake(snake);
+            tempPoints -= snakeValue;
             return 0;
         }
         List<JungleField> jungleFields = createJungleFields(snake, remainingChars.charAt(0));
@@ -175,6 +178,14 @@ public class SecondAlgorithm implements SnakeSearchAlgorithmus {
             }
         }
         return 0;
+    }
+
+    private int getSnakeValue(Snake snake) {
+        int result = 0;
+        for (SnakePart snakePart: snake.snakeParts()) {
+            result += jungle.getFieldValue(snakePart.coordinate());
+        }
+        return result + snakeTypes.get(snake.snakeTypeId()).snakeValue();
     }
 
     private List<JungleField> createJungleFields(Snake snake, char nextChar) {
