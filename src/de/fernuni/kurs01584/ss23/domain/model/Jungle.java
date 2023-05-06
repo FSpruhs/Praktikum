@@ -9,7 +9,7 @@ public class Jungle {
 
 	private final JungleSize jungleSize;
 	private final String characters;
-	private final List<JungleField> jungleFields;
+	private List<JungleField> jungleFields;
 	
 	public Jungle(JungleSize jungleSize, String characters, List<JungleField> jungleFields) {
 		this.jungleSize = jungleSize;
@@ -86,7 +86,7 @@ public class Jungle {
 		jungleFields.get(mapCoordinateToIndex(snakePart.coordinate())).removeSnakePart(snakePart);
 	}
 
-	private int mapCoordinateToIndex(Coordinate coordinate) {
+	public int mapCoordinateToIndex(Coordinate coordinate) {
 		return coordinate.row() * jungleSize.columns() + coordinate.column();
 	}
 
@@ -119,4 +119,8 @@ public class Jungle {
     public List<JungleField> getJungleFields() {
 		return jungleFields;
     }
+
+	public void setJungleFields(List<JungleField> jungleFields) {
+		this.jungleFields = jungleFields;
+	}
 }

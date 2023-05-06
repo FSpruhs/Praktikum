@@ -196,17 +196,50 @@ public class SnakeHuntInstance implements ValidationInPort,
 			jungleFields.add(null);
 		}
 		Random random = new Random();
+		boolean found = false;
+		while (!found) {
+			found = startSearchNextJungleField(jungleFields, random);
+		}
+		for (int i = 0; i < jungleFields.size(); i++) {
+			if (jungleFields.get(i) == null) {
+				JungleField jungleField = new JungleField(new FieldId("F" + i), mapIndexToCoordinate(i),1, 1, jungle.getCharacters().charAt(random.nextInt(jungle.getCharacters().length())));
+				jungleFields.set(i, jungleField);
+			}
+		}
+		jungle.setJungleFields(jungleFields);
+
+	}
+
+	private boolean startSearchNextJungleField(List<JungleField> jungleFields, Random random) {
 		for (SnakeType snakeType : snakeTypes.values()) {
 			for (int i = 0; i < snakeType.count(); i++) {
 				int startField = random.nextInt(jungle.getJungleSize().rows() * jungle.getJungleSize().columns() + 1);
 				jungleFields.add(startField, new JungleField(new FieldId("F" + startField), mapIndexToCoordinate(startField), 1, 1, snakeType.characterBand().charAt(0)));
-				searchNextJungleField(jungleFields, snakeType.neighborhoodStructure(), snakeType.characterBand().substring(1), startField);
+				boolean found = searchNextJungleField(jungleFields, snakeType.neighborhoodStructure(), snakeType.characterBand().substring(1), startField, random);
+				if (!found) {
+					return false;
+				}
 			}
 		}
-
+		return true;
 	}
 
-	private boolean searchNextJungleField(List<JungleField> jungleFields, NeighborhoodStructure neighborhoodStructure, String substring, int startField) {
+	private boolean searchNextJungleField(List<JungleField> jungleFields, NeighborhoodStructure neighborhoodStructure, String substring, int startField, Random random) {
+		if (substring.equals("")) {
+			return true;
+		}
+		List<Coordinate> nextFields = neighborhoodStructure.nextFields(mapIndexToCoordinate(startField), jungle.getJungleSize());
+		while (!nextFields.isEmpty()) {
+			int nextFieldPosition = random.nextInt(nextFields.size());
+			JungleField nextJungleField = new JungleField(new FieldId("F" + jungle.mapCoordinateToIndex(nextFields.get(nextFieldPosition))), nextFields.get(nextFieldPosition), 1, 1, substring.charAt(0));
+			jungleFields.add(jungle.mapCoordinateToIndex(nextFields.get(nextFieldPosition)), nextJungleField);
+			boolean found = searchNextJungleField(jungleFields, neighborhoodStructure, substring.substring(1), nextFieldPosition, random);
+			if (found) {
+				return true;
+			}
+			nextFields.remove(jungle.mapCoordinateToIndex(nextFields.get(nextFieldPosition)));
+			jungleFields.set(jungle.mapCoordinateToIndex(nextFields.get(nextFieldPosition)), null);
+		}
 		return false;
 	}
 
