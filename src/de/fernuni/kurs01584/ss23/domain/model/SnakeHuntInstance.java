@@ -99,7 +99,7 @@ public class SnakeHuntInstance implements ValidationInPort,
 		}
 	}
 
-	private SnakeType getSnakeType(String snakeTypeId) {
+	private SnakeType getSnakeType(SnakeTypeId snakeTypeId) {
 		if (snakeTypes.get(snakeTypeId) == null) {
 			throw new InvalidSnakeTypesException("Snake Type with value %s does not exist!".formatted(snakeTypeId));
 		}
@@ -107,7 +107,7 @@ public class SnakeHuntInstance implements ValidationInPort,
 	}
 
 	private void findLengthError(List<Fehlertyp> result, Snake snake) {
-		if (getSnakeType(snake.snakeTypeId().value()).getSnakeLength() != snake.getLength()) {
+		if (getSnakeType(snake.snakeTypeId()).getSnakeLength() != snake.getLength()) {
 			result.add(Fehlertyp.GLIEDER);
 		}
 	}
@@ -192,12 +192,12 @@ public class SnakeHuntInstance implements ValidationInPort,
 	public void create() {
 		solution = null;
 		List<JungleField> jungleFields = new ArrayList<>();
-		for (int i = 0; i < jungle.getJungleSize().rows() * jungle.getJungleSize().columns(); i++) {
-			jungleFields.add(null);
-		}
 		Random random = new Random();
 		boolean found = false;
 		while (!found) {
+			for (int i = 0; i < jungle.getJungleSize().rows() * jungle.getJungleSize().columns(); i++) {
+				jungleFields.add(null);
+			}
 			found = startSearchNextJungleField(jungleFields, random);
 		}
 		for (int i = 0; i < jungleFields.size(); i++) {
@@ -213,8 +213,11 @@ public class SnakeHuntInstance implements ValidationInPort,
 	private boolean startSearchNextJungleField(List<JungleField> jungleFields, Random random) {
 		for (SnakeType snakeType : snakeTypes.values()) {
 			for (int i = 0; i < snakeType.count(); i++) {
-				int startField = random.nextInt(jungle.getJungleSize().rows() * jungle.getJungleSize().columns() + 1);
-				jungleFields.add(startField, new JungleField(new FieldId("F" + startField), mapIndexToCoordinate(startField), 1, 1, snakeType.characterBand().charAt(0)));
+				int startField = 0;
+				do {
+					startField = random.nextInt(jungle.getJungleSize().rows() * jungle.getJungleSize().columns());
+				} while (!(jungleFields.get(startField) == null));
+				jungleFields.set(startField, new JungleField(new FieldId("F" + startField), mapIndexToCoordinate(startField), 1, 1, snakeType.characterBand().charAt(0)));
 				boolean found = searchNextJungleField(jungleFields, snakeType.neighborhoodStructure(), snakeType.characterBand().substring(1), startField, random);
 				if (!found) {
 					return false;
@@ -228,23 +231,30 @@ public class SnakeHuntInstance implements ValidationInPort,
 		if (substring.equals("")) {
 			return true;
 		}
-		List<Coordinate> nextFields = neighborhoodStructure.nextFields(mapIndexToCoordinate(startField), jungle.getJungleSize());
+		List<Coordinate> fields = neighborhoodStructure.nextFields(mapIndexToCoordinate(startField), jungle.getJungleSize());
+		List<Coordinate> nextFields = new LinkedList<>();
+		for (Coordinate coordinate : fields) {
+			if (jungleFields.get(jungle.mapCoordinateToIndex(coordinate)) == null) {
+				nextFields.add(coordinate);
+			}
+		}
+
 		while (!nextFields.isEmpty()) {
 			int nextFieldPosition = random.nextInt(nextFields.size());
 			JungleField nextJungleField = new JungleField(new FieldId("F" + jungle.mapCoordinateToIndex(nextFields.get(nextFieldPosition))), nextFields.get(nextFieldPosition), 1, 1, substring.charAt(0));
-			jungleFields.add(jungle.mapCoordinateToIndex(nextFields.get(nextFieldPosition)), nextJungleField);
-			boolean found = searchNextJungleField(jungleFields, neighborhoodStructure, substring.substring(1), nextFieldPosition, random);
+			jungleFields.set(jungle.mapCoordinateToIndex(nextFields.get(nextFieldPosition)), nextJungleField);
+			boolean found = searchNextJungleField(jungleFields, neighborhoodStructure, substring.substring(1), jungle.mapCoordinateToIndex(nextFields.get(nextFieldPosition)), random);
 			if (found) {
 				return true;
 			}
-			nextFields.remove(jungle.mapCoordinateToIndex(nextFields.get(nextFieldPosition)));
 			jungleFields.set(jungle.mapCoordinateToIndex(nextFields.get(nextFieldPosition)), null);
+			nextFields.remove(nextFieldPosition);
 		}
 		return false;
 	}
 
 	private Coordinate mapIndexToCoordinate(int index) {
-		return new Coordinate(jungle.getJungleSize().rows() * jungle.getJungleSize().columns() / index, jungle.getJungleSize().rows() * jungle.getJungleSize().columns() % index);
+		return new Coordinate(index /  jungle.getJungleSize().columns() , (index % (jungle.getJungleSize().columns())));
 	}
 
 }
