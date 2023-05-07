@@ -3,7 +3,9 @@ package de.fernuni.kurs01584.ss23.domain.model;
 import java.io.File;
 import java.time.Duration;
 import java.util.*;
+import java.util.logging.Logger;
 
+import de.fernuni.kurs01584.ss23.application.algorithm.SnakeHuntAlgorithm;
 import de.fernuni.kurs01584.ss23.application.junglegenerator.JungleGenerator;
 import de.fernuni.kurs01584.ss23.application.junglegenerator.SimpleJungleGenerator;
 import de.fernuni.kurs01584.ss23.application.ports.in.*;
@@ -20,12 +22,11 @@ public class SnakeHuntInstance implements ValidationInPort,
 		EvaluateSolutionInPort,
 		CreateSnakeHuntInPort,
 		SolveInPort {
-	
+	private static final Logger log = Logger.getLogger(SnakeHuntInstance.class.getName());
 	private final Jungle jungle;
 	private final Map<SnakeTypeId, SnakeType> snakeTypes;
 	private final Duration durationInSeconds;
 	private Solution solution;
-	private final SnakeSearchAlgorithmus snakeSearchAlgorithmus = new DoubleRecursionAlgorithm();
 	private final SaveSnakeHuntInstanceOutPort repository;
 	
 	
@@ -156,7 +157,12 @@ public class SnakeHuntInstance implements ValidationInPort,
 
 	@Override
 	public boolean solveSnakeHuntInstance(File file) {
-		solution = snakeSearchAlgorithmus.solveSnakeHuntInstance(jungle, snakeTypes, durationInSeconds);
+		if (jungle.getJungleFields().isEmpty()) {
+			log.info("Can not solve jungle, because jungle is empty.");
+			return false;
+		}
+		SnakeHuntAlgorithm snakeHuntAlgorithm = new DoubleRecursionAlgorithm(jungle, snakeTypes, durationInSeconds);
+		solution = snakeHuntAlgorithm.solveSnakeHuntInstance();
 		return !solution.getSnakes().isEmpty();
 	}
 
