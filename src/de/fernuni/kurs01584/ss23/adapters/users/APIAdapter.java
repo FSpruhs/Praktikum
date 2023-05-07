@@ -12,11 +12,11 @@ public class APIAdapter {
     public boolean solve(String xmlEingabeDatei, String xmlAusgabeDatei) {
         snakeHuntInitializer = new SnakeHuntInitializer(new File(xmlEingabeDatei));
         return snakeHuntInitializer.getSolveInPort().solveSnakeHuntInstance(new File(xmlAusgabeDatei));
-
     }
 
     public boolean create(String xmlEingabeDatei, String xmlAusgabeDatei) {
-        return false;
+        snakeHuntInitializer = new SnakeHuntInitializer(new File(xmlEingabeDatei));
+        return snakeHuntInitializer.getCreateSnakeHuntInPort().create(new File(xmlAusgabeDatei));
     }
 
     public List<SchlangenjagdAPI.Fehlertyp> validate(String xmlEingabeDatei) {

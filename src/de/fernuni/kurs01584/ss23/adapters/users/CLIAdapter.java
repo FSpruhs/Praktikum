@@ -249,7 +249,7 @@ public class CLIAdapter {
 	}
 
 	private void createInstance() {
-		createSnakeHuntInPort.create();
+		createSnakeHuntInPort.create(output);
 	}
 
 	private void solveInstance() {

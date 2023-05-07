@@ -123,4 +123,8 @@ public class Jungle {
 	public void setJungleFields(List<JungleField> jungleFields) {
 		this.jungleFields = jungleFields;
 	}
+
+	public void removeJungleFields() {
+		this.jungleFields = null;
+	}
 }

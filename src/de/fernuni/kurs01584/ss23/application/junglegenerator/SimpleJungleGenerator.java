@@ -21,8 +21,9 @@ public class SimpleJungleGenerator implements JungleGenerator{
     @Override
     public void generate() {
         boolean found = false;
+        fillJungleWithNull();
         while (!found) {
-            fillJungleWithNull();
+            resetJungle();
             found = startSearchNextJungleField();
         }
         fillJungleWithDefaults();
@@ -32,6 +33,12 @@ public class SimpleJungleGenerator implements JungleGenerator{
     private void fillJungleWithNull() {
         for (int field = 0; field < jungleFieldCount(); field++) {
             jungleFields.add(null);
+        }
+    }
+
+    private void resetJungle() {
+        for (int field = 0; field < jungleFieldCount(); field++) {
+            jungleFields.set(field, null);
         }
     }
 
@@ -79,8 +86,6 @@ public class SimpleJungleGenerator implements JungleGenerator{
     private int jungleFieldCount() {
         return getJungleRows() * getJungleColumns();
     }
-
-
 
     private boolean searchNextJungleField(NeighborhoodStructure neighborhoodStructure,
                                           String substring,

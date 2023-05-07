@@ -163,6 +163,7 @@ public class SnakeHuntInstance implements ValidationInPort,
 		}
 		SnakeHuntAlgorithm snakeHuntAlgorithm = new DoubleRecursionAlgorithm(jungle, snakeTypes, durationInSeconds);
 		solution = snakeHuntAlgorithm.solveSnakeHuntInstance();
+		save(file);
 		return !solution.getSnakes().isEmpty();
 	}
 
@@ -202,14 +203,15 @@ public class SnakeHuntInstance implements ValidationInPort,
 	}
 
 	@Override
-	public void create() {
+	public boolean create(File file) {
 		solution = null;
+		jungle.removeJungleFields();
 		JungleGenerator jungleGenerator = new SimpleJungleGenerator(jungle, snakeTypes);
 		log.info("Start create jungle");
 		jungleGenerator.generate();
 		log.info("New jungle created");
+		save(file);
+		return jungle.getJungleFields() != null;
 	}
-
-
 
 }

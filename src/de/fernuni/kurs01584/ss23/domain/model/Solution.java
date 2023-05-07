@@ -48,14 +48,10 @@ public class Solution {
 
 	public void insertSnake(Snake snake) {
 		snakes.add(snake);
-		
 	}
 
 	public void removeSnake(Snake snake) {
 		snakes.remove(snake);
 	}
 
-	public void addNewSnake(Snake newSnake) {
-		snakes.add(newSnake);
-	}
 }
