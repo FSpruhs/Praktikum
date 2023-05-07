@@ -22,19 +22,19 @@ public class SnakeHuntRepositoryAdapter implements SaveSnakeHuntInstanceOutPort 
     private static final Logger log = Logger.getLogger(SnakeHuntRepositoryAdapter.class.getName());
 
     @Override
-    public void save(File file, Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration durationInSeconds, Solution solution) {
+    public void save(File file, Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration targetDuration, Duration actualDuration, Solution solution) {
         try {
             XMLOutputter xmlOutputter = new XMLOutputter();
             xmlOutputter.setFormat(Format.getPrettyFormat());
-            xmlOutputter.output(snakeHuntInstanceToXML(jungle, snakeTypes, durationInSeconds, solution), new FileWriter(file));
+            xmlOutputter.output(snakeHuntInstanceToXML(jungle, snakeTypes, targetDuration, actualDuration, solution), new FileWriter(file));
         } catch (IOException e) {
             log.warning(e.getMessage());
         }
     }
 
-    private Document snakeHuntInstanceToXML(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration durationInSeconds, Solution solution) {
+    private Document snakeHuntInstanceToXML(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration targetDuration, Duration actualDuration, Solution solution) {
         Document result = createRootElement();
-        result.getRootElement().addContent(durationToXML(durationInSeconds));
+        result.getRootElement().addContent(durationToXML(targetDuration, actualDuration));
         result.getRootElement().addContent(jungleToXML(jungle));
         result.getRootElement().addContent(snakeTypesToXML(snakeTypes));
         if (solution != null) {
@@ -52,7 +52,7 @@ public class SnakeHuntRepositoryAdapter implements SaveSnakeHuntInstanceOutPort 
     }
 
     private Element snakeToXML(Snake snake) {
-        Element result = new Element(SnakeHuntXML.SNAKES);
+        Element result = new Element(SnakeHuntXML.SNAKE);
         result.setAttribute(SnakeHuntXML.KIND, snake.snakeTypeId().value());
         for (SnakePart snakePart : snake.snakeParts()) {
             result.addContent(snakePartToXML(snakePart));
@@ -62,12 +62,12 @@ public class SnakeHuntRepositoryAdapter implements SaveSnakeHuntInstanceOutPort 
 
     private Element snakePartToXML(SnakePart snakePart) {
         Element result = new Element(SnakeHuntXML.SNAKE_PART);
-        result.setAttribute(SnakeHuntXML.FIELD, String.valueOf(snakePart.fieldId().value()));
+        result.setAttribute(SnakeHuntXML.FIELD_LOWER, String.valueOf(snakePart.fieldId().value()));
         return result;
     }
 
     private Element snakeTypesToXML(Map<SnakeTypeId, SnakeType> snakeTypes) {
-        Element result = new Element(SnakeHuntXML.SNAKE_TYPE);
+        Element result = new Element(SnakeHuntXML.SNAKE_TYPES);
         for (SnakeType snakeType : snakeTypes.values()) {
             result.addContent(snakeTypeToXML(snakeType));
         }
@@ -113,7 +113,7 @@ public class SnakeHuntRepositoryAdapter implements SaveSnakeHuntInstanceOutPort 
     }
 
     private Element jungleFieldToXML(JungleField jungleField) {
-        Element result = new Element(SnakeHuntXML.FIELD);
+        Element result = new Element(SnakeHuntXML.FIELD_UPPER);
         result.setAttribute(SnakeHuntXML.ID, jungleField.getId().value());
         result.setAttribute(SnakeHuntXML.ROW, String.valueOf(jungleField.getCoordinate().row()));
         result.setAttribute(SnakeHuntXML.COLUMN, String.valueOf(jungleField.getCoordinate().column()));
@@ -123,15 +123,26 @@ public class SnakeHuntRepositoryAdapter implements SaveSnakeHuntInstanceOutPort 
         return result;
     }
 
-    private Element durationToXML(Duration durationInSeconds) {
+    private Element durationToXML(Duration targetDuration, Duration actualDuration) {
         Element result = new Element(SnakeHuntXML.TIME);
         result.setAttribute(new Attribute(SnakeHuntXML.UNIT, "s"));
-        Element target = new Element(SnakeHuntXML.TARGET);
-        target.setText(String.valueOf(durationInSeconds.toSeconds()));
-        Element delivery = new Element(SnakeHuntXML.SUBMISSION);
-        result.addContent(target);
-        result.addContent(delivery);
+        targetToXML(targetDuration, result);
+        deliveryToXML(actualDuration, result);
         return result;
+    }
+
+    private void deliveryToXML(Duration actualDuration, Element result) {
+        Element delivery = new Element(SnakeHuntXML.SUBMISSION);
+        if (actualDuration != null) {
+            delivery.setText(String.valueOf(Double.valueOf(actualDuration.toNanos()) / 1_000_000_000));
+        }
+        result.addContent(delivery);
+    }
+
+    private void targetToXML(Duration targetDuration, Element result) {
+        Element target = new Element(SnakeHuntXML.TARGET);
+        target.setText(String.valueOf(targetDuration.toSeconds() == 0 ? 1: targetDuration.toSeconds()));
+        result.addContent(target);
     }
 
     private Document createRootElement() {

@@ -205,7 +205,7 @@ public class XMLSnakeHuntReader {
 	}
 
 	private Element readSnakeType() {
-		return root.getChild(SnakeHuntXML.SNAKE_TYPE);
+		return root.getChild(SnakeHuntXML.SNAKE_TYPES);
 	}
 
 	private SnakePart readSnakePart(Element snakePart, char character) {
@@ -219,7 +219,7 @@ public class XMLSnakeHuntReader {
 	}
 
 	private String readSnakePartField(Element snakePart) {
-		return snakePart.getAttributeValue(SnakeHuntXML.FIELD);
+		return snakePart.getAttributeValue(SnakeHuntXML.FIELD_LOWER);
 	}
 
 	private int readSnakePartFieldNumber(Element snakePart) {

@@ -10,5 +10,5 @@ import java.time.Duration;
 import java.util.Map;
 
 public interface SaveSnakeHuntInstanceOutPort {
-    void save(File file, Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration durationInSeconds, Solution solution);
+    void save(File file, Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration durationInSeconds, Duration actualDuration, Solution solution);
 }

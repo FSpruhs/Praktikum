@@ -10,7 +10,6 @@ import de.fernuni.kurs01584.ss23.application.junglegenerator.JungleGenerator;
 import de.fernuni.kurs01584.ss23.application.junglegenerator.SimpleJungleGenerator;
 import de.fernuni.kurs01584.ss23.application.ports.in.*;
 import de.fernuni.kurs01584.ss23.application.algorithm.DoubleRecursionAlgorithm;
-import de.fernuni.kurs01584.ss23.domain.exception.InvalidDurationException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidSnakeTypesException;
 import de.fernuni.kurs01584.ss23.domain.exception.NoSolutionException;
@@ -25,19 +24,20 @@ public class SnakeHuntInstance implements ValidationInPort,
 	private static final Logger log = Logger.getLogger(SnakeHuntInstance.class.getName());
 	private final Jungle jungle;
 	private final Map<SnakeTypeId, SnakeType> snakeTypes;
-	private final Duration durationInSeconds;
+	private Duration targetDuration;
+	private Duration actualDuration;
 	private Solution solution;
 	private final SaveSnakeHuntInstanceOutPort repository;
 	
 	
 	public SnakeHuntInstance(Jungle jungle,
 							 Map<SnakeTypeId, SnakeType> snakeTypes,
-							 Duration durationInSeconds,
+							 Duration targetDuration,
 							 Solution solution,
 							 SaveSnakeHuntInstanceOutPort saveSnakeHuntInstanceOutPort) {
 		this.jungle = jungle;
 		this.snakeTypes = snakeTypes;
-		this.durationInSeconds = durationInSeconds;
+		this.targetDuration = targetDuration;
 		this.solution = solution;
 		this.repository = saveSnakeHuntInstanceOutPort;
 		validateSnakeHuntInstance();
@@ -45,11 +45,11 @@ public class SnakeHuntInstance implements ValidationInPort,
 
 	public SnakeHuntInstance(Jungle jungle,
 							 Map<SnakeTypeId, SnakeType> snakeTypes,
-							 Duration durationInSeconds,
+							 Duration targetDuration,
 							 SaveSnakeHuntInstanceOutPort saveSnakeHuntInstanceOutPort) {
 		this.jungle = jungle;
 		this.snakeTypes = snakeTypes;
-		this.durationInSeconds = durationInSeconds;
+		this.targetDuration = targetDuration;
 		this.repository = saveSnakeHuntInstanceOutPort;
 		validateSnakeHuntInstance();
 	}
@@ -57,12 +57,12 @@ public class SnakeHuntInstance implements ValidationInPort,
 	private void validateSnakeHuntInstance() {
 		validateJungle();
 		validateSnakeTypes();
-		validateDuration();
+		setDefaultDuration();
 	}
 
-	private void validateDuration() {
-		if (durationInSeconds == null) {
-			throw new InvalidDurationException("Duration in Seconds is Null!");
+	private void setDefaultDuration() {
+		if (targetDuration == null) {
+			this.targetDuration = Duration.ofSeconds(30);
 		}
 	}
 
@@ -161,10 +161,20 @@ public class SnakeHuntInstance implements ValidationInPort,
 			log.info("Can not solve jungle, because jungle is empty.");
 			return false;
 		}
-		SnakeHuntAlgorithm snakeHuntAlgorithm = new DoubleRecursionAlgorithm(jungle, snakeTypes, durationInSeconds);
+		SnakeHuntAlgorithm snakeHuntAlgorithm = new DoubleRecursionAlgorithm(jungle, snakeTypes, targetDuration);
+		long start = System.nanoTime();
 		solution = snakeHuntAlgorithm.solveSnakeHuntInstance();
+		actualDuration = Duration.ofNanos(System.nanoTime() - start);
 		save(file);
 		return !solution.getSnakes().isEmpty();
+	}
+
+	private void solveForTimeMeasurement() {
+		if (jungle.getJungleFields().isEmpty()) {
+			log.info("Can not solve jungle, because jungle is empty.");
+		}
+		SnakeHuntAlgorithm snakeHuntAlgorithm = new DoubleRecursionAlgorithm(jungle, snakeTypes, targetDuration);
+		snakeHuntAlgorithm.solveSnakeHuntInstance();
 	}
 
 	@Override
@@ -183,7 +193,8 @@ public class SnakeHuntInstance implements ValidationInPort,
 				file,
 				jungle,
 				snakeTypes,
-				durationInSeconds,
+				targetDuration,
+				actualDuration,
 				solution
 		);
 	}
@@ -210,8 +221,15 @@ public class SnakeHuntInstance implements ValidationInPort,
 		log.info("Start create jungle");
 		jungleGenerator.generate();
 		log.info("New jungle created");
+		setDuration();
 		save(file);
 		return jungle.getJungleFields() != null;
+	}
+
+	private void setDuration() {
+		long begin = System.nanoTime();
+		solveForTimeMeasurement();
+		this.targetDuration = Duration.ofNanos((System.nanoTime() - begin) * 2);
 	}
 
 }

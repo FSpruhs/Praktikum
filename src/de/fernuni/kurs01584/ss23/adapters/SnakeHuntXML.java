@@ -22,9 +22,12 @@ public class SnakeHuntXML {
     public static final String TIME = "Zeit";
     public static final String TARGET = "Vorgabe";
     public static final String SNAKES = "Schlangen";
+    public static final String SNAKE = "Schlange";
     public static final String KIND = "art";
-    public static final String SNAKE_TYPE = "Schlangenarten";
-    public static final String FIELD = "feld";
+    public static final String SNAKE_TYPES = "Schlangenarten";
+    public static final String SNAKE_TYPE = "Schlangenart";
+    public static final String FIELD_UPPER = "Feld";
+    public static final String FIELD_LOWER = "feld";
     public static final String SNAKE_PART = "Schlangenglied";
     public static final String UNIT = "einheit";
     public static final String SUBMISSION = "Abgabe";

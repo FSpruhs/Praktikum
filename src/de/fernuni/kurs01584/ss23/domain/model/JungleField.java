@@ -108,4 +108,5 @@ public class JungleField implements Comparable<JungleField>{
 	public Coordinate getCoordinate() {
 		return coordinate;
 	}
+
 }

@@ -13,16 +13,16 @@ public class DoubleRecursionAlgorithm implements SnakeHuntAlgorithm {
     private final Solution tempSolution = new Solution();
     private final Jungle jungle;
     private long startTimer;
-    private final Duration durationInSeconds;
+    private final Duration targetDuration;
     private int totalPoints = 0;
     private int tempPoints = 0;
     private final Map<SnakeTypeId, SnakeType> snakeTypes;
     private List<SnakeHead> snakeHeads;
     private Map<Character, List<JungleField>> jungleFieldMap;
 
-    public DoubleRecursionAlgorithm(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration durationInSeconds) {
+    public DoubleRecursionAlgorithm(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration targetDuration) {
         this.jungle = jungle;
-        this.durationInSeconds = durationInSeconds;
+        this.targetDuration = targetDuration;
         this.snakeTypes = snakeTypes;
     }
 
@@ -57,7 +57,7 @@ public class DoubleRecursionAlgorithm implements SnakeHuntAlgorithm {
     }
 
     private boolean timeIsOver() {
-        return System.nanoTime() - startTimer >= durationInSeconds.toNanos();
+        return System.nanoTime() - startTimer >= targetDuration.toNanos();
     }
 
     private int startSnakeSearch(JungleField startField, SnakeHead snakeHead) {
