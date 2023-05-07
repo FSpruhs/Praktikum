@@ -4,6 +4,8 @@ import java.io.File;
 import java.time.Duration;
 import java.util.*;
 
+import de.fernuni.kurs01584.ss23.application.junglegenerator.JungleGenerator;
+import de.fernuni.kurs01584.ss23.application.junglegenerator.SimpleJungleGenerator;
 import de.fernuni.kurs01584.ss23.application.ports.in.*;
 import de.fernuni.kurs01584.ss23.application.algorithm.DoubleRecursionAlgorithm;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidDurationException;
@@ -11,7 +13,6 @@ import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleException;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidSnakeTypesException;
 import de.fernuni.kurs01584.ss23.domain.exception.NoSolutionException;
 import de.fernuni.kurs01584.ss23.application.ports.out.SaveSnakeHuntInstanceOutPort;
-import de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure.NeighborhoodStructure;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
 
 public class SnakeHuntInstance implements ValidationInPort,
@@ -28,17 +29,23 @@ public class SnakeHuntInstance implements ValidationInPort,
 	private final SaveSnakeHuntInstanceOutPort repository;
 	
 	
-	public SnakeHuntInstance(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration durationInSeconds, Solution solution, SaveSnakeHuntInstanceOutPort saveSnakeHuntInstanceOutPort) {
+	public SnakeHuntInstance(Jungle jungle,
+							 Map<SnakeTypeId, SnakeType> snakeTypes,
+							 Duration durationInSeconds,
+							 Solution solution,
+							 SaveSnakeHuntInstanceOutPort saveSnakeHuntInstanceOutPort) {
 		this.jungle = jungle;
 		this.snakeTypes = snakeTypes;
 		this.durationInSeconds = durationInSeconds;
 		this.solution = solution;
 		this.repository = saveSnakeHuntInstanceOutPort;
-
 		validateSnakeHuntInstance();
 	}
 
-	public SnakeHuntInstance(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration durationInSeconds, SaveSnakeHuntInstanceOutPort saveSnakeHuntInstanceOutPort) {
+	public SnakeHuntInstance(Jungle jungle,
+							 Map<SnakeTypeId, SnakeType> snakeTypes,
+							 Duration durationInSeconds,
+							 SaveSnakeHuntInstanceOutPort saveSnakeHuntInstanceOutPort) {
 		this.jungle = jungle;
 		this.snakeTypes = snakeTypes;
 		this.durationInSeconds = durationInSeconds;
@@ -191,70 +198,10 @@ public class SnakeHuntInstance implements ValidationInPort,
 	@Override
 	public void create() {
 		solution = null;
-		List<JungleField> jungleFields = new ArrayList<>();
-		Random random = new Random();
-		boolean found = false;
-		while (!found) {
-			for (int i = 0; i < jungle.getJungleSize().rows() * jungle.getJungleSize().columns(); i++) {
-				jungleFields.add(null);
-			}
-			found = startSearchNextJungleField(jungleFields, random);
-		}
-		for (int i = 0; i < jungleFields.size(); i++) {
-			if (jungleFields.get(i) == null) {
-				JungleField jungleField = new JungleField(new FieldId("F" + i), mapIndexToCoordinate(i),1, 1, jungle.getCharacters().charAt(random.nextInt(jungle.getCharacters().length())));
-				jungleFields.set(i, jungleField);
-			}
-		}
-		jungle.setJungleFields(jungleFields);
-
+		JungleGenerator jungleGenerator = new SimpleJungleGenerator(jungle, snakeTypes);
+		jungleGenerator.generate();
 	}
 
-	private boolean startSearchNextJungleField(List<JungleField> jungleFields, Random random) {
-		for (SnakeType snakeType : snakeTypes.values()) {
-			for (int i = 0; i < snakeType.count(); i++) {
-				int startField = 0;
-				do {
-					startField = random.nextInt(jungle.getJungleSize().rows() * jungle.getJungleSize().columns());
-				} while (!(jungleFields.get(startField) == null));
-				jungleFields.set(startField, new JungleField(new FieldId("F" + startField), mapIndexToCoordinate(startField), 1, 1, snakeType.characterBand().charAt(0)));
-				boolean found = searchNextJungleField(jungleFields, snakeType.neighborhoodStructure(), snakeType.characterBand().substring(1), startField, random);
-				if (!found) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
 
-	private boolean searchNextJungleField(List<JungleField> jungleFields, NeighborhoodStructure neighborhoodStructure, String substring, int startField, Random random) {
-		if (substring.equals("")) {
-			return true;
-		}
-		List<Coordinate> fields = neighborhoodStructure.nextFields(mapIndexToCoordinate(startField), jungle.getJungleSize());
-		List<Coordinate> nextFields = new LinkedList<>();
-		for (Coordinate coordinate : fields) {
-			if (jungleFields.get(jungle.mapCoordinateToIndex(coordinate)) == null) {
-				nextFields.add(coordinate);
-			}
-		}
-
-		while (!nextFields.isEmpty()) {
-			int nextFieldPosition = random.nextInt(nextFields.size());
-			JungleField nextJungleField = new JungleField(new FieldId("F" + jungle.mapCoordinateToIndex(nextFields.get(nextFieldPosition))), nextFields.get(nextFieldPosition), 1, 1, substring.charAt(0));
-			jungleFields.set(jungle.mapCoordinateToIndex(nextFields.get(nextFieldPosition)), nextJungleField);
-			boolean found = searchNextJungleField(jungleFields, neighborhoodStructure, substring.substring(1), jungle.mapCoordinateToIndex(nextFields.get(nextFieldPosition)), random);
-			if (found) {
-				return true;
-			}
-			jungleFields.set(jungle.mapCoordinateToIndex(nextFields.get(nextFieldPosition)), null);
-			nextFields.remove(nextFieldPosition);
-		}
-		return false;
-	}
-
-	private Coordinate mapIndexToCoordinate(int index) {
-		return new Coordinate(index /  jungle.getJungleSize().columns() , (index % (jungle.getJungleSize().columns())));
-	}
 
 }
