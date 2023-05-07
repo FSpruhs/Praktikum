@@ -205,7 +205,9 @@ public class SnakeHuntInstance implements ValidationInPort,
 	public void create() {
 		solution = null;
 		JungleGenerator jungleGenerator = new SimpleJungleGenerator(jungle, snakeTypes);
+		log.info("Start create jungle");
 		jungleGenerator.generate();
+		log.info("New jungle created");
 	}
 
 

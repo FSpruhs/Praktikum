@@ -6,34 +6,39 @@ import java.time.Duration;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class DoubleRecursionAlgorithm implements SnakeSearchAlgorithmus {
+public class DoubleRecursionAlgorithm implements SnakeHuntAlgorithm {
 
     private static final Logger log = Logger.getLogger(DoubleRecursionAlgorithm.class.getName());
     private Solution finalSolution = new Solution();
     private final Solution tempSolution = new Solution();
-    private Jungle jungle;
+    private final Jungle jungle;
     private long startTimer;
-    private Duration durationInSeconds;
+    private final Duration durationInSeconds;
     private int totalPoints = 0;
     private int tempPoints = 0;
-    private Map<SnakeTypeId, SnakeType> snakeTypes;
+    private final Map<SnakeTypeId, SnakeType> snakeTypes;
     private List<SnakeHead> snakeHeads;
     private Map<Character, List<JungleField>> jungleFieldMap;
 
+    public DoubleRecursionAlgorithm(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration durationInSeconds) {
+        this.jungle = jungle;
+        this.durationInSeconds = durationInSeconds;
+        this.snakeTypes = snakeTypes;
+    }
+
 
     @Override
-    public Solution solveSnakeHuntInstance(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration durationInSeconds) {
-        initializeSnakeSearch(jungle, snakeTypes, durationInSeconds);
+    public Solution solveSnakeHuntInstance() {
+        initializeSnakeSearch();
         searchSnake();
         return finalSolution;
     }
 
     private int searchSnake() {
-        if (totalPoints < tempPoints) {
-            totalPoints = tempPoints;
-            saveSolution(tempSolution);
+        if (tempSolutionHasMorePoints()) {
+            saveSolution();
         }
-        if (System.nanoTime() - startTimer >= durationInSeconds.toNanos()) {
+        if (timeIsOver()) {
             log.info("Snake search finished. Time is over. Duration: %s ns".formatted(System.nanoTime() - startTimer));
             return -1;
         }
@@ -47,9 +52,17 @@ public class DoubleRecursionAlgorithm implements SnakeSearchAlgorithmus {
         return 0;
     }
 
+    private boolean tempSolutionHasMorePoints() {
+        return totalPoints < tempPoints;
+    }
+
+    private boolean timeIsOver() {
+        return System.nanoTime() - startTimer >= durationInSeconds.toNanos();
+    }
+
     private int startSnakeSearch(JungleField startField, SnakeHead snakeHead) {
         if (startField.getUsability() > 0) {
-            Snake snake = toSnake(snakeHead.getSnakeTypeId());
+            Snake snake = toSnake(snakeHead.snakeTypeId());
             SnakePart snakePart = placeSnakePart(startField, snake);
             int solution = searchNextSnakePart(snake, getCharacterBandWithoutFirstChar(snake));
             jungle.removeSnakePart(snakePart);
@@ -67,7 +80,7 @@ public class DoubleRecursionAlgorithm implements SnakeSearchAlgorithmus {
 
     private List<SnakeHead> createStartHeads(char character) {
         return snakeHeads.stream()
-                .filter(snakeHead -> snakeHead.getFirstChar() == character)
+                .filter(snakeHead -> snakeHead.firstChar() == character)
                 .sorted().
                 toList();
     }
@@ -76,23 +89,24 @@ public class DoubleRecursionAlgorithm implements SnakeSearchAlgorithmus {
         List<JungleField> result = new LinkedList<>();
         List<Character> chars = new LinkedList<>();
         for (SnakeHead snakeHead : snakeHeads) {
-            if (!chars.contains(snakeHead.getFirstChar()) ) {
+            if (!chars.contains(snakeHead.firstChar()) ) {
                 result.addAll(getUsableStartFields(snakeHead));
-                chars.add(snakeHead.getFirstChar());
+                chars.add(snakeHead.firstChar());
             }
         }
         return result;
     }
 
     private List<JungleField> getUsableStartFields(SnakeHead snakeHead) {
-        return jungleFieldMap.get(snakeHead.getFirstChar()).stream()
+        return jungleFieldMap.get(snakeHead.firstChar()).stream()
                 .filter(jungleField -> jungleField.getUsability() > 0)
                 .sorted()
                 .toList();
     }
 
-    private void saveSolution(Solution solution) {
-        this.finalSolution = new Solution(solution.getSnakes().stream().map(this::createNewSnake).toList());
+    private void saveSolution() {
+        totalPoints = tempPoints;
+        this.finalSolution = new Solution(tempSolution.getSnakes().stream().map(this::createNewSnake).toList());
     }
 
     private Snake createNewSnake(Snake snake) {
@@ -111,12 +125,9 @@ public class DoubleRecursionAlgorithm implements SnakeSearchAlgorithmus {
         return new SnakePart(snakePart.fieldId(), snakePart.character(), snakePart.coordinate());
     }
 
-    private void initializeSnakeSearch(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration durationInSeconds) {
+    private void initializeSnakeSearch() {
         this.startTimer = System.nanoTime();
         log.info("Start snake hunt search at %s".formatted(startTimer));
-        this.jungle = jungle;
-        this.durationInSeconds = durationInSeconds;
-        this.snakeTypes = snakeTypes;
         this.snakeHeads = createSnakeHeads();
         this.jungleFieldMap = createJungleFieldMap();
     }
@@ -146,20 +157,12 @@ public class DoubleRecursionAlgorithm implements SnakeSearchAlgorithmus {
 
     private int searchNextSnakePart(Snake snake, String remainingChars) {
         if (remainingChars.equals("")) {
-            tempSolution.insertSnake(snake);
-            snakeHeads.remove(snakeHeads.stream()
-                    .filter(snakeHead -> snakeHead.getSnakeTypeId().equals(snake.snakeTypeId()))
-                    .findFirst()
-                    .orElseThrow());
             int snakeValue = getSnakeValue(snake);
-            tempPoints += snakeValue;
+            addNewSnake(snake, snakeValue);
             if (searchSnake() < 0) {
                 return -1;
             }
-            SnakeType snakeType = snakeTypes.get(snake.snakeTypeId());
-            snakeHeads.add(new SnakeHead(snakeType.snakeValue(), snakeType.snakeTypeId(), snakeType.characterBand().charAt(0), snakeType.neighborhoodStructure()));
-            tempSolution.removeSnake(snake);
-            tempPoints -= snakeValue;
+            removeSnake(snake, snakeValue);
             return 0;
         }
         List<JungleField> jungleFields = createJungleFields(snake, remainingChars.charAt(0));
@@ -178,6 +181,22 @@ public class DoubleRecursionAlgorithm implements SnakeSearchAlgorithmus {
         return 0;
     }
 
+    private void removeSnake(Snake snake, int snakeValue) {
+        SnakeType snakeType = snakeTypes.get(snake.snakeTypeId());
+        snakeHeads.add(new SnakeHead(snakeType.snakeValue(), snakeType.snakeTypeId(), snakeType.characterBand().charAt(0)));
+        tempSolution.removeSnake(snake);
+        tempPoints -= snakeValue;
+    }
+
+    private void addNewSnake(Snake snake, int snakeValue) {
+        tempSolution.insertSnake(snake);
+        snakeHeads.remove(snakeHeads.stream()
+                .filter(snakeHead -> snakeHead.snakeTypeId().equals(snake.snakeTypeId()))
+                .findFirst()
+                .orElseThrow());
+        tempPoints += snakeValue;
+    }
+
     private int getSnakeValue(Snake snake) {
         int result = 0;
         for (SnakePart snakePart: snake.snakeParts()) {
@@ -190,7 +209,7 @@ public class DoubleRecursionAlgorithm implements SnakeSearchAlgorithmus {
         return getNeighbors(snake).stream()
                 .filter(coordinate -> jungle.getJungleField(coordinate).getUsability() > 0)
                 .filter(coordinate -> jungle.getJungleField(coordinate).getCharacter() == nextChar)
-                .map(coordinate -> jungle.getJungleField(coordinate))
+                .map(jungle::getJungleField)
                 .sorted()
                 .toList();
     }
@@ -210,11 +229,20 @@ public class DoubleRecursionAlgorithm implements SnakeSearchAlgorithmus {
                 result.add(new SnakeHead(
                         snakeType.snakeValue(),
                         snakeType.snakeTypeId(),
-                        snakeType.characterBand().charAt(0),
-                        snakeType.neighborhoodStructure()
+                        snakeType.characterBand().charAt(0)
                 ));
             }
         }
         return result;
+    }
+
+    private record SnakeHead(int snakeValue,
+                             SnakeTypeId snakeTypeId,
+                             char firstChar) implements Comparable<SnakeHead> {
+
+        @Override
+        public int compareTo(SnakeHead s) {
+            return Integer.compare(snakeValue, s.snakeValue());
+        }
     }
 }
