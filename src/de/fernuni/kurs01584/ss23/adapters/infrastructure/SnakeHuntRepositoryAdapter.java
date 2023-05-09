@@ -22,17 +22,37 @@ public class SnakeHuntRepositoryAdapter implements SaveSnakeHuntInstanceOutPort 
     private static final Logger log = Logger.getLogger(SnakeHuntRepositoryAdapter.class.getName());
 
     @Override
-    public void save(File file, Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration targetDuration, Duration actualDuration, Solution solution) {
+    public void save(
+            File file,
+            Jungle jungle,
+            Map<SnakeTypeId, SnakeType> snakeTypes,
+            Duration targetDuration,
+            Duration actualDuration,
+            Solution solution
+    ) {
         try {
             XMLOutputter xmlOutputter = new XMLOutputter();
             xmlOutputter.setFormat(Format.getPrettyFormat());
-            xmlOutputter.output(snakeHuntInstanceToXML(jungle, snakeTypes, targetDuration, actualDuration, solution), new FileWriter(file));
+            xmlOutputter.output(snakeHuntInstanceToXML(
+                    jungle,
+                    snakeTypes,
+                    targetDuration,
+                    actualDuration,
+                    solution
+            ), new FileWriter(file));
+            log.info("Saved in %s".formatted(file));
         } catch (IOException e) {
             log.warning(e.getMessage());
         }
     }
 
-    private Document snakeHuntInstanceToXML(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration targetDuration, Duration actualDuration, Solution solution) {
+    private Document snakeHuntInstanceToXML(
+            Jungle jungle,
+            Map<SnakeTypeId, SnakeType> snakeTypes,
+            Duration targetDuration,
+            Duration actualDuration,
+            Solution solution
+    ) {
         Document result = createRootElement();
         result.getRootElement().addContent(durationToXML(targetDuration, actualDuration));
         result.getRootElement().addContent(jungleToXML(jungle));
@@ -92,7 +112,9 @@ public class SnakeHuntRepositoryAdapter implements SaveSnakeHuntInstanceOutPort 
 
     private Element neighborhoodStructureToXML(SnakeType snakeType) {
         Element result = new Element(SnakeHuntXML.NEIGHBORHOOD_STRUCTURE);
-        result.setAttribute(SnakeHuntXML.TYPE, snakeType.neighborhoodStructure().getName().equals("Distance") ? SnakeHuntXML.DISTANCE : SnakeHuntXML.JUMP);
+        result.setAttribute(
+                SnakeHuntXML.TYPE,
+                snakeType.neighborhoodStructure().getName().equals("Distance") ? SnakeHuntXML.DISTANCE : SnakeHuntXML.JUMP);
         for (Integer parameter : snakeType.neighborhoodStructure().getParameter()) {
             Element parameterXML = new Element(SnakeHuntXML.PARAMETER);
             parameterXML.setAttribute(SnakeHuntXML.VALUE, String.valueOf(parameter));

@@ -79,8 +79,8 @@ public class XMLSnakeHuntReader {
 		return new JungleField(
 				new FieldId(readJungleFieldId(field)),
 				readCoordinate(field),
-				Integer.parseInt(field.getAttributeValue(SnakeHuntXML.USABILITY)),
 				Integer.parseInt(field.getAttributeValue(SnakeHuntXML.POINTS)),
+				Integer.parseInt(field.getAttributeValue(SnakeHuntXML.USABILITY)),
 				field.getValue().charAt(0),
 				new LinkedList<>()
 				);
