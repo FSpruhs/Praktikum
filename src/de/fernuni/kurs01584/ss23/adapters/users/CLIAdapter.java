@@ -190,7 +190,7 @@ public class CLIAdapter {
 	private void printGridValue(Jungle jungle, int row) {
 		for (int column = 0; column < jungle.getJungleSize().columns(); column++) {
 			JungleField jungleField = jungle.getJungleField(new Coordinate(row, column));
-			System.out.printf("| %s \033[1m%s\033[0m %s ", jungleField.getFieldValue(), jungleField.getCharacter(), jungleField.getUsability());
+			System.out.printf("| %s \033[1m%s\033[0m %s ", jungleField.fieldValue(), jungleField.character(), jungleField.getUsability());
 		}
 	}
 

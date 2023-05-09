@@ -43,7 +43,7 @@ public class DoubleRecursionAlgorithm implements SnakeHuntAlgorithm {
             return -1;
         }
         for (JungleField startField : createStartFields()) {
-            for (SnakeHead snakeHead : createStartHeads(startField.getCharacter())) {
+            for (SnakeHead snakeHead : createStartHeads(startField.character())) {
                 if (startSnakeSearch(startField, snakeHead) < 0) {
                     return -1;
                 }
@@ -135,7 +135,7 @@ public class DoubleRecursionAlgorithm implements SnakeHuntAlgorithm {
     private Map<Character, List<JungleField>> createJungleFieldMap() {
         Map<Character, List<JungleField>> result = new HashMap<>();
         for (JungleField jungleField : jungle.getJungleFields()) {
-            List<JungleField> jungleFields = result.computeIfAbsent(jungleField.getCharacter(), k -> new LinkedList<>());
+            List<JungleField> jungleFields = result.computeIfAbsent(jungleField.character(), k -> new LinkedList<>());
             jungleFields.add(jungleField);
         }
         return result;
@@ -147,9 +147,9 @@ public class DoubleRecursionAlgorithm implements SnakeHuntAlgorithm {
 
     private SnakePart placeSnakePart(JungleField jungleField, Snake snake) {
         SnakePart snakePart = new SnakePart(
-                jungleField.getId(),
-                jungleField.getCharacter(),
-                jungleField.getCoordinate());
+                jungleField.fieldId(),
+                jungleField.character(),
+                jungleField.coordinate());
         jungle.placeSnakePart(snakePart);
         snake.addSnakePart(snakePart);
         return snakePart;
@@ -208,7 +208,7 @@ public class DoubleRecursionAlgorithm implements SnakeHuntAlgorithm {
     private List<JungleField> createJungleFields(Snake snake, char nextChar) {
         return getNeighbors(snake).stream()
                 .filter(coordinate -> jungle.getJungleField(coordinate).getUsability() > 0)
-                .filter(coordinate -> jungle.getJungleField(coordinate).getCharacter() == nextChar)
+                .filter(coordinate -> jungle.getJungleField(coordinate).character() == nextChar)
                 .map(jungle::getJungleField)
                 .sorted()
                 .toList();

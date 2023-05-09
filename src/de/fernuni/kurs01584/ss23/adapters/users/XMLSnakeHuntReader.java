@@ -81,7 +81,8 @@ public class XMLSnakeHuntReader {
 				readCoordinate(field),
 				Integer.parseInt(field.getAttributeValue(SnakeHuntXML.USABILITY)),
 				Integer.parseInt(field.getAttributeValue(SnakeHuntXML.POINTS)),
-				field.getValue().charAt(0)
+				field.getValue().charAt(0),
+				new LinkedList<>()
 				);
 	}
 

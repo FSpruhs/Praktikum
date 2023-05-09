@@ -38,14 +38,14 @@ public class XMLSnakeHuntReaderTest {
 	@DisplayName("Testing reading jungle")
 	void readJungle() {
 		List<JungleField> expectedJungleFields = new ArrayList<>();
-		expectedJungleFields.add(0, new JungleField(new FieldId("F0"), new Coordinate(0, 0), 1, 1, 'F'));
-		expectedJungleFields.add(1, new JungleField(new FieldId("F1"), new Coordinate(0, 1), 1, 1, 'E'));
-		expectedJungleFields.add(2, new JungleField(new FieldId("F2"), new Coordinate(0, 2), 1, 1, 'R'));
-		expectedJungleFields.add(3, new JungleField(new FieldId("F3"), new Coordinate(0, 3), 1, 1, 'N'));
-		expectedJungleFields.add(4, new JungleField(new FieldId("F4"), new Coordinate(1, 0), 1, 1, 'X'));
-		expectedJungleFields.add(5, new JungleField(new FieldId("F5"), new Coordinate(1, 1), 1, 1, 'I'));
-		expectedJungleFields.add(6, new JungleField(new FieldId("F6"), new Coordinate(1, 2), 1, 1, 'N'));
-		expectedJungleFields.add(7, new JungleField(new FieldId("F7"), new Coordinate(1, 3), 1, 1, 'U'));
+		expectedJungleFields.add(0, new JungleField(new FieldId("F0"), new Coordinate(0, 0), 1, 1, 'F', new LinkedList<>()));
+		expectedJungleFields.add(1, new JungleField(new FieldId("F1"), new Coordinate(0, 1), 1, 1, 'E', new LinkedList<>()));
+		expectedJungleFields.add(2, new JungleField(new FieldId("F2"), new Coordinate(0, 2), 1, 1, 'R', new LinkedList<>()));
+		expectedJungleFields.add(3, new JungleField(new FieldId("F3"), new Coordinate(0, 3), 1, 1, 'N', new LinkedList<>()));
+		expectedJungleFields.add(4, new JungleField(new FieldId("F4"), new Coordinate(1, 0), 1, 1, 'X', new LinkedList<>()));
+		expectedJungleFields.add(5, new JungleField(new FieldId("F5"), new Coordinate(1, 1), 1, 1, 'I', new LinkedList<>()));
+		expectedJungleFields.add(6, new JungleField(new FieldId("F6"), new Coordinate(1, 2), 1, 1, 'N', new LinkedList<>()));
+		expectedJungleFields.add(7, new JungleField(new FieldId("F7"), new Coordinate(1, 3), 1, 1, 'U', new LinkedList<>()));
 		String expectedSignString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		Jungle expectedJungle = new Jungle(new JungleSize(2, 4), expectedSignString, expectedJungleFields);
 

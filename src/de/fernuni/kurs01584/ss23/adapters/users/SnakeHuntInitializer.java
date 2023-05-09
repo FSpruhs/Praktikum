@@ -10,7 +10,7 @@ import de.fernuni.kurs01584.ss23.application.ports.in.*;
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidDataException;
 import de.fernuni.kurs01584.ss23.domain.model.*;
 
-public class SnakeHuntInitializer {
+class SnakeHuntInitializer {
 	
 	private static final Logger log = Logger.getLogger(SnakeHuntInitializer.class.getName());
 	

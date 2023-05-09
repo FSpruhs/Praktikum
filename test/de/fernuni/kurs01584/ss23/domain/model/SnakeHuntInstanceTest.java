@@ -26,7 +26,7 @@ public class SnakeHuntInstanceTest {
 	@DisplayName("Test Exception if Solution is null")
 	void solutionIsNull( ) {
 		List<JungleField> jungleFields = new ArrayList<>();
-		jungleFields.add(new JungleField(new FieldId("F0"), new Coordinate(0, 0), 1, 1, 'F')) ;
+		jungleFields.add(new JungleField(new FieldId("F0"), new Coordinate(0, 0), 1, 1, 'F', new LinkedList<>())) ;
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		Jungle jungle = new Jungle(new JungleSize(2, 4), signString, jungleFields);
 		SnakeHuntInstance snakeHuntInstance = new SnakeHuntInstance(
@@ -42,14 +42,14 @@ public class SnakeHuntInstanceTest {
 	@DisplayName("Test if multiple \"Glieder\" error is found!")
 	void findLengthError() {
 		List<JungleField> jungleFields = new ArrayList<>();
-		jungleFields.add(0, new JungleField(new FieldId("F0"), new Coordinate(0, 0), 1, 2, 'F'));
-		jungleFields.add(1, new JungleField(new FieldId("F1"), new Coordinate(0, 1), 1, 2, 'E'));
-		jungleFields.add(2, new JungleField(new FieldId("F2"), new Coordinate(0, 2), 1, 2, 'R'));
-		jungleFields.add(3, new JungleField(new FieldId("F3"), new Coordinate(0, 3), 1, 2, 'N'));
-		jungleFields.add(4, new JungleField(new FieldId("F4"), new Coordinate(1, 0), 1, 2, 'X'));
-		jungleFields.add(5, new JungleField(new FieldId("F5"), new Coordinate(1, 1), 1, 2, 'I'));
-		jungleFields.add(6, new JungleField(new FieldId("F6"), new Coordinate(1, 2), 1, 2, 'N'));
-		jungleFields.add(7, new JungleField(new FieldId("F7"), new Coordinate(1, 3), 1, 2, 'U'));
+		jungleFields.add(0, new JungleField(new FieldId("F0"), new Coordinate(0, 0), 1, 2, 'F', new LinkedList<>()));
+		jungleFields.add(1, new JungleField(new FieldId("F1"), new Coordinate(0, 1), 1, 2, 'E', new LinkedList<>()));
+		jungleFields.add(2, new JungleField(new FieldId("F2"), new Coordinate(0, 2), 1, 2, 'R', new LinkedList<>()));
+		jungleFields.add(3, new JungleField(new FieldId("F3"), new Coordinate(0, 3), 1, 2, 'N', new LinkedList<>()));
+		jungleFields.add(4, new JungleField(new FieldId("F4"), new Coordinate(1, 0), 1, 2, 'X', new LinkedList<>()));
+		jungleFields.add(5, new JungleField(new FieldId("F5"), new Coordinate(1, 1), 1, 2, 'I', new LinkedList<>()));
+		jungleFields.add(6, new JungleField(new FieldId("F6"), new Coordinate(1, 2), 1, 2, 'N', new LinkedList<>()));
+		jungleFields.add(7, new JungleField(new FieldId("F7"), new Coordinate(1, 3), 1, 2, 'U', new LinkedList<>()));
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		Jungle jungle = new Jungle(new JungleSize(2, 4), signString, jungleFields);
 
@@ -88,14 +88,14 @@ public class SnakeHuntInstanceTest {
 	@DisplayName("Test if multiple \"ZUORDNUNG\" error is found!")
 	void findWrongCharacterError() {
 		List<JungleField> jungleFields = new ArrayList<>();
-		jungleFields.add(0, new JungleField(new FieldId("F0"), new Coordinate(0, 0), 1, 2, 'F'));
-		jungleFields.add(1, new JungleField(new FieldId("F1"), new Coordinate(0, 1), 1, 2, 'E'));
-		jungleFields.add(2, new JungleField(new FieldId("F2"), new Coordinate(0, 2), 1, 2, 'R'));
-		jungleFields.add(3, new JungleField(new FieldId("F3"), new Coordinate(0, 3), 1, 2, 'N'));
-		jungleFields.add(4, new JungleField(new FieldId("F4"), new Coordinate(1, 0), 1, 2, 'X'));
-		jungleFields.add(5, new JungleField(new FieldId("F5"), new Coordinate(1, 1), 1, 2, 'X'));
-		jungleFields.add(6, new JungleField(new FieldId("F6"), new Coordinate(1, 2), 1, 2, 'N'));
-		jungleFields.add(7, new JungleField(new FieldId("F7"), new Coordinate(1, 3), 1, 2, 'U'));
+		jungleFields.add(0, new JungleField(new FieldId("F0"), new Coordinate(0, 0), 1, 2, 'F', new LinkedList<>()));
+		jungleFields.add(1, new JungleField(new FieldId("F1"), new Coordinate(0, 1), 1, 2, 'E', new LinkedList<>()));
+		jungleFields.add(2, new JungleField(new FieldId("F2"), new Coordinate(0, 2), 1, 2, 'R', new LinkedList<>()));
+		jungleFields.add(3, new JungleField(new FieldId("F3"), new Coordinate(0, 3), 1, 2, 'N', new LinkedList<>()));
+		jungleFields.add(4, new JungleField(new FieldId("F4"), new Coordinate(1, 0), 1, 2, 'X', new LinkedList<>()));
+		jungleFields.add(5, new JungleField(new FieldId("F5"), new Coordinate(1, 1), 1, 2, 'X', new LinkedList<>()));
+		jungleFields.add(6, new JungleField(new FieldId("F6"), new Coordinate(1, 2), 1, 2, 'N', new LinkedList<>()));
+		jungleFields.add(7, new JungleField(new FieldId("F7"), new Coordinate(1, 3), 1, 2, 'U', new LinkedList<>()));
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		Jungle jungle = new Jungle(new JungleSize(2, 4), signString, jungleFields);
 
@@ -136,14 +136,14 @@ public class SnakeHuntInstanceTest {
 	@DisplayName("Test if multiple \"VERWENDUNG\" error is found!")
 	void findUsabilityError() {
 		List<JungleField> jungleFields = new ArrayList<>();
-		jungleFields.add(0, new JungleField(new FieldId("F0"), new Coordinate(0, 0), 1, 2, 'F'));
-		jungleFields.add(1, new JungleField(new FieldId("F1"), new Coordinate(0, 1), 1, 2, 'E'));
-		jungleFields.add(2, new JungleField(new FieldId("F2"), new Coordinate(0, 2), 1, 1, 'R'));
-		jungleFields.add(3, new JungleField(new FieldId("F3"), new Coordinate(0, 3), 1, 2, 'N'));
-		jungleFields.add(4, new JungleField(new FieldId("F4"), new Coordinate(1, 0), 1, 2, 'X'));
-		jungleFields.add(5, new JungleField(new FieldId("F5"), new Coordinate(1, 1), 1, 2, 'I'));
-		jungleFields.add(6, new JungleField(new FieldId("F6"), new Coordinate(1, 2), 1, 1, 'N'));
-		jungleFields.add(7, new JungleField(new FieldId("F7"), new Coordinate(1, 3), 1, 2, 'U'));
+		jungleFields.add(0, new JungleField(new FieldId("F0"), new Coordinate(0, 0), 1, 2, 'F', new LinkedList<>()));
+		jungleFields.add(1, new JungleField(new FieldId("F1"), new Coordinate(0, 1), 1, 2, 'E', new LinkedList<>()));
+		jungleFields.add(2, new JungleField(new FieldId("F2"), new Coordinate(0, 2), 1, 1, 'R', new LinkedList<>()));
+		jungleFields.add(3, new JungleField(new FieldId("F3"), new Coordinate(0, 3), 1, 2, 'N', new LinkedList<>()));
+		jungleFields.add(4, new JungleField(new FieldId("F4"), new Coordinate(1, 0), 1, 2, 'X', new LinkedList<>()));
+		jungleFields.add(5, new JungleField(new FieldId("F5"), new Coordinate(1, 1), 1, 2, 'I', new LinkedList<>()));
+		jungleFields.add(6, new JungleField(new FieldId("F6"), new Coordinate(1, 2), 1, 1, 'N', new LinkedList<>()));
+		jungleFields.add(7, new JungleField(new FieldId("F7"), new Coordinate(1, 3), 1, 2, 'U', new LinkedList<>()));
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		Jungle jungle = new Jungle(new JungleSize(2, 4), signString, jungleFields);
 
@@ -184,14 +184,14 @@ public class SnakeHuntInstanceTest {
 	@DisplayName("Test if multiple \"NACHBARSCHAFT\" error is found!")
 	void findNeighbourhoodError() {
 		List<JungleField> jungleFields = new ArrayList<>();
-		jungleFields.add(0, new JungleField(new FieldId("F0"), new Coordinate(0, 0), 1, 2, 'F'));
-		jungleFields.add(1, new JungleField(new FieldId("F1"), new Coordinate(0, 1), 1, 2, 'E'));
-		jungleFields.add(2, new JungleField(new FieldId("F2"), new Coordinate(0, 2), 1, 2, 'R'));
-		jungleFields.add(3, new JungleField(new FieldId("F3"), new Coordinate(0, 3), 1, 2, 'N'));
-		jungleFields.add(4, new JungleField(new FieldId("F4"), new Coordinate(1, 0), 1, 2, 'X'));
-		jungleFields.add(5, new JungleField(new FieldId("F5"), new Coordinate(1, 1), 1, 2, 'I'));
-		jungleFields.add(6, new JungleField(new FieldId("F6"), new Coordinate(1, 2), 1, 2, 'N'));
-		jungleFields.add(7, new JungleField(new FieldId("F7"), new Coordinate(1, 3), 1, 2, 'U'));
+		jungleFields.add(0, new JungleField(new FieldId("F0"), new Coordinate(0, 0), 1, 2, 'F', new LinkedList<>()));
+		jungleFields.add(1, new JungleField(new FieldId("F1"), new Coordinate(0, 1), 1, 2, 'E', new LinkedList<>()));
+		jungleFields.add(2, new JungleField(new FieldId("F2"), new Coordinate(0, 2), 1, 2, 'R', new LinkedList<>()));
+		jungleFields.add(3, new JungleField(new FieldId("F3"), new Coordinate(0, 3), 1, 2, 'N', new LinkedList<>()));
+		jungleFields.add(4, new JungleField(new FieldId("F4"), new Coordinate(1, 0), 1, 2, 'X', new LinkedList<>()));
+		jungleFields.add(5, new JungleField(new FieldId("F5"), new Coordinate(1, 1), 1, 2, 'I', new LinkedList<>()));
+		jungleFields.add(6, new JungleField(new FieldId("F6"), new Coordinate(1, 2), 1, 2, 'N', new LinkedList<>()));
+		jungleFields.add(7, new JungleField(new FieldId("F7"), new Coordinate(1, 3), 1, 2, 'U', new LinkedList<>()));
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		Jungle jungle = new Jungle(new JungleSize(2, 4), signString, jungleFields);
 
@@ -222,14 +222,14 @@ public class SnakeHuntInstanceTest {
 	@DisplayName("Evaluate total points of solution.")
 	void evaluateTotalPoints() {
 		List<JungleField> jungleFields = new ArrayList<>();
-		jungleFields.add(0, new JungleField(new FieldId("F0"), new Coordinate(0, 0), 1, 2, 'F'));
-		jungleFields.add(1, new JungleField(new FieldId("F1"), new Coordinate(0, 1), 2, 2, 'E'));
-		jungleFields.add(2, new JungleField(new FieldId("F2"), new Coordinate(0, 2), 3, 2, 'R'));
-		jungleFields.add(3, new JungleField(new FieldId("F3"), new Coordinate(0, 3), 4, 2, 'N'));
-		jungleFields.add(4, new JungleField(new FieldId("F4"), new Coordinate(1, 0), 5, 2, 'X'));
-		jungleFields.add(5, new JungleField(new FieldId("F5"), new Coordinate(1, 1), 6, 2, 'I'));
-		jungleFields.add(6, new JungleField(new FieldId("F6"), new Coordinate(1, 2), 7, 2, 'N'));
-		jungleFields.add(7, new JungleField(new FieldId("F7"), new Coordinate(1, 3), 8, 2, 'U'));
+		jungleFields.add(0, new JungleField(new FieldId("F0"), new Coordinate(0, 0), 1, 2, 'F', new LinkedList<>()));
+		jungleFields.add(1, new JungleField(new FieldId("F1"), new Coordinate(0, 1), 2, 2, 'E', new LinkedList<>()));
+		jungleFields.add(2, new JungleField(new FieldId("F2"), new Coordinate(0, 2), 3, 2, 'R', new LinkedList<>()));
+		jungleFields.add(3, new JungleField(new FieldId("F3"), new Coordinate(0, 3), 4, 2, 'N', new LinkedList<>()));
+		jungleFields.add(4, new JungleField(new FieldId("F4"), new Coordinate(1, 0), 5, 2, 'X', new LinkedList<>()));
+		jungleFields.add(5, new JungleField(new FieldId("F5"), new Coordinate(1, 1), 6, 2, 'I', new LinkedList<>()));
+		jungleFields.add(6, new JungleField(new FieldId("F6"), new Coordinate(1, 2), 7, 2, 'N', new LinkedList<>()));
+		jungleFields.add(7, new JungleField(new FieldId("F7"), new Coordinate(1, 3), 8, 2, 'U', new LinkedList<>()));
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		Jungle jungle = new Jungle(new JungleSize(2, 4), signString, jungleFields);
 
@@ -270,7 +270,7 @@ public class SnakeHuntInstanceTest {
 	@DisplayName("Evaluate total points of solution with solution null.")
 	void evaluateTotalPointsSolutionNull() {
 		List<JungleField> jungleFields = new ArrayList<>();
-		jungleFields.add(new JungleField(new FieldId("F0"), new Coordinate(0, 0), 1, 1, 'F')) ;
+		jungleFields.add(new JungleField(new FieldId("F0"), new Coordinate(0, 0), 1, 1, 'F', new LinkedList<>())) ;
 		String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		Jungle jungle = new Jungle(new JungleSize(2, 4), signString, jungleFields);
 		SnakeHuntInstance snakeHuntInstance = new SnakeHuntInstance(

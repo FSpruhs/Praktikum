@@ -37,7 +37,7 @@ public class Jungle {
 	}
 
 	private void validateJungleFieldPosition(int counter, JungleField jungleField) {
-		if (Integer.parseInt(jungleField.getId().value().substring(1)) != counter || jungleField.getId().value().charAt(0) != 'F') {
+		if (Integer.parseInt(jungleField.fieldId().value().substring(1)) != counter || jungleField.fieldId().value().charAt(0) != 'F') {
 			throw new InvalidJungleException("Jungle field is Invalid");
 		}
 	}
@@ -67,11 +67,11 @@ public class Jungle {
 	}
 
 	public char getJungleFieldSign(Coordinate coordinate) {
-		return jungleFields.get(mapCoordinateToIndex(coordinate)).getCharacter();
+		return jungleFields.get(mapCoordinateToIndex(coordinate)).character();
 	}
 	
 	public int getFieldValue(Coordinate coordinate) {
-		return jungleFields.get(mapCoordinateToIndex(coordinate)).getFieldValue();
+		return jungleFields.get(mapCoordinateToIndex(coordinate)).fieldValue();
 	}
 
 	public void removeAllSnakeParts() {

@@ -55,7 +55,8 @@ public class SimpleJungleGenerator implements JungleGenerator{
                 mapIndexToCoordinate(fieldId),
                 1,
                 1,
-                jungle.getCharacters().charAt(random.nextInt(jungle.getCharacters().length())));
+                jungle.getCharacters().charAt(random.nextInt(jungle.getCharacters().length())),
+                new LinkedList<>());
     }
 
     private boolean startSearchNextJungleField() {
@@ -72,7 +73,14 @@ public class SimpleJungleGenerator implements JungleGenerator{
     }
 
     private JungleField createNextJungleField(char character, int startField) {
-        return new JungleField(new FieldId("F" + startField), mapIndexToCoordinate(startField), 1, 1, character);
+        return new JungleField(
+                new FieldId("F" + startField),
+                mapIndexToCoordinate(startField),
+                1,
+                1,
+                character,
+                new LinkedList<>()
+        );
     }
 
     private int generateStartField(List<JungleField> jungleFields) {
