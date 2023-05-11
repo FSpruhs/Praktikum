@@ -31,7 +31,7 @@ public class SnakeHuntPrinter {
 
     private void printSolution(JungleSize jungleSize, Solution solution, Map<SnakeTypeId, SnakeType> snakeTypes) {
         System.out.printf(SEPARATOR, "Solution");
-        for (Snake snake : solution.getSnakes()) {
+        for (Snake snake : solution.snakes()) {
             printSolutionData(snake, snakeTypes);
             String[][] solutionGrid = initializeSolutionGrid(jungleSize);
             printSnakeParts(snake, solutionGrid);

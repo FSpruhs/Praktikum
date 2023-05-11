@@ -26,7 +26,7 @@ public class ValidationUseCase implements ValidationInPort {
     public List<SchlangenjagdAPI.Fehlertyp> isValid() {
         List<SchlangenjagdAPI.Fehlertyp> result = new LinkedList<>();
         solutionNullCheck();
-        for (Snake snake : solution.getSnakes()) {
+        for (Snake snake : solution.snakes()) {
             findSnakeErrors(result, snake);
         }
         jungle.removeAllSnakeParts();

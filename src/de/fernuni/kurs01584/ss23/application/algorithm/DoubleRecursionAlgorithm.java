@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 public class DoubleRecursionAlgorithm implements SnakeHuntAlgorithm {
 
     private static final Logger log = Logger.getLogger(DoubleRecursionAlgorithm.class.getName());
-    private Solution finalSolution = new Solution();
-    private final Solution tempSolution = new Solution();
+    private Solution finalSolution = new Solution(new LinkedList<>());
+    private final Solution tempSolution = new Solution(new LinkedList<>());
     private final Jungle jungle;
     private long startTimer;
     private final Duration targetDuration;
@@ -106,7 +106,7 @@ public class DoubleRecursionAlgorithm implements SnakeHuntAlgorithm {
 
     private void saveSolution() {
         totalPoints = tempPoints;
-        this.finalSolution = new Solution(tempSolution.getSnakes().stream().map(this::createNewSnake).toList());
+        this.finalSolution = new Solution(tempSolution.snakes().stream().map(this::createNewSnake).toList());
     }
 
     private Snake createNewSnake(Snake snake) {

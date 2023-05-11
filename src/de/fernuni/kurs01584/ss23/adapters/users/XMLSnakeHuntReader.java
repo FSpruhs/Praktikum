@@ -151,7 +151,7 @@ public class XMLSnakeHuntReader {
 	
 	public Solution readSolution() {
 		if (root.getChild(SnakeHuntXML.SNAKES) != null) {
-			Solution result = new Solution();
+			Solution result = new Solution(new LinkedList<>());
 			result.loadSnakes(readSnakes());
 			return result;
 		}

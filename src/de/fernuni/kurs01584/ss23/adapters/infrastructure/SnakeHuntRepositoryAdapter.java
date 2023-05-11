@@ -65,7 +65,7 @@ public class SnakeHuntRepositoryAdapter implements SaveSnakeHuntInstanceOutPort 
 
     private Element solutionToXML(Solution solution) {
         Element result = new Element(SnakeHuntXML.SNAKES);
-        for (Snake snake : solution.getSnakes()) {
+        for (Snake snake : solution.snakes()) {
             result.addContent(snakeToXML(snake));
         }
         return result;

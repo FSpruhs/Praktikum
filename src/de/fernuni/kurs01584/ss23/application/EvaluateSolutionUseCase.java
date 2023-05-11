@@ -33,7 +33,7 @@ public class EvaluateSolutionUseCase implements EvaluateSolutionInPort {
 
     public int evaluateTotalPoints(Solution solution, Map<SnakeTypeId ,SnakeType> snakeTypes, Jungle jungle) {
         int result = 0;
-        for (Snake snake : solution.getSnakes()) {
+        for (Snake snake : solution.snakes()) {
             result += snakeTypes.get(snake.snakeTypeId()).snakeValue() + sumSnakePartValues(snake, jungle);
         }
         return result;
