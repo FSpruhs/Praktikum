@@ -1,8 +1,9 @@
 package de.fernuni.kurs01584.ss23.application.ports.in;
 
-import java.io.File;
+import java.time.Duration;
 
 public interface CreateSnakeHuntInPort {
 
-    boolean create(File file);
+    void create();
+    Duration getTargetDuration();
 }

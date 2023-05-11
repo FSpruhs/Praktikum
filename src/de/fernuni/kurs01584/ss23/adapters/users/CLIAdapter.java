@@ -1,10 +1,13 @@
 package de.fernuni.kurs01584.ss23.adapters.users;
 
 import java.io.File;
-import java.util.Arrays;
+import java.time.Duration;
 import java.util.List;
 import java.util.logging.Logger;
 
+import de.fernuni.kurs01584.ss23.application.*;
+import de.fernuni.kurs01584.ss23.application.algorithm.DoubleRecursionAlgorithm;
+import de.fernuni.kurs01584.ss23.application.algorithm.SnakeHuntAlgorithm;
 import de.fernuni.kurs01584.ss23.application.ports.in.*;
 import de.fernuni.kurs01584.ss23.domain.model.*;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
@@ -13,16 +16,11 @@ import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
 public class CLIAdapter {
 
 	private static final Logger log = Logger.getLogger(CLIAdapter.class.getName());
-	private static final String SEPARATOR = "-------------------------- %s --------------------------%n";
 
 	private String procedure;
 	private File input;
 	private File output;
-	private EvaluateSolutionInPort evaluateSolutionInPort;
-	private ShowSnakeHuntIntPort showSnakeHuntIntPort;
-	private SolveInPort solveInPort;
-	private ValidationInPort validationInPort;
-	private CreateSnakeHuntInPort createSnakeHuntInPort;
+	private SnakeHuntInstance snakeHuntInstance;
 
 	private void readCliArgs(String[] args) {
 		validateCLIArgs(args);
@@ -81,13 +79,9 @@ public class CLIAdapter {
 		}
 	}
 
-	public void loadInPorts() {
-		SnakeHuntInitializer snakeHuntInizializer = new SnakeHuntInitializer(input);
-		evaluateSolutionInPort = snakeHuntInizializer.getEvaluateSolutionInPort();
-		showSnakeHuntIntPort = snakeHuntInizializer.getShowSnakeHuntInPort();
-		solveInPort = snakeHuntInizializer.getSolveInPort();
-		validationInPort = snakeHuntInizializer.getValidationInPort();
-		createSnakeHuntInPort = snakeHuntInizializer.getCreateSnakeHuntInPort();
+	public void loadSnakeHuntInstance() {
+		SnakeHuntInitializer snakeHuntInitializer = new SnakeHuntInitializer(input);
+		snakeHuntInstance = snakeHuntInitializer.getSnakeHuntInstance();
 	}
 
 
@@ -105,131 +99,37 @@ public class CLIAdapter {
 				}
 			}
 		}
-
 	}
 
 	private void showInstance() {
-		printJungleData(showSnakeHuntIntPort.showJungle());
-		printSnakeTypes();
-		printJungleFields(showSnakeHuntIntPort.showJungle());
-		if (showSnakeHuntIntPort.showSolution() != null) {
-			printSolution(showSnakeHuntIntPort.showJungle().getJungleSize());
-		}
-	}
-
-	private void printSolution(JungleSize jungleSize) {
-		System.out.printf(SEPARATOR, "Solution");
-		for (Snake snake : showSnakeHuntIntPort.showSolution().getSnakes()) {
-			printSolutionData(snake);
-			String[][] solutionGrid = initializeSolutionGrid(jungleSize);
-			printSnakeParts(snake, solutionGrid);
-			printSolutionGrid(jungleSize, solutionGrid);
-		}
-	}
-
-	private void printSnakeParts(Snake snake, String[][] solutionGrid) {
-		System.out.print("Snakeparts: ");
-		int counter = 1;
-		for (SnakePart snakePart : snake.snakeParts()) {
-			printSnakePart(snake, counter, snakePart);
-			solutionGrid[snakePart.coordinate().row()][snakePart.coordinate().column()] = counter < 10 ? " " + counter + " " :" " + counter;
-			counter++;
-		}
-		System.out.println();
-	}
-
-	private void printSnakePart(Snake snake, int counter, SnakePart snakePart) {
-		System.out.printf("(%s, %s, %s)", snakePart.coordinate().row(), snakePart.character(), snakePart.coordinate().column());
-		if (counter != snake.snakeParts().size()) {
-			System.out.print(" -> ");
-		}
-		if (counter % 10 == 0) {
-			System.out.println();
-		}
-	}
-
-	private void printSolutionGrid(JungleSize jungleSize, String[][] solutionGrid) {
-		for (int row = 0; row < jungleSize.rows() ; row++) {
-			for (int column = 0; column < jungleSize.columns() ; column++) {
-				System.out.print(solutionGrid[row][column]);
-			}
-			System.out.println();
-		}
-		System.out.println();
-	}
-
-	private String[][] initializeSolutionGrid(JungleSize jungleSize) {
-		String[][] result = new String[jungleSize.rows()][jungleSize.columns()];
-		Arrays.stream(result).forEach(row -> Arrays.fill(row, " . "));
-		return result;
-	}
-
-	private void printSolutionData(Snake snake) {
-		System.out.printf("SnakeType: %s%n", snake.snakeTypeId().value());
-		System.out.printf("Character band: %s%n", showSnakeHuntIntPort.showSnakeTypesById(snake.snakeTypeId()).characterBand());
-		System.out.printf("Neighborhood Structure: %s%n", showSnakeHuntIntPort.showSnakeTypesById(snake.snakeTypeId()).neighborhoodStructure().getName());
-		System.out.printf("Snake Length: %s%n", snake.snakeParts().size());
-	}
-
-	private void printJungleFields(Jungle jungle) {
-		System.out.printf(SEPARATOR, "Jungle Fields");
-		System.out.println("(Value, Character, Usability)\n");
-		printGrid(jungle);
-	}
-
-	private void printGrid(Jungle jungle) {
-		for (int row = 0; row < jungle.getJungleSize().rows() ; row++) {
-			printGridTop(jungle.getJungleSize().columns());
-			printGridValue(jungle, row);
-			printGridBottom(jungle.getJungleSize().columns());
-		}
-		System.out.print("+-------".repeat(jungle.getJungleSize().columns()));
-		System.out.println("+\n");
-	}
-
-	private void printGridValue(Jungle jungle, int row) {
-		for (int column = 0; column < jungle.getJungleSize().columns(); column++) {
-			JungleField jungleField = jungle.getJungleField(new Coordinate(row, column));
-			System.out.printf("| %s \033[1m%s\033[0m %s ", jungleField.fieldValue(), jungleField.character(), jungleField.getUsability());
-		}
-	}
-
-	private void printGridBottom(int columns) {
-		System.out.println("|");
-		System.out.print("|       ".repeat(columns));
-		System.out.println("|");
-	}
-
-	private void printGridTop(int columns) {
-		System.out.print("+-------".repeat(columns));
-		System.out.println("+");
-		System.out.print("|       ".repeat(columns));
-		System.out.println("|");
-	}
-
-	private void printSnakeTypes() {
-		System.out.printf(SEPARATOR, "Snake Types");
-		for (SnakeType snakeType : showSnakeHuntIntPort.showSnakeTypes()) {
-			System.out.printf("Snake Type: %s%n", snakeType.snakeTypeId());
-			System.out.printf("Character band: %s%n", snakeType.characterBand());
-			System.out.printf("Neighborhood Structure: %s%n", snakeType.neighborhoodStructure().getName());
-			System.out.printf("Value: %s%n", snakeType.snakeValue());
-			System.out.printf("Count: %s%n%n", snakeType.count());
-		}
-	}
-
-	private void printJungleData(Jungle jungle) {
-		System.out.printf(SEPARATOR, "Jungle data");
-		System.out.printf("Rows: %s%n", jungle.getJungleSize().rows());
-		System.out.printf("Columns: %s%n", jungle.getJungleSize().rows());
-		System.out.printf("Character band: %s%n%n", jungle.getCharacters());
+		ShowSnakeHuntIntPort showSnakeHuntIntPort = new ShowSnakeHuntUseCase(
+				snakeHuntInstance.getJungle(),
+				snakeHuntInstance.getSolution(),
+				snakeHuntInstance.getSnakeTypes()
+		);
+		SnakeHuntPrinter snakeHuntPrinter = new SnakeHuntPrinter(
+				showSnakeHuntIntPort.showJungle(),
+				showSnakeHuntIntPort.showSolution(),
+				showSnakeHuntIntPort.showSnakeTypes()
+		);
+		snakeHuntPrinter.print();
 	}
 
 	private void evaluateSolution() {
+		EvaluateSolutionInPort evaluateSolutionInPort = new EvaluateSolutionUseCase(
+				snakeHuntInstance.getSolution(),
+				snakeHuntInstance.getJungle(),
+				snakeHuntInstance.getSnakeTypes()
+		);
 		System.out.printf("Total points of the Solution are: %s%n", evaluateSolutionInPort.evaluateTotalPoints());
 	}
 
 	private void validateInstance() {
+		ValidationInPort validationInPort = new ValidationUseCase(
+				snakeHuntInstance.getSolution(),
+				snakeHuntInstance.getJungle(),
+				snakeHuntInstance.getSnakeTypes()
+		);
 		List<Fehlertyp> errorTypes = validationInPort.isValid();
 		StringBuilder result = new StringBuilder();
 		if (errorTypes.isEmpty()) {
@@ -249,20 +149,33 @@ public class CLIAdapter {
 	}
 
 	private void createInstance() {
-		createSnakeHuntInPort.create(output);
+		snakeHuntInstance.setSolution(null);
+		CreateSnakeHuntInPort createSnakeHuntInPort = new CreateUseCase(
+				snakeHuntInstance.getJungle(),
+				snakeHuntInstance.getSnakeTypes(),
+				snakeHuntInstance.getTargetDuration()
+		);
+		createSnakeHuntInPort.create();
+		snakeHuntInstance.setTargetDuration(createSnakeHuntInPort.getTargetDuration());
+		snakeHuntInstance.save(output);
 	}
 
 	private void solveInstance() {
-		solveInPort.solveSnakeHuntInstance(output);
+		SolveInPort solveInPort = new SolveUseCase(
+				snakeHuntInstance.getJungle(),
+				snakeHuntInstance.getTargetDuration(),
+				snakeHuntInstance.getSnakeTypes()
+		);
+		snakeHuntInstance.setSolution(solveInPort.solveSnakeHuntInstance());
+		snakeHuntInstance.setActualDuration(solveInPort.getActualDuration());
+		snakeHuntInstance.save(output);
 	}
 
 	public static void main(String[] args) {
-
 		CLIAdapter cliAdapter = new CLIAdapter();
 		cliAdapter.readCliArgs(args);
-		cliAdapter.loadInPorts();
+		cliAdapter.loadSnakeHuntInstance();
 		cliAdapter.runProcedure();
-
 	}
 
 }

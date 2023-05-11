@@ -5,26 +5,30 @@ import de.fernuni.kurs01584.ss23.adapters.users.APIAdapter;
 import java.util.List;
 
 public class Schlangenjagd implements SchlangenjagdAPI {
-	private final APIAdapter apiAdapter = new APIAdapter();
+
 
 	@Override
 	public boolean loeseProbleminstanz(String xmlEingabeDatei, String xmlAusgabeDatei) {
-		return apiAdapter.solve(xmlEingabeDatei, xmlAusgabeDatei);
+		APIAdapter apiAdapter = new APIAdapter(xmlEingabeDatei);
+		return apiAdapter.solve(xmlAusgabeDatei);
 	}
 
 	@Override
 	public boolean erzeugeProbleminstanz(String xmlEingabeDatei, String xmlAusgabeDatei) {
-		return apiAdapter.create(xmlEingabeDatei, xmlAusgabeDatei);
+		APIAdapter apiAdapter = new APIAdapter(xmlEingabeDatei);
+		return apiAdapter.create(xmlAusgabeDatei);
 	}
 
 	@Override
 	public List<Fehlertyp> pruefeLoesung(String xmlEingabeDatei) {
-		return apiAdapter.validate(xmlEingabeDatei);
+		APIAdapter apiAdapter = new APIAdapter(xmlEingabeDatei);
+		return apiAdapter.validate();
 	}
 
 	@Override
 	public int bewerteLoesung(String xmlEingabeDatei) {
-		return apiAdapter.rate(xmlEingabeDatei);
+		APIAdapter apiAdapter = new APIAdapter(xmlEingabeDatei);
+		return apiAdapter.rate();
 	}
 
 	@Override

@@ -5,13 +5,11 @@ import de.fernuni.kurs01584.ss23.domain.model.SnakeType;
 import de.fernuni.kurs01584.ss23.domain.model.SnakeTypeId;
 import de.fernuni.kurs01584.ss23.domain.model.Solution;
 
-import java.util.List;
+import java.util.Map;
 
 public interface ShowSnakeHuntIntPort {
 
     Jungle showJungle();
-    List<SnakeType> showSnakeTypes();
-
-    SnakeType showSnakeTypesById(SnakeTypeId snakeTypeId);
+    Map<SnakeTypeId, SnakeType> showSnakeTypes();
     Solution showSolution();
 }

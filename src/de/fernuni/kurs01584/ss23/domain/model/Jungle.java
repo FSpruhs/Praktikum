@@ -127,4 +127,5 @@ public class Jungle {
 	public void removeJungleFields() {
 		this.jungleFields = null;
 	}
+
 }
