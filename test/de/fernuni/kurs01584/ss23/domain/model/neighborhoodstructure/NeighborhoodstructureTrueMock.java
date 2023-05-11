@@ -1,7 +1,9 @@
-package de.fernuni.kurs01584.ss23.domain.model;
+package de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure;
 
 import java.util.List;
 
+import de.fernuni.kurs01584.ss23.domain.model.Coordinate;
+import de.fernuni.kurs01584.ss23.domain.model.JungleSize;
 import de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure.NeighborhoodStructure;
 
 public class NeighborhoodstructureTrueMock implements NeighborhoodStructure{

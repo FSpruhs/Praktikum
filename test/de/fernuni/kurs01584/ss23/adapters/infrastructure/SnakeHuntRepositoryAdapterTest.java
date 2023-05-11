@@ -44,7 +44,7 @@ class SnakeHuntRepositoryAdapterTest {
                 new SnakePart(new FieldId("F5"), 'I', new Coordinate(1, 1))
         ),
                 new Distance(1)));
-        Solution solution = new Solution();
+        Solution solution = new Solution(new LinkedList<>());
         solution.loadSnakes(snakes);
         SnakeHuntRepositoryAdapter repository = new SnakeHuntRepositoryAdapter();
         repository.save(file, jungle, snakeTypes, targetDuration, actualDuration, solution);

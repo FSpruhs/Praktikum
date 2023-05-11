@@ -82,7 +82,7 @@ public class XMLSnakeHuntReaderTest {
 				),
                 new Distance(1)));
 
-		Solution expectedSolution = new Solution();
+		Solution expectedSolution = new Solution(new LinkedList<>());
 		expectedSolution.loadSnakes(expectedSnakes);
 
 		assertEquals(expectedSolution, xmlSnakeHuntReader.readSolution());

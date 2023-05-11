@@ -1,13 +1,10 @@
 package de.fernuni.kurs01584.ss23.adapters.users;
 
 import java.io.File;
-import java.time.Duration;
 import java.util.List;
 import java.util.logging.Logger;
 
 import de.fernuni.kurs01584.ss23.application.*;
-import de.fernuni.kurs01584.ss23.application.algorithm.DoubleRecursionAlgorithm;
-import de.fernuni.kurs01584.ss23.application.algorithm.SnakeHuntAlgorithm;
 import de.fernuni.kurs01584.ss23.application.ports.in.*;
 import de.fernuni.kurs01584.ss23.domain.model.*;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
