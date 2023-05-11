@@ -17,7 +17,6 @@ public class SimpleJungleGenerator implements JungleGenerator{
         this.snakeTypes = snakeTypes;
     }
 
-
     @Override
     public void generate() {
         boolean found = false;
@@ -45,12 +44,12 @@ public class SimpleJungleGenerator implements JungleGenerator{
     private void fillJungleWithDefaults() {
         for (int fieldId = 0; fieldId < jungleFields.size(); fieldId++) {
             if (jungleFields.get(fieldId) == null) {
-                jungleFields.set(fieldId, defaultField(fieldId));
+                jungleFields.set(fieldId, createDefaultField(fieldId));
             }
         }
     }
 
-    private JungleField defaultField(int fieldId) {
+    private JungleField createDefaultField(int fieldId) {
         return new JungleField(new FieldId("F" + fieldId),
                 mapIndexToCoordinate(fieldId),
                 1,
