@@ -17,10 +17,24 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * Adapter to save all data of a snake hunt instance in one file in XML format.
+ */
+
 public class SnakeHuntRepositoryAdapter implements SaveSnakeHuntInstanceOutPort {
 
     private static final Logger log = Logger.getLogger(SnakeHuntRepositoryAdapter.class.getName());
 
+    /**
+     * Saves all passed data of the snake hunt instance into the passed file in xml format.
+     *
+     * @param file The file path where the instance will be saved.
+     * @param jungle The jungle to be saved.
+     * @param snakeTypes The snake types to be saved.
+     * @param targetDuration The target time in which the snake hunt must be solved.
+     * @param actualDuration The time when the snake hunt was actually solved.
+     * @param solution The solution to be saved.
+     */
     @Override
     public void save(
             File file,
