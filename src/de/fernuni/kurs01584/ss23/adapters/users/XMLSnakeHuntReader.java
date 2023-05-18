@@ -214,9 +214,17 @@ public class XMLSnakeHuntReader {
 				new FieldId(readSnakePartField(snakePart)),
 				character,
 				new Coordinate(
-						readSnakePartFieldNumber(snakePart) / getJungleColumn(),
-						readSnakePartFieldNumber(snakePart) % getJungleColumn())
+						readRow(snakePart),
+						readColumn(snakePart))
 				);
+	}
+
+	private int readColumn(Element snakePart) {
+		return readSnakePartFieldNumber(snakePart) % getJungleColumn();
+	}
+
+	private int readRow(Element snakePart) {
+		return readSnakePartFieldNumber(snakePart) / getJungleColumn();
 	}
 
 	private String readSnakePartField(Element snakePart) {

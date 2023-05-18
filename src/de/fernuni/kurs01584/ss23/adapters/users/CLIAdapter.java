@@ -9,10 +9,21 @@ import de.fernuni.kurs01584.ss23.application.ports.in.*;
 import de.fernuni.kurs01584.ss23.domain.model.*;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
 
+/**
+ * Adapter for the CLI.
+ */
 
 public class CLIAdapter {
 
 	private static final Logger log = Logger.getLogger(CLIAdapter.class.getName());
+	private static final char COMMAND_SOLVE = 'l';
+	private static final char COMMAND_CREATE = 'e';
+	private static final char COMMAND_VALIDATE = 'p';
+	private static final char COMMAND_EVALUATE = 'b';
+	private static final char COMMAND_SHOW = 'd';
+	private static final String ARGUMENT_INPUT = "eingabe";
+	private static final String ARGUMENT_OUTPUT = "ausgabe";
+	private static final String ARGUMENT_COMMANDS = "ablauf";
 
 	private String procedure;
 	private File input;
@@ -29,17 +40,21 @@ public class CLIAdapter {
 
 	private void validateOutput() {
 		if (isSolveWithoutOutput() || isCreateWithoutOutput()) {
-			log.warning("Parameter \"ausgabe\" is required with procedure l and e.");
+			log.warning("Parameter \"%s\" is required with procedure %s and %s.".formatted(
+					ARGUMENT_OUTPUT,
+					COMMAND_CREATE,
+					COMMAND_SOLVE
+			));
 			System.exit(0);
 		}
 	}
 
 	private boolean isCreateWithoutOutput() {
-		return procedure.contains("e") && output == null;
+		return procedure.contains(String.valueOf(COMMAND_CREATE)) && output == null;
 	}
 
 	private boolean isSolveWithoutOutput() {
-		return procedure.contains("l") && output == null;
+		return procedure.contains(String.valueOf(COMMAND_SOLVE)) && output == null;
 	}
 
 	private void readOutput(String[] args) {
@@ -61,22 +76,22 @@ public class CLIAdapter {
 
 	private void validateCLIArgs(String[] args) {
 		if (args.length < 2) {
-			log.warning("\"ablauf\" and \"eingabe\" parameter required.");
+			log.warning("\"%s\" and \"%s\" parameter required.".formatted(ARGUMENT_COMMANDS, ARGUMENT_INPUT));
 			System.exit(0);
 		}
 
-		if (!args[0].startsWith("ablauf")) {
-			log.warning("Parameter \"ablauf\" is required.");
+		if (!args[0].startsWith(ARGUMENT_COMMANDS)) {
+			log.warning("Parameter \"%s\" is required.".formatted(ARGUMENT_COMMANDS));
 			System.exit(0);
 		}
 
-		if (!args[1].startsWith("eingabe")) {
-			log.warning("Parameter \"eingabe\" is required.");
+		if (!args[1].startsWith(ARGUMENT_INPUT)) {
+			log.warning("Parameter \"%s\" is required.".formatted(ARGUMENT_INPUT));
 			System.exit(0);
 		}
 	}
 
-	public void loadSnakeHuntInstance() {
+	private void loadSnakeHuntInstance() {
 		SnakeHuntInitializer snakeHuntInitializer = new SnakeHuntInitializer(input);
 		snakeHuntInstance = snakeHuntInitializer.getSnakeHuntInstance();
 	}
@@ -85,11 +100,11 @@ public class CLIAdapter {
 	private void runProcedure() {
 		for (char command : procedure.toCharArray()) {
 			switch (command) {
-				case 'l' -> solveInstance();
-				case 'e' -> createInstance();
-				case 'p' -> validateInstance();
-				case 'b' -> evaluateSolution();
-				case 'd' -> showInstance();
+				case COMMAND_SOLVE -> solveInstance();
+				case COMMAND_CREATE -> createInstance();
+				case COMMAND_VALIDATE -> validateInstance();
+				case COMMAND_EVALUATE -> evaluateSolution();
+				case COMMAND_SHOW -> showInstance();
 				default -> {
 					log.warning("Unknown command %s.".formatted(command));
 					System.exit(0);
@@ -104,12 +119,12 @@ public class CLIAdapter {
 				snakeHuntInstance.getSolution(),
 				snakeHuntInstance.getSnakeTypes()
 		);
-		SnakeHuntPrinter snakeHuntPrinter = new SnakeHuntPrinter(
+		SnakeHuntCLIPrinter snakeHuntCLIPrinter = new SnakeHuntCLIPrinter(
 				showSnakeHuntIntPort.showJungle(),
 				showSnakeHuntIntPort.showSolution(),
 				showSnakeHuntIntPort.showSnakeTypes()
 		);
-		snakeHuntPrinter.print();
+		snakeHuntCLIPrinter.print();
 	}
 
 	private void evaluateSolution() {
@@ -167,6 +182,22 @@ public class CLIAdapter {
 		snakeHuntInstance.setActualDuration(solveInPort.getActualDuration());
 		snakeHuntInstance.save(output);
 	}
+
+	/**
+	 * Entry point for the CLI. The program can be operated at startup with the following commands:
+	 * 'l' solves the snake hunt instance. Requires a path where the output file should be stored.
+	 * 'e' creates a new jungle. Requires a path where to save the output file.
+	 * 'p' checks the correctness of the snake hunt instance.
+	 * 'b' calculates the value of the current solution of the snake hunt instance.
+	 * 'd' prints a graphical version of the current snake hunt instance.
+	 * The commands are passed when starting the CLI and can be combined arbitrarily.
+	 *
+	 * @param args Requires as first argument the command 'ablauf=' with a combination of the commands.
+	 *                Requires as second 'eingabe=' with the path to the snake hunt instance that should be loaded.
+	 *                Can optionally pass the third argument 'ausgabe='.
+	 *                This contains the path to the file for which the output should be stored.
+	 *                Is mandatory for the commands 'l' and 'e'.
+	 */
 
 	public static void main(String[] args) {
 		CLIAdapter cliAdapter = new CLIAdapter();

@@ -6,7 +6,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class SnakeHuntPrinter {
+/**
+ *
+ * Creates an optical version of the snake chase instance and outputs it to the CLI.
+ */
+
+public class SnakeHuntCLIPrinter {
 
     private static final String SEPARATOR = "-------------------------- %s --------------------------%n";
 
@@ -14,12 +19,23 @@ public class SnakeHuntPrinter {
     private final Jungle jungle;
     private final Map<SnakeTypeId, SnakeType> snakeTypes;
 
-    public SnakeHuntPrinter(Jungle jungle, Solution solution, Map<SnakeTypeId, SnakeType> snakeTypes) {
+    /**
+     * Constructor for a snake hunt CLI printer.
+     *
+     * @param jungle the jungle to be printed.
+     * @param solution the solution to be printed.
+     * @param snakeTypes the snake types to be printed.
+     */
+
+    public SnakeHuntCLIPrinter(Jungle jungle, Solution solution, Map<SnakeTypeId, SnakeType> snakeTypes) {
         this.solution = solution;
         this.jungle = jungle;
         this.snakeTypes = snakeTypes;
     }
 
+    /**
+     * Generates the output of the passed jungle, solution and snake types on the CLI
+     */
     public void print() {
         printJungleData(jungle);
         printSnakeTypes(snakeTypes.values().stream().toList());

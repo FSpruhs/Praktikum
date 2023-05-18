@@ -9,6 +9,9 @@ import de.fernuni.kurs01584.ss23.adapters.infrastructure.SnakeHuntRepositoryAdap
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidDataException;
 import de.fernuni.kurs01584.ss23.domain.model.*;
 
+/**
+ * Initializer of a snake hunt instance.
+ */
 class SnakeHuntInitializer {
 	
 	private static final Logger log = Logger.getLogger(SnakeHuntInitializer.class.getName());
@@ -18,18 +21,18 @@ class SnakeHuntInitializer {
 	
 	public SnakeHuntInitializer(File xmlFilePath) {
 		this.xmlFilePath = xmlFilePath;
-		inizializeSnakeHuntInstance();
+		initializeSnakeHuntInstance();
 	}
 
-	private void inizializeSnakeHuntInstance() {
+	private void initializeSnakeHuntInstance() {
 		XMLSnakeHuntReader xmlSnakeHuntReader = new XMLSnakeHuntReader(xmlFilePath); 
 		try {
 			Duration duration = xmlSnakeHuntReader.readDurationInSeconds();
-			log.info("Duration inizialized: %s".formatted(duration.toNanos()));
+			log.info("Duration initialized: %s".formatted(duration.toNanos()));
 			Jungle jungle = xmlSnakeHuntReader.readJungle();
-			log.info("Jungle inizialized: %s".formatted(jungle));
+			log.info("Jungle initialized: %s".formatted(jungle));
 			Map<SnakeTypeId, SnakeType> snakeTypes = xmlSnakeHuntReader.readSnakeTypes();
-			log.info("Snake Types inizialized: %s".formatted(snakeTypes));
+			log.info("Snake Types initialized: %s".formatted(snakeTypes));
 			Solution solution = xmlSnakeHuntReader.readSolution();
 			log.info("Solution is: %s".formatted(solution));
 			if (solution == null) {
@@ -43,6 +46,11 @@ class SnakeHuntInitializer {
 		}
 	}
 
+	/**
+	 * Returns the initialized snake hunt instance.
+	 *
+	 * @return a snake hunt instance.
+	 */
 	public SnakeHuntInstance getSnakeHuntInstance() {
 		return snakeHuntInstance;
 	}
