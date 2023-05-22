@@ -22,11 +22,19 @@ import de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure.Distance;
 import de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure.Jump;
 import de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure.NeighborhoodStructure;
 
+/**
+ * Read the data from a snake hunts xml file.
+ */
 public class XMLSnakeHuntReader {
 	
 	private static final Logger log = Logger.getLogger(XMLSnakeHuntReader.class.getName());
 	private Element root;
-	
+
+	/**
+	 * Constructor for the XML Snake Hunt Reader.
+	 *
+	 * @param file The path to the XML file to be read.
+	 */
 	public XMLSnakeHuntReader(File file) {
 		SAXBuilder sax = new SAXBuilder();
 		sax.setValidation(true);
@@ -38,7 +46,12 @@ public class XMLSnakeHuntReader {
 			System.exit(0);
 		}
 	}
-	
+
+	/**
+	 * Reads out the jungle of XML the snake hunt file.
+	 *
+	 * @return the read jungle.
+	 */
 	public Jungle readJungle() {
 		return new Jungle(
 				new JungleSize(getJungleRow(), getJungleColumn()),
@@ -102,6 +115,11 @@ public class XMLSnakeHuntReader {
 		return Integer.parseInt(field.getAttributeValue(SnakeHuntXML.ROW));
 	}
 
+	/**
+	 * Reads out the snake types of the XML snake hunt file.
+	 *
+	 * @return the read snake types as a map of snake type id and snake type.
+	 */
 	public Map<SnakeTypeId, SnakeType> readSnakeTypes() {
 		Map<SnakeTypeId, SnakeType> result = new HashMap<>();
 		readSnakeType().getChildren().forEach(snakeType ->
@@ -144,11 +162,21 @@ public class XMLSnakeHuntReader {
 				Integer.parseInt(neighborhoodStructure.getChildren().get(1).getAttributeValue(SnakeHuntXML.VALUE))
 				);
 	}
-	
+
+	/**
+	 * Reads out the target time in seconds of the XML snake hunt file.
+	 *
+	 * @return the read target time.
+	 */
 	public Duration readDurationInSeconds() {
 		return Duration.ofSeconds( (long) Float.parseFloat(root.getChild(SnakeHuntXML.TIME).getChild(SnakeHuntXML.TARGET).getValue()));
 	}
-	
+
+	/**
+	 * Reads out the target time in seconds of the XML snake hunt file.
+	 *
+	 * @return the read solution if it exists, otherwise null.
+	 */
 	public Solution readSolution() {
 		if (root.getChild(SnakeHuntXML.SNAKES) != null) {
 			Solution result = new Solution(new LinkedList<>());

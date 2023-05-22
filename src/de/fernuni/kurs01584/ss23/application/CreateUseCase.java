@@ -13,6 +13,12 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * Use case to create a new snake hunt instance. The use case deletes the actual solution, the actual jungle,
+ * the actual duration and the target duration. Then it creates a new jungle with all snake types in it.
+ * Each new jungle field has the field value 1 and the usability 1.
+ * For the new jungle a new target duration will be calculated.
+ */
 public class CreateUseCase implements CreateSnakeHuntInPort {
 
     private static final Logger log = Logger.getLogger(CreateUseCase.class.getName());
@@ -40,7 +46,7 @@ public class CreateUseCase implements CreateSnakeHuntInPort {
     private void setDuration() {
         long begin = System.nanoTime();
         solveForTimeMeasurement();
-        this. targetDuration = Duration.ofNanos((System.nanoTime() - begin) * 2);
+        this.targetDuration = Duration.ofNanos((System.nanoTime() - begin) * 2);
     }
 
     private void solveForTimeMeasurement() {

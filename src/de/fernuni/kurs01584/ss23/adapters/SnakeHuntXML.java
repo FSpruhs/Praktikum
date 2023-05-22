@@ -1,6 +1,11 @@
 package de.fernuni.kurs01584.ss23.adapters;
 
+/**
+ * Dictionary for the snake hunt xml file.
+ */
 public class SnakeHuntXML {
+
+    private SnakeHuntXML() {}
 
     public static final String SIGN = "zeichen";
     public static final String ROWS = "zeilen";
