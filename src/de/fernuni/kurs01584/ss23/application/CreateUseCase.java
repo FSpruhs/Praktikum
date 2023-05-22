@@ -22,17 +22,32 @@ import java.util.logging.Logger;
 public class CreateUseCase implements CreateSnakeHuntInPort {
 
     private static final Logger log = Logger.getLogger(CreateUseCase.class.getName());
+    private static final int EXTRA_TIME_MULTIPLIER = 2;
 
     private final Jungle jungle;
     private final Map<SnakeTypeId, SnakeType> snakeTypes;
     private Duration targetDuration;
 
-    public CreateUseCase(Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes, Duration targetDuration) {
+    /**
+     * Constructor for the create use case.
+     *
+     * @param jungle jungle with the jungle data.
+     * @param snakeTypes map with the snake type id and the snake type data.
+     * @param targetDuration target duration to solve the snake hunt instance.
+     */
+    public CreateUseCase(
+            Jungle jungle,
+            Map<SnakeTypeId, SnakeType> snakeTypes,
+            Duration targetDuration
+    ) {
         this.jungle = jungle;
         this.snakeTypes = snakeTypes;
         this.targetDuration = targetDuration;
     }
 
+    /**
+     * Creates a new jungle with a new target duration.
+     */
     @Override
     public void create() {
         jungle.removeJungleFields();
@@ -44,9 +59,13 @@ public class CreateUseCase implements CreateSnakeHuntInPort {
     }
 
     private void setDuration() {
-        long begin = System.nanoTime();
+        long begin = actualTime();
         solveForTimeMeasurement();
-        this.targetDuration = Duration.ofNanos((System.nanoTime() - begin) * 2);
+        this.targetDuration = Duration.ofNanos((actualTime() - begin) * EXTRA_TIME_MULTIPLIER);
+    }
+
+    private long actualTime() {
+        return System.nanoTime();
     }
 
     private void solveForTimeMeasurement() {
@@ -61,6 +80,11 @@ public class CreateUseCase implements CreateSnakeHuntInPort {
         snakeHuntAlgorithm.solveSnakeHuntInstance();
     }
 
+    /**
+     * Get the target duration.
+     *
+     * @return the target duration.
+     */
     @Override
     public Duration getTargetDuration() {
         return targetDuration;

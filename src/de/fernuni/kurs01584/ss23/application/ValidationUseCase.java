@@ -10,18 +10,35 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Use case to validate the solution of the snake hunt instance.
+ */
 public class ValidationUseCase implements ValidationInPort {
 
     private final Solution solution;
     private final Jungle jungle;
     private final Map<SnakeTypeId, SnakeType> snakeTypes;
 
+    /**
+     * Constructor of the validate use case.
+     *
+     * @param solution the solution to validate.
+     * @param jungle jungle for which the solution is to be validated.
+     * @param snakeTypes map of the snake types for which the solution is to be validated.
+     */
     public ValidationUseCase(Solution solution, Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes) {
         this.solution = solution;
         this.jungle = jungle;
         this.snakeTypes = snakeTypes;
     }
 
+
+    /**
+     * Validates the solution and returns a list of the type 'Fehlertyp'.
+     * For each error type found there is one entry in the list.
+     *
+     * @return list of error types.
+     */
     @Override
     public List<SchlangenjagdAPI.Fehlertyp> isValid() {
         List<SchlangenjagdAPI.Fehlertyp> result = new LinkedList<>();
