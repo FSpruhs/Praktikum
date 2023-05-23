@@ -18,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EvaluateSolutionUseCaseTest {
 
+    public SnakeHunt snakeHunt;
+
     @Test
     @DisplayName("Evaluate total points of solution.")
     void evaluateTotalPoints() {
@@ -56,12 +58,15 @@ class EvaluateSolutionUseCaseTest {
                 new Distance(1)));
         Solution solution = new Solution(new LinkedList<>());
         solution.loadSnakes(snakes);
-
-        EvaluateSolutionUseCase evaluateSolutionUseCase = new EvaluateSolutionUseCase(
-                solution,
+        SnakeHunt.createInstance(
                 jungle,
-                Map.of(new SnakeTypeId("A0"), new SnakeType(new SnakeTypeId("A0"), 9, 3, "FERNUNI", new NeighborhoodstructureFalseMock()))
-                );
+                Map.of(new SnakeTypeId("A0"), new SnakeType(new SnakeTypeId("A0"), 9, 3, "FERNUNI", new NeighborhoodstructureFalseMock())),
+                Duration.ofSeconds(30),
+                solution,
+                new SnakeHuntRepositoryAdapter()
+        );
+
+        EvaluateSolutionUseCase evaluateSolutionUseCase = new EvaluateSolutionUseCase();
         assertEquals(80, evaluateSolutionUseCase.evaluateTotalPoints());
     }
 
@@ -72,11 +77,13 @@ class EvaluateSolutionUseCaseTest {
         jungleFields.add(new JungleField(new FieldId("F0"), new Coordinate(0, 0), 1, 1, 'F', new LinkedList<>())) ;
         String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         Jungle jungle = new Jungle(new JungleSize(2, 4), signString, jungleFields);
-        EvaluateSolutionUseCase evaluateSolutionUseCase = new EvaluateSolutionUseCase(
-                null,
+        SnakeHunt.createInstance(
                 jungle,
-                Map.of(new SnakeTypeId("A0"), new SnakeType(new SnakeTypeId("A0"), 1, 3, "FERNUNI", new Distance(1)))
-                );
+                Map.of(new SnakeTypeId("A0"), new SnakeType(new SnakeTypeId("A0"), 9, 3, "FERNUNI", new NeighborhoodstructureFalseMock())),
+                Duration.ofSeconds(30),
+                new SnakeHuntRepositoryAdapter()
+        );
+        EvaluateSolutionUseCase evaluateSolutionUseCase = new EvaluateSolutionUseCase();
         assertThrows(NoSolutionException.class, evaluateSolutionUseCase::evaluateTotalPoints);
     }
 }

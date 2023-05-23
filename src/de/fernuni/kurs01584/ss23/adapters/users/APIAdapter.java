@@ -8,7 +8,9 @@ import de.fernuni.kurs01584.ss23.application.ports.in.CreateSnakeHuntInPort;
 import de.fernuni.kurs01584.ss23.application.ports.in.EvaluateSolutionInPort;
 import de.fernuni.kurs01584.ss23.application.ports.in.SolveInPort;
 import de.fernuni.kurs01584.ss23.application.ports.in.ValidationInPort;
-import de.fernuni.kurs01584.ss23.domain.model.SnakeHuntInstance;
+import de.fernuni.kurs01584.ss23.domain.model.JungleField;
+import de.fernuni.kurs01584.ss23.domain.model.SnakeHunt;
+import de.fernuni.kurs01584.ss23.domain.model.Solution;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI;
 
 import java.io.File;
@@ -19,7 +21,6 @@ import java.util.List;
  */
 public class APIAdapter {
 
-    private final SnakeHuntInstance snakeHuntInstance;
 
     /**
      *
@@ -28,8 +29,7 @@ public class APIAdapter {
      * @param inputFile Path of the file for the snake hunt instance.
      */
     public APIAdapter(String inputFile) {
-        SnakeHuntInitializer snakeHuntInitializer = new SnakeHuntInitializer(new File(inputFile));
-        this.snakeHuntInstance = snakeHuntInitializer.getSnakeHuntInstance();
+        SnakeHuntInitializer.initialize(new File(inputFile));
     }
 
     /**
@@ -39,37 +39,30 @@ public class APIAdapter {
      * @param xmlAusgabeDatei Path in which the XML file should be saved.
      * @return Returns true if a solution was found, false otherwise.
      */
-
     public boolean solve(String xmlAusgabeDatei) {
-        SolveInPort solveInPort = new SolveUseCase(
-                snakeHuntInstance.getJungle(),
-                snakeHuntInstance.getTargetDuration(),
-                snakeHuntInstance.getSnakeTypes()
-        );
-        snakeHuntInstance.setSolution(solveInPort.solveSnakeHuntInstance());
-        snakeHuntInstance.setActualDuration(solveInPort.getActualDuration());
-        snakeHuntInstance.save(new File(xmlAusgabeDatei));
-        return snakeHuntInstance.getSolution() != null;
+        SolveInPort solveInPort = new SolveUseCase();
+        solveInPort.solveSnakeHuntInstance(new File(xmlAusgabeDatei));
+        return getSolution() != null;
+    }
+
+    private Solution getSolution() {
+        return SnakeHunt.getInstance().getSolution();
     }
 
     /**
      * Returns true if a new jungle was created, otherwise false.
      *
      * @param xmlAusgabeDatei Path in which the XML file should be saved.
-     * @return
+     * @return true if snake hunt instance is created, otherwise false.
      */
-
     public boolean create(String xmlAusgabeDatei) {
-        snakeHuntInstance.setSolution(null);
-        CreateSnakeHuntInPort createSnakeHuntInPort = new CreateUseCase(
-                snakeHuntInstance.getJungle(),
-                snakeHuntInstance.getSnakeTypes(),
-                snakeHuntInstance.getTargetDuration()
-        );
-        createSnakeHuntInPort.create();
-        snakeHuntInstance.setTargetDuration(createSnakeHuntInPort.getTargetDuration());
-        snakeHuntInstance.save(new File(xmlAusgabeDatei));
-        return snakeHuntInstance.getJungle().getJungleFields() != null;
+        CreateSnakeHuntInPort createSnakeHuntInPort = new CreateUseCase();
+        createSnakeHuntInPort.create(new File(xmlAusgabeDatei));
+        return getJungleFields() != null;
+    }
+
+    private List<JungleField> getJungleFields() {
+        return SnakeHunt.getInstance().getJungle().getJungleFields();
     }
 
     /**
@@ -78,13 +71,8 @@ public class APIAdapter {
      *
      * @return Return a list of SchlangenjagdAPI.Fehlertyp.
      */
-
     public List<SchlangenjagdAPI.Fehlertyp> validate() {
-        ValidationInPort validationInPort = new ValidationUseCase(
-                snakeHuntInstance.getSolution(),
-                snakeHuntInstance.getJungle(),
-                snakeHuntInstance.getSnakeTypes()
-        );
+        ValidationInPort validationInPort = new ValidationUseCase();
         return validationInPort.isValid();
     }
 
@@ -93,13 +81,8 @@ public class APIAdapter {
      *
      * @return The current value of the solution of the snake hunt instance.
      */
-
     public int rate() {
-        EvaluateSolutionInPort evaluateSolutionInPort = new EvaluateSolutionUseCase(
-                snakeHuntInstance.getSolution(),
-                snakeHuntInstance.getJungle(),
-                snakeHuntInstance.getSnakeTypes()
-        );
+        EvaluateSolutionInPort evaluateSolutionInPort = new EvaluateSolutionUseCase();
         return evaluateSolutionInPort.evaluateTotalPoints();
     }
 }

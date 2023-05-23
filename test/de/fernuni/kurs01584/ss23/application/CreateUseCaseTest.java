@@ -1,9 +1,11 @@
 package de.fernuni.kurs01584.ss23.application;
 
+import de.fernuni.kurs01584.ss23.adapters.infrastructure.SnakeHuntRepositoryAdapter;
 import de.fernuni.kurs01584.ss23.domain.model.*;
 import de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure.Distance;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -27,9 +29,15 @@ class CreateUseCaseTest {
         jungleFields.add(7, new JungleField(new FieldId("F7"), new Coordinate(1, 3), 1, 1, 'N', new LinkedList<>()));
         String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         Jungle jungle = new Jungle(new JungleSize(2, 4), signString, new ArrayList<>());
-        CreateUseCase createUseCase = new CreateUseCase(jungle, Map.of(new SnakeTypeId("A0"), new SnakeType(new SnakeTypeId("A0"), 1, 1, "FERNUNI", new Distance(1))), Duration.ofSeconds(10));
-        createUseCase.create();
-        assertEquals(jungleFields, jungle.getJungleFields());
+        SnakeHunt.createInstance(
+                jungle,
+                Map.of(new SnakeTypeId("A0"), new SnakeType(new SnakeTypeId("A0"), 1, 1, "FERNUNI", new Distance(1))),
+                Duration.ofSeconds(10),
+                new SnakeHuntRepositoryAdapter()
+        );
+        CreateUseCase createUseCase = new CreateUseCase();
+        createUseCase.create(new File(""));
+        assertEquals(jungleFields, SnakeHunt.getInstance().getJungle().getJungleFields());
     }
 
 }

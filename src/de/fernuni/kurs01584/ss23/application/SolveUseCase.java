@@ -4,13 +4,10 @@ import de.fernuni.kurs01584.ss23.application.algorithm.DoubleRecursionAlgorithm;
 import de.fernuni.kurs01584.ss23.application.algorithm.SnakeHuntAlgorithm;
 import de.fernuni.kurs01584.ss23.application.ports.in.SolveInPort;
 import de.fernuni.kurs01584.ss23.domain.exception.NoSolutionException;
-import de.fernuni.kurs01584.ss23.domain.model.Jungle;
-import de.fernuni.kurs01584.ss23.domain.model.SnakeType;
-import de.fernuni.kurs01584.ss23.domain.model.SnakeTypeId;
-import de.fernuni.kurs01584.ss23.domain.model.Solution;
+import de.fernuni.kurs01584.ss23.domain.model.*;
 
+import java.io.File;
 import java.time.Duration;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -19,66 +16,42 @@ import java.util.logging.Logger;
 public class SolveUseCase implements SolveInPort {
 
     private static final Logger log = Logger.getLogger(SolveUseCase.class.getName());
-    private final Jungle jungle;
-    private final Duration targetDuration;
-    private final Map<SnakeTypeId, SnakeType> snakeTypes;
-    private Duration actualDuration;
-
-    /**
-     * Constructor of the solve use case.
-     *
-     * @param jungle jungle in which to search for the snakes.
-     * @param targetDuration target duration to solve the snake hunt instance.
-     * @param snakeTypes map of snake types to find.
-     */
-    public SolveUseCase(
-            Jungle jungle,
-            Duration targetDuration,
-            Map<SnakeTypeId, SnakeType> snakeTypes
-    ) {
-        this.jungle = jungle;
-        this.targetDuration = targetDuration;
-        this.snakeTypes = snakeTypes;
+    private final SnakeHunt snakeHunt;
+    public SolveUseCase() {
+        this.snakeHunt = SnakeHunt.getInstance();
     }
 
     /**
      * Searches for the solution of the snakes hunt instance with the highest value in the target time.
      *
-     * @return the found solution.
      */
     @Override
-    public Solution solveSnakeHuntInstance() {
+    public void solveSnakeHuntInstance(File output) {
         checkJungleFields();
         SnakeHuntAlgorithm snakeHuntAlgorithm = new DoubleRecursionAlgorithm(
-                jungle,
-                snakeTypes,
-                targetDuration
+                snakeHunt.getJungle(),
+                snakeHunt.getSnakeTypes(),
+                snakeHunt.getTargetDuration()
         );
         long start = actualTime();
-        Solution solution = snakeHuntAlgorithm.solveSnakeHuntInstance();
-        this.actualDuration = Duration.ofNanos(actualTime() - start);
-        return solution;
+        snakeHunt.setSolution(snakeHuntAlgorithm.solveSnakeHuntInstance());
+        snakeHunt.setActualDuration(Duration.ofNanos(actualTime() - start));
+        snakeHunt.save(output);
     }
 
     private void checkJungleFields() {
-        if (jungle.getJungleFields().isEmpty()) {
+        if (isJungleFieldsEmpty()) {
             log.warning("Can not solve jungle, because jungle is empty.");
             throw new NoSolutionException();
         }
     }
 
-    private long actualTime() {
-        return System.nanoTime();
+    private boolean isJungleFieldsEmpty() {
+        return snakeHunt.getJungle().getJungleFields().isEmpty();
     }
 
-    /**
-     * Returns the duration in which the solution was found.
-     *
-     * @return the duration in which the solution was found.
-     */
-    @Override
-    public Duration getActualDuration() {
-        return actualDuration;
+    private long actualTime() {
+        return System.nanoTime();
     }
 
 }

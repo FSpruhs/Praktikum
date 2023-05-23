@@ -8,28 +8,16 @@ import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Use case to validate the solution of the snake hunt instance.
  */
 public class ValidationUseCase implements ValidationInPort {
 
-    private final Solution solution;
-    private final Jungle jungle;
-    private final Map<SnakeTypeId, SnakeType> snakeTypes;
+    private final SnakeHunt snakeHunt;
 
-    /**
-     * Constructor of the validate use case.
-     *
-     * @param solution the solution to validate.
-     * @param jungle jungle for which the solution is to be validated.
-     * @param snakeTypes map of the snake types for which the solution is to be validated.
-     */
-    public ValidationUseCase(Solution solution, Jungle jungle, Map<SnakeTypeId, SnakeType> snakeTypes) {
-        this.solution = solution;
-        this.jungle = jungle;
-        this.snakeTypes = snakeTypes;
+    public ValidationUseCase() {
+        this.snakeHunt = SnakeHunt.getInstance();
     }
 
 
@@ -43,36 +31,44 @@ public class ValidationUseCase implements ValidationInPort {
     public List<SchlangenjagdAPI.Fehlertyp> isValid() {
         List<SchlangenjagdAPI.Fehlertyp> result = new LinkedList<>();
         solutionNullCheck();
-        for (Snake snake : solution.snakes()) {
+        for (Snake snake : getSnakes()) {
             findSnakeErrors(result, snake);
         }
-        jungle.removeAllSnakeParts();
+        snakeHunt.getJungle().removeAllSnakeParts();
         return result;
+    }
+
+    private List<Snake> getSnakes() {
+        return snakeHunt.getSolution().snakes();
     }
 
     private void findSnakeErrors(List<SchlangenjagdAPI.Fehlertyp> result, Snake snake) {
         findLengthError(result, snake);
         SnakePart previousSnakePart = null;
         for (SnakePart snakePart : snake.snakeParts()) {
-            jungle.placeSnakePart(snakePart);
+            snakeHunt.getJungle().placeSnakePart(snakePart);
             findUsageError(result, snakePart);
             findAllocationError(result, snakePart);
-            findNeighborhoodError(result, snakePart, previousSnakePart, snakeTypes.get(snake.snakeTypeId()));
+            findNeighborhoodError(result, snakePart, previousSnakePart, getSnakeTypeById(snake.snakeTypeId()));
             previousSnakePart = snakePart;
         }
     }
 
+    private SnakeType getSnakeTypeById(SnakeTypeId snakeTypeId) {
+        return snakeHunt.getSnakeTypes().get(snakeTypeId);
+    }
+
     private void solutionNullCheck() {
-        if (solution == null) {
+        if (snakeHunt.getSolution() == null) {
             throw new NoSolutionException();
         }
     }
 
     private SnakeType getSnakeType(SnakeTypeId snakeTypeId) {
-        if (snakeTypes.get(snakeTypeId) == null) {
+        if (getSnakeTypeById(snakeTypeId) == null) {
             throw new InvalidSnakeTypesException("Snake Type with value %s does not exist!".formatted(snakeTypeId));
         }
-        return snakeTypes.get(snakeTypeId);
+        return getSnakeTypeById(snakeTypeId);
     }
 
     private void findLengthError(List<SchlangenjagdAPI.Fehlertyp> result, Snake snake) {
@@ -88,15 +84,23 @@ public class ValidationUseCase implements ValidationInPort {
     }
 
     private void findAllocationError(List<SchlangenjagdAPI.Fehlertyp> result, SnakePart snakePart) {
-        if (jungle.getJungleFieldSign(snakePart.coordinate()) != snakePart.character()) {
+        if (getJungleFieldSign(snakePart) != snakePart.character()) {
             result.add(SchlangenjagdAPI.Fehlertyp.ZUORDNUNG);
         }
 
     }
 
+    private char getJungleFieldSign(SnakePart snakePart) {
+        return snakeHunt.getJungle().getJungleFieldSign(snakePart.coordinate());
+    }
+
     private void findUsageError(List<SchlangenjagdAPI.Fehlertyp> result, SnakePart snakePart) {
-        if (jungle.getJungleFieldUsability(snakePart.coordinate()) < 0) {
+        if (getJungleFieldUsability(snakePart) < 0) {
             result.add(SchlangenjagdAPI.Fehlertyp.VERWENDUNG);
         }
+    }
+
+    private int getJungleFieldUsability(SnakePart snakePart) {
+        return snakeHunt.getJungle().getJungleFieldUsability(snakePart.coordinate());
     }
 }

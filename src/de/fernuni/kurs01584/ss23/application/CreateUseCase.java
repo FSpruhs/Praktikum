@@ -5,12 +5,10 @@ import de.fernuni.kurs01584.ss23.application.algorithm.SnakeHuntAlgorithm;
 import de.fernuni.kurs01584.ss23.application.junglegenerator.JungleGenerator;
 import de.fernuni.kurs01584.ss23.application.junglegenerator.SimpleJungleGenerator;
 import de.fernuni.kurs01584.ss23.application.ports.in.CreateSnakeHuntInPort;
-import de.fernuni.kurs01584.ss23.domain.model.Jungle;
-import de.fernuni.kurs01584.ss23.domain.model.SnakeType;
-import de.fernuni.kurs01584.ss23.domain.model.SnakeTypeId;
+import de.fernuni.kurs01584.ss23.domain.model.SnakeHunt;
 
+import java.io.File;
 import java.time.Duration;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -24,44 +22,31 @@ public class CreateUseCase implements CreateSnakeHuntInPort {
     private static final Logger log = Logger.getLogger(CreateUseCase.class.getName());
     private static final int EXTRA_TIME_MULTIPLIER = 2;
 
-    private final Jungle jungle;
-    private final Map<SnakeTypeId, SnakeType> snakeTypes;
-    private Duration targetDuration;
+    private final SnakeHunt snakeHunt;
 
-    /**
-     * Constructor for the create use case.
-     *
-     * @param jungle jungle with the jungle data.
-     * @param snakeTypes map with the snake type id and the snake type data.
-     * @param targetDuration target duration to solve the snake hunt instance.
-     */
-    public CreateUseCase(
-            Jungle jungle,
-            Map<SnakeTypeId, SnakeType> snakeTypes,
-            Duration targetDuration
-    ) {
-        this.jungle = jungle;
-        this.snakeTypes = snakeTypes;
-        this.targetDuration = targetDuration;
+    public CreateUseCase() {
+        this.snakeHunt = SnakeHunt.getInstance();
     }
 
     /**
      * Creates a new jungle with a new target duration.
      */
     @Override
-    public void create() {
-        jungle.removeJungleFields();
-        JungleGenerator jungleGenerator = new SimpleJungleGenerator(jungle, snakeTypes);
+    public void create(File output) {
+        snakeHunt.setSolution(null);
+        snakeHunt.getJungle().removeJungleFields();
+        JungleGenerator jungleGenerator = new SimpleJungleGenerator(snakeHunt.getJungle(), snakeHunt.getSnakeTypes());
         log.info("Start create jungle");
         jungleGenerator.generate();
         log.info("New jungle created");
         setDuration();
+        snakeHunt.save(output);
     }
 
     private void setDuration() {
         long begin = actualTime();
         solveForTimeMeasurement();
-        this.targetDuration = Duration.ofNanos((actualTime() - begin) * EXTRA_TIME_MULTIPLIER);
+        snakeHunt.setTargetDuration(Duration.ofNanos((actualTime() - begin) * EXTRA_TIME_MULTIPLIER));
     }
 
     private long actualTime() {
@@ -69,25 +54,18 @@ public class CreateUseCase implements CreateSnakeHuntInPort {
     }
 
     private void solveForTimeMeasurement() {
-        if (jungle.getJungleFields().isEmpty()) {
+        if (isJungleFieldsEmpty()) {
             log.info("Can not solve jungle, because jungle is empty.");
         }
         SnakeHuntAlgorithm snakeHuntAlgorithm = new DoubleRecursionAlgorithm(
-                jungle,
-                snakeTypes,
-                targetDuration
+                snakeHunt.getJungle(),
+                snakeHunt.getSnakeTypes(),
+                snakeHunt.getTargetDuration()
         );
         snakeHuntAlgorithm.solveSnakeHuntInstance();
     }
 
-    /**
-     * Get the target duration.
-     *
-     * @return the target duration.
-     */
-    @Override
-    public Duration getTargetDuration() {
-        return targetDuration;
+    private boolean isJungleFieldsEmpty() {
+        return snakeHunt.getJungle().getJungleFields().isEmpty();
     }
-
 }

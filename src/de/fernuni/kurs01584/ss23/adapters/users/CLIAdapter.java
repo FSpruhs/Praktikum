@@ -6,13 +6,11 @@ import java.util.logging.Logger;
 
 import de.fernuni.kurs01584.ss23.application.*;
 import de.fernuni.kurs01584.ss23.application.ports.in.*;
-import de.fernuni.kurs01584.ss23.domain.model.*;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
 
 /**
  * Adapter for the CLI.
  */
-
 public class CLIAdapter {
 
 	private static final Logger log = Logger.getLogger(CLIAdapter.class.getName());
@@ -24,11 +22,16 @@ public class CLIAdapter {
 	private static final String ARGUMENT_INPUT = "eingabe";
 	private static final String ARGUMENT_OUTPUT = "ausgabe";
 	private static final String ARGUMENT_COMMANDS = "ablauf";
+	private static final int COMMAND_INDEX = 7;
+	private static final int INPUT_INDEX = 8;
+	private static final int OUTPUT_INDEX = 8;
+	private static final int COMMAND_POSITION = 0;
+	private static final int INPUT_POSITION = 1;
+	private static final int OUTPUT_POSITION = 2;
 
 	private String procedure;
 	private File input;
 	private File output;
-	private SnakeHuntInstance snakeHuntInstance;
 
 	private void readCliArgs(String[] args) {
 		validateCLIArgs(args);
@@ -50,27 +53,32 @@ public class CLIAdapter {
 	}
 
 	private boolean isCreateWithoutOutput() {
-		return procedure.contains(String.valueOf(COMMAND_CREATE)) && output == null;
+		return procedure.contains(String.valueOf(COMMAND_CREATE)) && outputIsMissing();
 	}
 
+
 	private boolean isSolveWithoutOutput() {
-		return procedure.contains(String.valueOf(COMMAND_SOLVE)) && output == null;
+		return procedure.contains(String.valueOf(COMMAND_SOLVE)) && outputIsMissing();
+	}
+
+	private boolean outputIsMissing() {
+		return output == null;
 	}
 
 	private void readOutput(String[] args) {
 		if (args.length >= 3) {
-			output = new File(args[2].substring(8));
+			output = new File(args[OUTPUT_POSITION].substring(OUTPUT_INDEX));
 			log.info("Output: %s.".formatted(output));
 		}
 	}
 
 	private void readInput(String[] args) {
-		input = new File(args[1].substring(8));
+		input = new File(args[INPUT_POSITION].substring(INPUT_INDEX));
 		log.info("Input: %s.".formatted(input));
 	}
 
 	private void readProcedure(String[] args) {
-		procedure = args[0].substring(7);
+		procedure = args[COMMAND_POSITION].substring(COMMAND_INDEX);
 		log.info("Procedure: %s.".formatted(procedure));
 	}
 
@@ -80,20 +88,19 @@ public class CLIAdapter {
 			System.exit(0);
 		}
 
-		if (!args[0].startsWith(ARGUMENT_COMMANDS)) {
+		if (!args[COMMAND_POSITION].startsWith(ARGUMENT_COMMANDS)) {
 			log.warning("Parameter \"%s\" is required.".formatted(ARGUMENT_COMMANDS));
 			System.exit(0);
 		}
 
-		if (!args[1].startsWith(ARGUMENT_INPUT)) {
+		if (!args[INPUT_POSITION].startsWith(ARGUMENT_INPUT)) {
 			log.warning("Parameter \"%s\" is required.".formatted(ARGUMENT_INPUT));
 			System.exit(0);
 		}
 	}
 
 	private void loadSnakeHuntInstance() {
-		SnakeHuntInitializer snakeHuntInitializer = new SnakeHuntInitializer(input);
-		snakeHuntInstance = snakeHuntInitializer.getSnakeHuntInstance();
+		SnakeHuntInitializer.initialize(input);
 	}
 
 
@@ -114,11 +121,7 @@ public class CLIAdapter {
 	}
 
 	private void showInstance() {
-		ShowSnakeHuntIntPort showSnakeHuntIntPort = new ShowSnakeHuntUseCase(
-				snakeHuntInstance.getJungle(),
-				snakeHuntInstance.getSolution(),
-				snakeHuntInstance.getSnakeTypes()
-		);
+		ShowSnakeHuntIntPort showSnakeHuntIntPort = new ShowSnakeHuntUseCase();
 		SnakeHuntCLIPrinter snakeHuntCLIPrinter = new SnakeHuntCLIPrinter(
 				showSnakeHuntIntPort.showJungle(),
 				showSnakeHuntIntPort.showSolution(),
@@ -128,20 +131,12 @@ public class CLIAdapter {
 	}
 
 	private void evaluateSolution() {
-		EvaluateSolutionInPort evaluateSolutionInPort = new EvaluateSolutionUseCase(
-				snakeHuntInstance.getSolution(),
-				snakeHuntInstance.getJungle(),
-				snakeHuntInstance.getSnakeTypes()
-		);
+		EvaluateSolutionInPort evaluateSolutionInPort = new EvaluateSolutionUseCase();
 		System.out.printf("Total points of the Solution are: %s%n", evaluateSolutionInPort.evaluateTotalPoints());
 	}
 
 	private void validateInstance() {
-		ValidationInPort validationInPort = new ValidationUseCase(
-				snakeHuntInstance.getSolution(),
-				snakeHuntInstance.getJungle(),
-				snakeHuntInstance.getSnakeTypes()
-		);
+		ValidationInPort validationInPort = new ValidationUseCase();
 		List<Fehlertyp> errorTypes = validationInPort.isValid();
 		StringBuilder result = new StringBuilder();
 		if (errorTypes.isEmpty()) {
@@ -161,26 +156,13 @@ public class CLIAdapter {
 	}
 
 	private void createInstance() {
-		snakeHuntInstance.setSolution(null);
-		CreateSnakeHuntInPort createSnakeHuntInPort = new CreateUseCase(
-				snakeHuntInstance.getJungle(),
-				snakeHuntInstance.getSnakeTypes(),
-				snakeHuntInstance.getTargetDuration()
-		);
-		createSnakeHuntInPort.create();
-		snakeHuntInstance.setTargetDuration(createSnakeHuntInPort.getTargetDuration());
-		snakeHuntInstance.save(output);
+		CreateSnakeHuntInPort createSnakeHuntInPort = new CreateUseCase();
+		createSnakeHuntInPort.create(output);
 	}
 
 	private void solveInstance() {
-		SolveInPort solveInPort = new SolveUseCase(
-				snakeHuntInstance.getJungle(),
-				snakeHuntInstance.getTargetDuration(),
-				snakeHuntInstance.getSnakeTypes()
-		);
-		snakeHuntInstance.setSolution(solveInPort.solveSnakeHuntInstance());
-		snakeHuntInstance.setActualDuration(solveInPort.getActualDuration());
-		snakeHuntInstance.save(output);
+		SolveInPort solveInPort = new SolveUseCase();
+		solveInPort.solveSnakeHuntInstance(output);
 	}
 
 	/**

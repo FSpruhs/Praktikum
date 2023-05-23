@@ -1,10 +1,7 @@
 package de.fernuni.kurs01584.ss23.application;
 
 import de.fernuni.kurs01584.ss23.application.ports.in.ShowSnakeHuntIntPort;
-import de.fernuni.kurs01584.ss23.domain.model.Jungle;
-import de.fernuni.kurs01584.ss23.domain.model.SnakeType;
-import de.fernuni.kurs01584.ss23.domain.model.SnakeTypeId;
-import de.fernuni.kurs01584.ss23.domain.model.Solution;
+import de.fernuni.kurs01584.ss23.domain.model.*;
 
 import java.util.Map;
 
@@ -13,25 +10,11 @@ import java.util.Map;
  */
 public class ShowSnakeHuntUseCase implements ShowSnakeHuntIntPort {
 
-    private final Jungle jungle;
-    private final Solution solution;
-    private final Map<SnakeTypeId, SnakeType> snakeTypes;
+    private final SnakeHunt snakeHunt;
 
-    /**
-     * Constructor of the show snake hunt use case.
-     *
-     * @param jungle jungle data to be shown.
-     * @param solution solution data to be shown.
-     * @param snakeTypes map of snake id and snake typed to be shown.
-     */
-    public ShowSnakeHuntUseCase(
-            Jungle jungle,
-            Solution solution,
-            Map<SnakeTypeId, SnakeType> snakeTypes
-    ) {
-        this.jungle = jungle;
-        this.solution = solution;
-        this.snakeTypes = snakeTypes;
+
+    public ShowSnakeHuntUseCase() {
+        this.snakeHunt = SnakeHunt.getInstance();
     }
 
     /**
@@ -41,7 +24,7 @@ public class ShowSnakeHuntUseCase implements ShowSnakeHuntIntPort {
      */
     @Override
     public Map<SnakeTypeId, SnakeType>  showSnakeTypes() {
-        return snakeTypes;
+        return snakeHunt.getSnakeTypes();
     }
 
     /**
@@ -51,7 +34,7 @@ public class ShowSnakeHuntUseCase implements ShowSnakeHuntIntPort {
      */
     @Override
     public Solution showSolution() {
-        return solution;
+        return snakeHunt.getSolution();
     }
 
     /**
@@ -59,9 +42,8 @@ public class ShowSnakeHuntUseCase implements ShowSnakeHuntIntPort {
      *
      * @return data of the jungle to be shown.
      */
-
     @Override
     public Jungle showJungle() {
-        return jungle;
+        return snakeHunt.getJungle();
     }
 }

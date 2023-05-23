@@ -1,9 +1,11 @@
 package de.fernuni.kurs01584.ss23.application;
 
+import de.fernuni.kurs01584.ss23.adapters.infrastructure.SnakeHuntRepositoryAdapter;
 import de.fernuni.kurs01584.ss23.domain.model.*;
 import de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure.Distance;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -28,12 +30,13 @@ class SolveUseCaseTest {
         jungleFields.add(7, new JungleField(new FieldId("F7"), new Coordinate(1, 3), 1, 1, 'U', new LinkedList<>()));
         String signString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         Jungle jungle = new Jungle(new JungleSize(2, 4), signString, jungleFields);
-
-        SolveUseCase solveUseCase = new SolveUseCase(
+        SnakeHunt.createInstance(
                 jungle,
+                Map.of(new SnakeTypeId("A0"), new SnakeType(new SnakeTypeId("A0"), 9, 3, "FERNUNI", new Distance(1))),
                 Duration.ofSeconds(10),
-                Map.of(new SnakeTypeId("A0"), new SnakeType(new SnakeTypeId("A0"), 9, 3, "FERNUNI", new Distance(1)))
+                new SnakeHuntRepositoryAdapter()
         );
+        SolveUseCase solveUseCase = new SolveUseCase();
 
         List<Snake> snakes = new LinkedList<>();
         snakes.add(new Snake(new SnakeTypeId("A0"), List.of(
@@ -48,8 +51,8 @@ class SolveUseCaseTest {
                 new Distance(1)));
         Solution solution = new Solution(new LinkedList<>());
         solution.loadSnakes(snakes);
-
-        assertEquals(solution, solveUseCase.solveSnakeHuntInstance());
+        solveUseCase.solveSnakeHuntInstance(new File(""));
+        assertEquals(solution, SnakeHunt.getInstance().getSolution());
     }
 
 }

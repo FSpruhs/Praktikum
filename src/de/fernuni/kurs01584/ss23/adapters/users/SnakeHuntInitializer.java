@@ -15,16 +15,10 @@ import de.fernuni.kurs01584.ss23.domain.model.*;
 class SnakeHuntInitializer {
 	
 	private static final Logger log = Logger.getLogger(SnakeHuntInitializer.class.getName());
-	
-	private final File xmlFilePath;
-	private SnakeHuntInstance snakeHuntInstance;
-	
-	public SnakeHuntInitializer(File xmlFilePath) {
-		this.xmlFilePath = xmlFilePath;
-		initializeSnakeHuntInstance();
-	}
 
-	private void initializeSnakeHuntInstance() {
+	private SnakeHuntInitializer(){}
+
+	public static void initialize(File xmlFilePath) {
 		XMLSnakeHuntReader xmlSnakeHuntReader = new XMLSnakeHuntReader(xmlFilePath); 
 		try {
 			Duration duration = xmlSnakeHuntReader.readDurationInSeconds();
@@ -36,9 +30,9 @@ class SnakeHuntInitializer {
 			Solution solution = xmlSnakeHuntReader.readSolution();
 			log.info("Solution is: %s".formatted(solution));
 			if (solution == null) {
-				snakeHuntInstance = new SnakeHuntInstance(jungle, snakeTypes, duration, new SnakeHuntRepositoryAdapter());
+				SnakeHunt.createInstance(jungle, snakeTypes, duration, new SnakeHuntRepositoryAdapter());
 			} else {
-				snakeHuntInstance = new SnakeHuntInstance(jungle, snakeTypes, duration, solution, new SnakeHuntRepositoryAdapter());
+				SnakeHunt.createInstance(jungle, snakeTypes, duration, solution, new SnakeHuntRepositoryAdapter());
 			}
 		} catch (InvalidDataException e) {
 			log.warning(e.getMessage());
@@ -46,13 +40,5 @@ class SnakeHuntInitializer {
 		}
 	}
 
-	/**
-	 * Returns the initialized snake hunt instance.
-	 *
-	 * @return a snake hunt instance.
-	 */
-	public SnakeHuntInstance getSnakeHuntInstance() {
-		return snakeHuntInstance;
-	}
 }
 
