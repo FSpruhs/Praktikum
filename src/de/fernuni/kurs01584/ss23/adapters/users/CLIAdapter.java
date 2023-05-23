@@ -124,7 +124,7 @@ public class CLIAdapter {
 		ShowSnakeHuntIntPort showSnakeHuntIntPort = new ShowSnakeHuntUseCase();
 		SnakeHuntCLIPrinter snakeHuntCLIPrinter = new SnakeHuntCLIPrinter(
 				showSnakeHuntIntPort.showJungle(),
-				showSnakeHuntIntPort.showSolution(),
+				showSnakeHuntIntPort.showSolutionSnakes(),
 				showSnakeHuntIntPort.showSnakeTypes()
 		);
 		snakeHuntCLIPrinter.print();
