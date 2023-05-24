@@ -153,7 +153,7 @@ public class SnakeHuntRepositoryAdapter implements SaveSnakeHuntInstanceOutPort 
         result.setAttribute(SnakeHuntXML.ID, jungleField.fieldId().value());
         result.setAttribute(SnakeHuntXML.ROW, String.valueOf(jungleField.coordinate().row()));
         result.setAttribute(SnakeHuntXML.COLUMN, String.valueOf(jungleField.coordinate().column()));
-        result.setAttribute(SnakeHuntXML.USABILITY, String.valueOf(jungleField.getUsability()));
+        result.setAttribute(SnakeHuntXML.USABILITY, String.valueOf(jungleField.remainingUsability()));
         result.setAttribute(SnakeHuntXML.POINTS, String.valueOf(jungleField.fieldValue()));
         result.setText(String.valueOf(jungleField.character()));
         return result;

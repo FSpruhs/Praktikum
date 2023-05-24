@@ -61,7 +61,7 @@ public class DoubleRecursionAlgorithm implements SnakeHuntAlgorithm {
     }
 
     private int startSnakeSearch(JungleField startField, SnakeHead snakeHead) {
-        if (startField.getUsability() > 0) {
+        if (startField.remainingUsability() > 0) {
             Snake snake = toSnake(snakeHead.snakeTypeId());
             SnakePart snakePart = placeSnakePart(startField, snake);
             int solution = searchNextSnakePart(snake, getCharacterBandWithoutFirstChar(snake));
@@ -99,7 +99,7 @@ public class DoubleRecursionAlgorithm implements SnakeHuntAlgorithm {
 
     private List<JungleField> getUsableStartFields(SnakeHead snakeHead) {
         return jungleFieldMap.get(snakeHead.firstChar()).stream()
-                .filter(jungleField -> jungleField.getUsability() > 0)
+                .filter(jungleField -> jungleField.remainingUsability() > 0)
                 .sorted()
                 .toList();
     }
@@ -207,7 +207,7 @@ public class DoubleRecursionAlgorithm implements SnakeHuntAlgorithm {
 
     private List<JungleField> createJungleFields(Snake snake, char nextChar) {
         return getNeighbors(snake).stream()
-                .filter(coordinate -> jungle.getJungleField(coordinate).getUsability() > 0)
+                .filter(coordinate -> jungle.getJungleField(coordinate).remainingUsability() > 0)
                 .filter(coordinate -> jungle.getJungleField(coordinate).character() == nextChar)
                 .map(jungle::getJungleField)
                 .sorted()

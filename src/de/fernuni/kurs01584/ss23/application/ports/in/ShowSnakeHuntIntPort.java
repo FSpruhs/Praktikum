@@ -15,7 +15,7 @@ public interface ShowSnakeHuntIntPort {
      *
      * @return the jungle with all data.
      */
-    Jungle showJungle();
+    JungleDTO showJungle();
 
     /**
      * Shows the values of the snake types.

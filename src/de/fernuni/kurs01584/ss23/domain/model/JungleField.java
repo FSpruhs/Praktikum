@@ -36,7 +36,7 @@ public record JungleField(
 		snakeParts.add(snakePart);
 	}
 
-	public int getUsability() {
+	public int remainingUsability() {
 		return usability - snakeParts.size();
 	}
 

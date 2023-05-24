@@ -15,7 +15,7 @@ public class SnakeHuntCLIPrinter {
     private static final String SEPARATOR = "-------------------------- %s --------------------------%n";
 
     private final List<SnakeDTO> snakes;
-    private final Jungle jungle;
+    private final JungleDTO jungle;
     private final List<SnakeTypeDTO> snakeTypes;
 
     /**
@@ -25,7 +25,7 @@ public class SnakeHuntCLIPrinter {
      * @param snakes the list of snakes of the solution to be printed.
      * @param snakeTypes the snake types to be printed.
      */
-    public SnakeHuntCLIPrinter(Jungle jungle, List<SnakeDTO> snakes, List<SnakeTypeDTO> snakeTypes) {
+    public SnakeHuntCLIPrinter(JungleDTO jungle, List<SnakeDTO> snakes, List<SnakeTypeDTO> snakeTypes) {
         this.snakes = snakes;
         this.jungle = jungle;
         this.snakeTypes = snakeTypes;
@@ -39,17 +39,17 @@ public class SnakeHuntCLIPrinter {
         printSnakeTypes();
         printJungleFields();
         if (!snakes.isEmpty()) {
-            printSolution(jungle.getJungleSize());
+            printSolution();
         }
     }
 
-    private void printSolution(JungleSize jungleSize) {
+    private void printSolution() {
         System.out.printf(SEPARATOR, "Solution");
         for (SnakeDTO snake : snakes) {
             printSolutionData(snake);
-            String[][] solutionGrid = initializeSolutionGrid(jungleSize);
+            String[][] solutionGrid = initializeSolutionGrid();
             printSnakeParts(snake, solutionGrid);
-            printSolutionGrid(jungleSize, solutionGrid);
+            printSolutionGrid(solutionGrid);
         }
     }
 
@@ -74,9 +74,9 @@ public class SnakeHuntCLIPrinter {
         }
     }
 
-    private void printSolutionGrid(JungleSize jungleSize, String[][] solutionGrid) {
-        for (int row = 0; row < jungleSize.rows() ; row++) {
-            for (int column = 0; column < jungleSize.columns() ; column++) {
+    private void printSolutionGrid(String[][] solutionGrid) {
+        for (int row = 0; row < jungle.rows() ; row++) {
+            for (int column = 0; column < jungle.columns() ; column++) {
                 System.out.print(solutionGrid[row][column]);
             }
             System.out.println();
@@ -84,8 +84,8 @@ public class SnakeHuntCLIPrinter {
         System.out.println();
     }
 
-    private String[][] initializeSolutionGrid(JungleSize jungleSize) {
-        String[][] result = new String[jungleSize.rows()][jungleSize.columns()];
+    private String[][] initializeSolutionGrid() {
+        String[][] result = new String[jungle.rows()][jungle.columns()];
         Arrays.stream(result).forEach(row -> Arrays.fill(row, " . "));
         return result;
     }
@@ -111,20 +111,27 @@ public class SnakeHuntCLIPrinter {
     }
 
     private void printGrid() {
-        for (int row = 0; row < jungle.getJungleSize().rows() ; row++) {
-            printGridTop(jungle.getJungleSize().columns());
+        for (int row = 0; row < jungle.rows() ; row++) {
+            printGridTop(jungle.columns());
             printGridValue(row);
-            printGridBottom(jungle.getJungleSize().columns());
+            printGridBottom(jungle.columns());
         }
-        System.out.print("+-------".repeat(jungle.getJungleSize().columns()));
+        System.out.print("+-------".repeat(jungle.columns()));
         System.out.println("+\n");
     }
 
     private void printGridValue(int row) {
-        for (int column = 0; column < jungle.getJungleSize().columns(); column++) {
-            JungleField jungleField = jungle.getJungleField(new Coordinate(row, column));
-            System.out.printf("| %s \033[1m%s\033[0m %s ", jungleField.fieldValue(), jungleField.character(), jungleField.getUsability());
+        for (int column = 0; column < jungle.columns(); column++) {
+            JungleFieldDTO jungleField = findJungleField(row, column);
+            System.out.printf("| %s \033[1m%s\033[0m %s ", jungleField.fieldValue(), jungleField.character(), jungleField.usability());
         }
+    }
+
+    private JungleFieldDTO findJungleField(int row, int column) {
+        return jungle.jungleFields().stream()
+                .filter(jungleField -> jungleField.row() == row && jungleField.column() == column)
+                .findFirst()
+                .orElseThrow();
     }
 
     private void printGridBottom(int columns) {
@@ -153,8 +160,8 @@ public class SnakeHuntCLIPrinter {
 
     private void printJungleData() {
         System.out.printf(SEPARATOR, "Jungle data");
-        System.out.printf("Rows: %s%n", jungle.getJungleSize().rows());
-        System.out.printf("Columns: %s%n", jungle.getJungleSize().columns());
-        System.out.printf("Character band: %s%n%n", jungle.getCharacters());
+        System.out.printf("Rows: %s%n", jungle.rows());
+        System.out.printf("Columns: %s%n", jungle.columns());
+        System.out.printf("Character band: %s%n%n", jungle.characters());
     }
 }

@@ -5,12 +5,26 @@ import java.util.Objects;
 
 import de.fernuni.kurs01584.ss23.domain.exception.InvalidJungleException;
 
+
+/**
+ * Domain object that represents the jungle of snake hunt.
+ */
 public class Jungle {
 
 	private final JungleSize jungleSize;
 	private final String characters;
 	private List<JungleField> jungleFields;
-	
+
+	/**
+	 * Constructor of the Jungle.
+	 *
+	 * @param jungleSize Jungle Size value Object.
+	 * @param characters These characters are present in the jungle. No empty String allowed.
+	 * @param jungleFields List with the fields of the jungle. The size of the list corresponds to the rows of the
+	 *                     jungle multiplied by the columns of the jungle.
+	 *                     The jungle fields must be sorted by the ID in ascending order.
+	 *                     The value of the id must match their index in the list.
+	 */
 	public Jungle(JungleSize jungleSize, String characters, List<JungleField> jungleFields) {
 		this.jungleSize = jungleSize;
 		this.characters = characters;
@@ -49,21 +63,32 @@ public class Jungle {
 	}
 
 	private void validateCharacters() {
-		if (characters == null) {
+		if (characters == null || characters.isEmpty()) {
 			throw new InvalidJungleException("Characters is Null!");
 		}
 	}
 
+	/**
+	 * Returns the jungle field at the coordinate.
+	 *
+	 * @param coordinate The coordinate of the jungle field to be returned.
+	 * @return The jungle field at the coordinate.
+	 */
 	public JungleField getJungleField(Coordinate coordinate) {
 		return jungleFields.get(mapCoordinateToIndex(coordinate));
 	}
 
+	/**
+	 * Places the snake part in the jungle
+	 *
+	 * @param snakePart The snake part to be placed.
+	 */
 	public void placeSnakePart(SnakePart snakePart) {
 		jungleFields.get(mapCoordinateToIndex(snakePart.coordinate())).placeSnakePart(snakePart);
 	}
 
 	public int getJungleFieldUsability(Coordinate coordinate) {
-		return jungleFields.get(mapCoordinateToIndex(coordinate)).getUsability();
+		return jungleFields.get(mapCoordinateToIndex(coordinate)).remainingUsability();
 	}
 
 	public char getJungleFieldSign(Coordinate coordinate) {

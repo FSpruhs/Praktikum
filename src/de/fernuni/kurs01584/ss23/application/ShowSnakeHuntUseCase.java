@@ -3,7 +3,6 @@ package de.fernuni.kurs01584.ss23.application;
 import de.fernuni.kurs01584.ss23.application.ports.in.ShowSnakeHuntIntPort;
 import de.fernuni.kurs01584.ss23.domain.model.*;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -78,7 +77,28 @@ public class ShowSnakeHuntUseCase implements ShowSnakeHuntIntPort {
      * @return data of the jungle to be shown.
      */
     @Override
-    public Jungle showJungle() {
-        return snakeHunt.getJungle();
+    public JungleDTO showJungle() {
+        return toJungleDTO(snakeHunt.getJungle());
+    }
+
+    private JungleDTO toJungleDTO(Jungle jungle) {
+        return new JungleDTO(
+                jungle.getJungleSize().rows(),
+                jungle.getJungleSize().columns(),
+                jungle.getCharacters(),
+                toJungleFieldDTO(jungle.getJungleFields())
+        );
+    }
+
+    private List<JungleFieldDTO> toJungleFieldDTO(List<JungleField> jungleFields) {
+        return jungleFields.stream().map(jungleField -> new JungleFieldDTO(
+                jungleField.fieldId().value(),
+                jungleField.coordinate().row(),
+                jungleField.coordinate().column(),
+                jungleField.fieldValue(),
+                jungleField.usability(),
+                jungleField.character()
+        )).toList();
     }
 }
+
