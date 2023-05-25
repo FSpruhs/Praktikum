@@ -49,7 +49,7 @@ public record SnakeType(SnakeTypeId snakeTypeId,
 	}
 
 	/**
-	 * Checks whether the current snake pat can follow on the previous snake part.
+	 * Checks whether the current snake part can follow on the previous snake part.
 	 * The rules of the neighborhood structure are used for the check.
 	 *
 	 * @param actualSnakePart  the actual snake part.
