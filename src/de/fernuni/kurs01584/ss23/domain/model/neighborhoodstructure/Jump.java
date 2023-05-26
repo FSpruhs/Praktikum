@@ -8,15 +8,29 @@ import de.fernuni.kurs01584.ss23.domain.exception.InvalidNeighboorhoodStructureE
 import de.fernuni.kurs01584.ss23.domain.model.Coordinate;
 import de.fernuni.kurs01584.ss23.domain.model.JungleSize;
 
+
+/**
+ * Jump is a neighborhood structure designed to find the nearest possible neighbor from the current position.
+ * First, the fields in the first parameter are counted vertically or horizontally.
+ * If the first move was vertical, the next move must be horizontal and vice versa.
+ * In the second move, the number of fields from the second parameter is counted accordingly.
+ * All fields that can be reached in this way are possible neighboring fields to the current field.
+ */
 public class Jump implements NeighborhoodStructure{
 
-	private final int row;
-	private final int column;
+	private final int fristMove;
+	private final int secondMove;
 
-	public Jump(int row, int column) {
-		validateJump(row, column);
-		this.row = row;
-		this.column = column;
+	/**
+	 * Constructor of jump.
+	 *
+	 * @param firstMove The first distance needed to find the next neighbor.
+	 * @param secondMove The second distance needed to find the next neighbor.
+	 */
+	public Jump(int firstMove, int secondMove) {
+		validateJump(firstMove, secondMove);
+		this.fristMove = firstMove;
+		this.secondMove = secondMove;
 	}
 
 	private void validateJump(int row, int column) {
@@ -39,14 +53,14 @@ public class Jump implements NeighborhoodStructure{
 	@Override
 	public String toString() {
 		return "Jump{" +
-				"row=" + row +
-				", column=" + column +
+				"row=" + fristMove +
+				", column=" + secondMove +
 				'}';
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(column, row);
+		return Objects.hash(secondMove, fristMove);
 	}
 
 	@Override
@@ -58,9 +72,17 @@ public class Jump implements NeighborhoodStructure{
 		if (getClass() != obj.getClass())
 			return false;
 		Jump other = (Jump) obj;
-		return column == other.column && row == other.row;
+		return secondMove == other.secondMove && fristMove == other.fristMove;
 	}
 
+	/**
+	 * Checks whether the current coordinate can follow on the previous coordinate.
+	 * The jump rules are used for the check.
+	 *
+	 * @param actualCoordinate  the actual coordinate.
+	 * @param previousCoordinate the previous coordinate.
+	 * @return Returns false if the current coordinate can follow the previous coordinate, otherwise true.
+	 */
 	@Override
 	public boolean isNotNeighbour(Coordinate actualCoordinate, Coordinate previousCoordinate) {
 		return !((matchesRow(previousCoordinate.row(), actualCoordinate.row())
@@ -70,39 +92,56 @@ public class Jump implements NeighborhoodStructure{
 	}
 
 	private boolean matchesColumn(int previous, int actual) {
-		return previous + column == actual || previous - column == actual;
+		return previous + secondMove == actual || previous - secondMove == actual;
 	}
 
 	private boolean matchesRow(int previous, int actual) {
-		return previous + row == actual || previous - row == actual;
+		return previous + fristMove == actual || previous - fristMove == actual;
 	}
 
+	/**
+	 * Gets a field in a jungle and returns a list with all fields that can be reached with jump.
+	 *
+	 * @param coordinate The coordinate that serves as the starting point.
+	 * @param jungleSize The dimensions of the jungle.
+	 * @return A list with all coordinates that can be reached from the starting point.
+	 */
 	@Override
 	public List<Coordinate> nextFields(Coordinate coordinate, JungleSize jungleSize) {
-		if (row == 0 || column == 0) {
+		if (fristMove == 0 || secondMove == 0) {
 			return nextFieldsWithZeroValue(coordinate, jungleSize);
 		}
-		if (row == column) {
+		if (fristMove == secondMove) {
 			return nextFieldsWithSameCoordinateValue(coordinate, jungleSize);
 		}
 		return nextFieldsWithDifferentCoordinateValue(coordinate, jungleSize);
 
 	}
 
+	/**
+	 * Returns the name of jump.
+	 *
+	 * @return the name of jump.
+	 */
 	@Override
 	public String getName() {
 		return "Jump";
 	}
 
+	/**
+	 * Returns a list of the parameters of jump.
+	 *
+	 * @return a list of the parameters of jump.
+	 */
 	@Override
 	public List<Integer> getParameter() {
-		return List.of(row, column);
+		return List.of(fristMove, secondMove);
 	}
 
 	private List<Coordinate> nextFieldsWithDifferentCoordinateValue(Coordinate coordinate, JungleSize jungleSize) {
 		List<Coordinate> result = new LinkedList<>();
-		result.addAll(addFields(coordinate, jungleSize, row, column));
-		result.addAll(addFields(coordinate, jungleSize, column, row));
+		result.addAll(addFields(coordinate, jungleSize, fristMove, secondMove));
+		result.addAll(addFields(coordinate, jungleSize, secondMove, fristMove));
 		return result;
 	}
 
@@ -141,7 +180,7 @@ public class Jump implements NeighborhoodStructure{
 
 	private List<Coordinate> nextFieldsWithSameCoordinateValue(Coordinate coordinate, JungleSize jungleSize) {
 		List<Coordinate> result = new LinkedList<>();
-		int distance = row;
+		int distance = fristMove;
 		if (topLeftIsValid(coordinate, distance)) {
 			result.add(new Coordinate(topCoordinate(coordinate, distance), leftCoordinate(coordinate, distance)));
 		}
@@ -183,7 +222,7 @@ public class Jump implements NeighborhoodStructure{
 
 	private List<Coordinate> nextFieldsWithZeroValue(Coordinate coordinate, JungleSize jungleSize) {
 		List<Coordinate> result = new LinkedList<>();
-		int distance = Math.max(row, column);
+		int distance = Math.max(fristMove, secondMove);
 		if (topIsValid(coordinate, distance)) {
 			result.add(new Coordinate(topCoordinate(coordinate, distance), coordinate.column()));
 		}

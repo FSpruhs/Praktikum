@@ -8,11 +8,22 @@ import de.fernuni.kurs01584.ss23.domain.exception.InvalidNeighboorhoodStructureE
 import de.fernuni.kurs01584.ss23.domain.model.Coordinate;
 import de.fernuni.kurs01584.ss23.domain.model.JungleSize;
 
+/**
+ * Creates a neighborhood structure distance. Distance has one parameter.
+ * This parameter is an integer number greater than 0.
+ * Distance allows to reach from the current field all fields that are as far away from the current field as the value of the parameter.
+ * This distance is valid vertically, horizontally and diagonally.
+ */
 public class Distance implements NeighborhoodStructure {
 
 
 	private final int fieldRange;
 
+	/**
+	 * Constructor from Distance.
+	 *
+	 * @param fieldRange Specifies the maximum number of fields the next field can be away from the current field.
+	 */
 	public Distance(int fieldRange) {
 		this.fieldRange = fieldRange;
 		validateDistance(fieldRange);
@@ -37,6 +48,14 @@ public class Distance implements NeighborhoodStructure {
 		return Objects.hash(fieldRange);
 	}
 
+	/**
+	 * Checks whether the current coordinate can follow on the previous coordinate.
+	 * The distance rules are used for the check.
+	 *
+	 * @param actualCoordinate  the actual coordinate.
+	 * @param previousCoordinate the previous coordinate.
+	 * @return Returns false if the current coordinate can follow the previous coordinate, otherwise true.
+	 */
 	@Override
 	public boolean isNotNeighbour(Coordinate actualCoordinate, Coordinate previousCoordinate) {
 		return isSameCoordinate(actualCoordinate, previousCoordinate) ||
@@ -44,11 +63,11 @@ public class Distance implements NeighborhoodStructure {
 				isCoordinateOutOfRange(actualCoordinate.column(), previousCoordinate.column());
 	}
 
-	public boolean isSameCoordinate(Coordinate actualCoordinate, Coordinate previousCoordinate) {
+	private boolean isSameCoordinate(Coordinate actualCoordinate, Coordinate previousCoordinate) {
 		return actualCoordinate.row() == previousCoordinate.row() && actualCoordinate.column() == previousCoordinate.column();
 	}
 
-	public boolean isCoordinateOutOfRange(int actualCoordinate, int previousCoordinate) {
+	private boolean isCoordinateOutOfRange(int actualCoordinate, int previousCoordinate) {
 		return istToBig(actualCoordinate, previousCoordinate) || isToSmall(actualCoordinate, previousCoordinate);
 	}
 
@@ -67,6 +86,13 @@ public class Distance implements NeighborhoodStructure {
 				'}';
 	}
 
+	/**
+	 * Gets a field in a jungle and returns a list with all fields that can be reached with Distance.
+	 *
+	 * @param coordinate The coordinate that serves as the starting point.
+	 * @param jungleSize The dimensions of the jungle.
+	 * @return A list with all coordinates that can be reached from the starting point.
+	 */
 	@Override
 	public List<Coordinate> nextFields(Coordinate coordinate, JungleSize jungleSize) {
 		List<Coordinate> result = new LinkedList<>();
@@ -78,11 +104,22 @@ public class Distance implements NeighborhoodStructure {
 		return result;
 	}
 
+	/**
+	 * Returns the name of distance.
+	 *
+	 * @return the name of distance.
+	 */
 	@Override
 	public String getName() {
 		return "Distance";
 	}
 
+
+	/**
+	 * Returns a list of the parameters of distance.
+	 *
+	 * @return a list of the parameters of distance.
+	 */
 	@Override
 	public List<Integer> getParameter() {
 		return List.of(fieldRange);
