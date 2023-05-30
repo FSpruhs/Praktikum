@@ -8,19 +8,23 @@ import de.fernuni.kurs01584.ss23.application.ports.in.CreateSnakeHuntInPort;
 import de.fernuni.kurs01584.ss23.application.ports.in.EvaluateSolutionInPort;
 import de.fernuni.kurs01584.ss23.application.ports.in.SolveInPort;
 import de.fernuni.kurs01584.ss23.application.ports.in.ValidationInPort;
+import de.fernuni.kurs01584.ss23.domain.exception.NoSolutionException;
 import de.fernuni.kurs01584.ss23.domain.model.JungleField;
 import de.fernuni.kurs01584.ss23.domain.model.SnakeHunt;
 import de.fernuni.kurs01584.ss23.domain.model.Solution;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI;
 
 import java.io.File;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Adapter for the Snake Hunt Api.
  */
 public class APIAdapter {
 
+    private static final Logger log = Logger.getLogger(APIAdapter.class.getName());
 
     /**
      *
@@ -73,7 +77,13 @@ public class APIAdapter {
      */
     public List<SchlangenjagdAPI.Fehlertyp> validate() {
         ValidationInPort validationInPort = new ValidationUseCase();
-        return validationInPort.isValid();
+        try {
+            return validationInPort.isValid();
+        } catch (NoSolutionException e) {
+            log.info("No solution to validate!");
+            return new LinkedList<>();
+        }
+
     }
 
     /**
@@ -83,6 +93,12 @@ public class APIAdapter {
      */
     public int rate() {
         EvaluateSolutionInPort evaluateSolutionInPort = new EvaluateSolutionUseCase();
-        return evaluateSolutionInPort.evaluateTotalPoints();
+        try {
+            return evaluateSolutionInPort.evaluateTotalPoints();
+        } catch (NoSolutionException e) {
+            log.info("No solution to evaluate!");
+            return 0;
+        }
+
     }
 }

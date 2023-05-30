@@ -47,7 +47,7 @@ class CLITest {
         String expected = """
                 -------------------------- Jungle data --------------------------
                 Rows: 2
-                Columns: 2
+                Columns: 4
                 Character band: ABCDEFGHIJKLMNOPQRSTUVWXYZ
                                 
                 -------------------------- Snake Types --------------------------
@@ -87,7 +87,7 @@ class CLITest {
         String expected = """
                 -------------------------- Jungle data --------------------------
                 Rows: 2
-                Columns: 2
+                Columns: 4
                 Character band: ABCDEFGHIJKLMNOPQRSTUVWXYZ
                                 
                 -------------------------- Snake Types --------------------------
@@ -121,7 +121,7 @@ class CLITest {
         String expected = """
                 -------------------------- Jungle data --------------------------
                 Rows: 2
-                Columns: 2
+                Columns: 4
                 Character band: ABCDEFGHIJKLMNOPQRSTUVWXYZ
                                
                 -------------------------- Snake Types --------------------------
@@ -164,7 +164,7 @@ class CLITest {
         String expected = """
                 -------------------------- Jungle data --------------------------
                 Rows: 2
-                Columns: 2
+                Columns: 4
                 Character band: ABCDEFGHIJKLMNOPQRSTUVWXYZ
                                 
                 -------------------------- Snake Types --------------------------

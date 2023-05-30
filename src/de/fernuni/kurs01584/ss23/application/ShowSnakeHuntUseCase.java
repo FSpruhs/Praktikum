@@ -3,6 +3,7 @@ package de.fernuni.kurs01584.ss23.application;
 import de.fernuni.kurs01584.ss23.application.ports.in.ShowSnakeHuntIntPort;
 import de.fernuni.kurs01584.ss23.domain.model.*;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -51,6 +52,9 @@ public class ShowSnakeHuntUseCase implements ShowSnakeHuntIntPort {
     }
 
     private List<SnakeDTO> toSnakeDTO(Solution solution) {
+        if (solution == null) {
+            return new LinkedList<>();
+        }
         return solution.snakes().stream()
                 .map(snake -> new SnakeDTO(
                         snake.snakeTypeId().value(),

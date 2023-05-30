@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import de.fernuni.kurs01584.ss23.application.*;
 import de.fernuni.kurs01584.ss23.application.ports.in.*;
+import de.fernuni.kurs01584.ss23.domain.exception.NoSolutionException;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
 
 /**
@@ -132,19 +133,29 @@ public class CLIAdapter {
 
 	private void evaluateSolution() {
 		EvaluateSolutionInPort evaluateSolutionInPort = new EvaluateSolutionUseCase();
-		System.out.printf("Total points of the Solution are: %s%n", evaluateSolutionInPort.evaluateTotalPoints());
+		try {
+			System.out.printf("Total points of the Solution are: %s%n", evaluateSolutionInPort.evaluateTotalPoints());
+		} catch (NoSolutionException e) {
+			System.out.println("No solution to evaluate!");
+		}
+
 	}
 
 	private void validateInstance() {
 		ValidationInPort validationInPort = new ValidationUseCase();
-		List<Fehlertyp> errorTypes = validationInPort.isValid();
-		StringBuilder result = new StringBuilder();
-		if (errorTypes.isEmpty()) {
-			result.append("Snake hunt solution is valid.");
-		} else {
-			createErrorMessage(errorTypes, result);
+		try {
+			List<Fehlertyp> errorTypes = validationInPort.isValid();
+			StringBuilder result = new StringBuilder();
+			if (errorTypes.isEmpty()) {
+				result.append("Snake hunt solution is valid.");
+			} else {
+				createErrorMessage(errorTypes, result);
+			}
+			System.out.println(result);
+		} catch (NoSolutionException e) {
+			System.out.println("No solution to validate!");
 		}
-		System.out.println(result);
+
 	}
 
 	private void createErrorMessage(List<Fehlertyp> errorTypes, StringBuilder result) {
