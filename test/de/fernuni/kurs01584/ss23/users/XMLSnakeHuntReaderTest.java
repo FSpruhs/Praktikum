@@ -31,7 +31,7 @@ public class XMLSnakeHuntReaderTest {
 	@Test
 	@DisplayName("Positiv Test for Read Duration")
 	void readDurationInSeconds() {
-		assertEquals(Duration.ofSeconds(60), xmlSnakeHuntReader.readDurationInSeconds());
+		assertEquals(Duration.ofSeconds(60), xmlSnakeHuntReader.readDuration());
 	}
 
 	@Test

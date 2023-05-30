@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Schlangenjagd SYSTEM "schlangenjagd.dtd">
+<Schlangenjagd>
+    <Zeit einheit="min">
+        <Vorgabe>0.2</Vorgabe>
+        <Abgabe>0.2000001336666667</Abgabe>
+    </Zeit>
+    <Dschungel zeilen="8" spalten="8" zeichen="☀☁☂☃☄★☆☇☔☕☼☽☾♨♫⚘⚽⛄⛅⛆⛈⛐⛰⛵⛷⛸⛹⛺">
+        <Feld id="F0" zeile="0" spalte="0" verwendbarkeit="1" punkte="5">☻</Feld>
+        <Feld id="F1" zeile="0" spalte="1" verwendbarkeit="1" punkte="8">☺</Feld>
+        <Feld id="F2" zeile="0" spalte="2" verwendbarkeit="1" punkte="7">☻</Feld>
+        <Feld id="F3" zeile="0" spalte="3" verwendbarkeit="1" punkte="3">⛸</Feld>
+        <Feld id="F4" zeile="0" spalte="4" verwendbarkeit="1" punkte="4">☄</Feld>
+        <Feld id="F5" zeile="0" spalte="5" verwendbarkeit="1" punkte="4">☺</Feld>
+        <Feld id="F6" zeile="0" spalte="6" verwendbarkeit="1" punkte="4">☻</Feld>
+        <Feld id="F7" zeile="0" spalte="7" verwendbarkeit="1" punkte="6">☺</Feld>
+        <Feld id="F8" zeile="1" spalte="0" verwendbarkeit="1" punkte="8">☺</Feld>
+        <Feld id="F9" zeile="1" spalte="1" verwendbarkeit="1" punkte="8">☻</Feld>
+        <Feld id="F10" zeile="1" spalte="2" verwendbarkeit="1" punkte="9">☺</Feld>
+        <Feld id="F11" zeile="1" spalte="3" verwendbarkeit="1" punkte="3">☺</Feld>
+        <Feld id="F12" zeile="1" spalte="4" verwendbarkeit="1" punkte="7">☻</Feld>
+        <Feld id="F13" zeile="1" spalte="5" verwendbarkeit="1" punkte="3">☻</Feld>
+        <Feld id="F14" zeile="1" spalte="6" verwendbarkeit="1" punkte="2">⚘</Feld>
+        <Feld id="F15" zeile="1" spalte="7" verwendbarkeit="1" punkte="4">☻</Feld>
+        <Feld id="F16" zeile="2" spalte="0" verwendbarkeit="1" punkte="2">P</Feld>
+        <Feld id="F17" zeile="2" spalte="1" verwendbarkeit="1" punkte="2">☺</Feld>
+        <Feld id="F18" zeile="2" spalte="2" verwendbarkeit="1" punkte="6">P</Feld>
+        <Feld id="F19" zeile="2" spalte="3" verwendbarkeit="1" punkte="9">R</Feld>
+        <Feld id="F20" zeile="2" spalte="4" verwendbarkeit="1" punkte="6">☻</Feld>
+        <Feld id="F21" zeile="2" spalte="5" verwendbarkeit="1" punkte="2">⛐</Feld>
+        <Feld id="F22" zeile="2" spalte="6" verwendbarkeit="1" punkte="0">☺</Feld>
+        <Feld id="F23" zeile="2" spalte="7" verwendbarkeit="1" punkte="9">☺</Feld>
+        <Feld id="F24" zeile="3" spalte="0" verwendbarkeit="1" punkte="4">☻</Feld>
+        <Feld id="F25" zeile="3" spalte="1" verwendbarkeit="1" punkte="9">R</Feld>
+        <Feld id="F26" zeile="3" spalte="2" verwendbarkeit="1" punkte="8">☺</Feld>
+        <Feld id="F27" zeile="3" spalte="3" verwendbarkeit="1" punkte="3">♡</Feld>
+        <Feld id="F28" zeile="3" spalte="4" verwendbarkeit="1" punkte="7">☺</Feld>
+        <Feld id="F29" zeile="3" spalte="5" verwendbarkeit="1" punkte="2">☺</Feld>
+        <Feld id="F30" zeile="3" spalte="6" verwendbarkeit="1" punkte="5">☺</Feld>
+        <Feld id="F31" zeile="3" spalte="7" verwendbarkeit="1" punkte="4">☻</Feld>
+        <Feld id="F32" zeile="4" spalte="0" verwendbarkeit="1" punkte="0">☻</Feld>
+        <Feld id="F33" zeile="4" spalte="1" verwendbarkeit="1" punkte="6">☻</Feld>
+        <Feld id="F34" zeile="4" spalte="2" verwendbarkeit="1" punkte="3">☺</Feld>
+        <Feld id="F35" zeile="4" spalte="3" verwendbarkeit="1" punkte="5">☻</Feld>
+        <Feld id="F36" zeile="4" spalte="4" verwendbarkeit="1" punkte="9">P</Feld>
+        <Feld id="F37" zeile="4" spalte="5" verwendbarkeit="1" punkte="0">☻</Feld>
+        <Feld id="F38" zeile="4" spalte="6" verwendbarkeit="1" punkte="5">☺</Feld>
+        <Feld id="F39" zeile="4" spalte="7" verwendbarkeit="1" punkte="4">☻</Feld>
+        <Feld id="F40" zeile="5" spalte="0" verwendbarkeit="1" punkte="5">☺</Feld>
+        <Feld id="F41" zeile="5" spalte="1" verwendbarkeit="1" punkte="0">☺</Feld>
+        <Feld id="F42" zeile="5" spalte="2" verwendbarkeit="1" punkte="7">☺</Feld>
+        <Feld id="F43" zeile="5" spalte="3" verwendbarkeit="1" punkte="7">☻</Feld>
+        <Feld id="F44" zeile="5" spalte="4" verwendbarkeit="1" punkte="7">☆</Feld>
+        <Feld id="F45" zeile="5" spalte="5" verwendbarkeit="1" punkte="2">R</Feld>
+        <Feld id="F46" zeile="5" spalte="6" verwendbarkeit="1" punkte="0">☻</Feld>
+        <Feld id="F47" zeile="5" spalte="7" verwendbarkeit="1" punkte="8">☺</Feld>
+        <Feld id="F48" zeile="6" spalte="0" verwendbarkeit="1" punkte="0">⛈</Feld>
+        <Feld id="F49" zeile="6" spalte="1" verwendbarkeit="1" punkte="7">☺</Feld>
+        <Feld id="F50" zeile="6" spalte="2" verwendbarkeit="1" punkte="2">☻</Feld>
+        <Feld id="F51" zeile="6" spalte="3" verwendbarkeit="1" punkte="3">♫</Feld>
+        <Feld id="F52" zeile="6" spalte="4" verwendbarkeit="1" punkte="6">☺</Feld>
+        <Feld id="F53" zeile="6" spalte="5" verwendbarkeit="1" punkte="5">P</Feld>
+        <Feld id="F54" zeile="6" spalte="6" verwendbarkeit="1" punkte="6">☻</Feld>
+        <Feld id="F55" zeile="6" spalte="7" verwendbarkeit="1" punkte="5">⛰</Feld>
+        <Feld id="F56" zeile="7" spalte="0" verwendbarkeit="1" punkte="8">☻</Feld>
+        <Feld id="F57" zeile="7" spalte="1" verwendbarkeit="1" punkte="9">☼</Feld>
+        <Feld id="F58" zeile="7" spalte="2" verwendbarkeit="1" punkte="4">⛈</Feld>
+        <Feld id="F59" zeile="7" spalte="3" verwendbarkeit="1" punkte="4">♥</Feld>
+        <Feld id="F60" zeile="7" spalte="4" verwendbarkeit="1" punkte="0">R</Feld>
+        <Feld id="F61" zeile="7" spalte="5" verwendbarkeit="1" punkte="1">☻</Feld>
+        <Feld id="F62" zeile="7" spalte="6" verwendbarkeit="1" punkte="6">★</Feld>
+        <Feld id="F63" zeile="7" spalte="7" verwendbarkeit="1" punkte="3">★</Feld>
+    </Dschungel>
+    <Schlangenarten>
+        <Schlangenart id="A0" punkte="10" anzahl="1">
+            <Zeichenkette>PR☻PR♥</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Distanz">
+                <Parameter wert="1" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+        <Schlangenart id="A1" punkte="10" anzahl="1">
+            <Zeichenkette>PR☺PR♡</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Distanz">
+                <Parameter wert="1" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+        <Schlangenart id="A2" punkte="1" anzahl="6">
+            <Zeichenkette>☺☻</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Distanz">
+                <Parameter wert="1" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+        <Schlangenart id="A3" punkte="3" anzahl="4">
+            <Zeichenkette>☺☻☺☻</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Distanz">
+                <Parameter wert="1" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+        <Schlangenart id="A4" punkte="6" anzahl="2">
+            <Zeichenkette>☺☻☺☻☺☻</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Distanz">
+                <Parameter wert="1" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+    </Schlangenarten>
+    <Schlangen>
+        <Schlange art="A0">
+            <Schlangenglied feld="F36" />
+            <Schlangenglied feld="F45" />
+            <Schlangenglied feld="F54" />
+            <Schlangenglied feld="F53" />
+            <Schlangenglied feld="F60" />
+            <Schlangenglied feld="F59" />
+        </Schlange>
+        <Schlange art="A4">
+            <Schlangenglied feld="F10" />
+            <Schlangenglied feld="F9" />
+            <Schlangenglied feld="F1" />
+            <Schlangenglied feld="F2" />
+            <Schlangenglied feld="F11" />
+            <Schlangenglied feld="F12" />
+        </Schlange>
+        <Schlange art="A4">
+            <Schlangenglied feld="F23" />
+            <Schlangenglied feld="F15" />
+            <Schlangenglied feld="F7" />
+            <Schlangenglied feld="F6" />
+            <Schlangenglied feld="F5" />
+            <Schlangenglied feld="F13" />
+        </Schlange>
+        <Schlange art="A4">
+            <Schlangenglied feld="F26" />
+            <Schlangenglied feld="F33" />
+            <Schlangenglied feld="F42" />
+            <Schlangenglied feld="F43" />
+            <Schlangenglied feld="F52" />
+            <Schlangenglied feld="F61" />
+        </Schlange>
+        <Schlange art="A4">
+            <Schlangenglied feld="F47" />
+            <Schlangenglied feld="F39" />
+            <Schlangenglied feld="F30" />
+            <Schlangenglied feld="F31" />
+            <Schlangenglied feld="F38" />
+            <Schlangenglied feld="F46" />
+        </Schlange>
+        <Schlange art="A2">
+            <Schlangenglied feld="F8" />
+            <Schlangenglied feld="F0" />
+        </Schlange>
+        <Schlange art="A4">
+            <Schlangenglied feld="F40" />
+            <Schlangenglied feld="F32" />
+            <Schlangenglied feld="F41" />
+            <Schlangenglied feld="F50" />
+            <Schlangenglied feld="F49" />
+            <Schlangenglied feld="F56" />
+        </Schlange>
+        <Schlange art="A4">
+            <Schlangenglied feld="F34" />
+            <Schlangenglied feld="F35" />
+            <Schlangenglied feld="F28" />
+            <Schlangenglied feld="F20" />
+            <Schlangenglied feld="F29" />
+            <Schlangenglied feld="F37" />
+        </Schlange>
+        <Schlange art="A1">
+            <Schlangenglied feld="F16" />
+            <Schlangenglied feld="F25" />
+            <Schlangenglied feld="F17" />
+            <Schlangenglied feld="F18" />
+            <Schlangenglied feld="F19" />
+            <Schlangenglied feld="F27" />
+        </Schlange>
+    </Schlangen>
+</Schlangenjagd>

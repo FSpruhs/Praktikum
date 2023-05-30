@@ -21,8 +21,8 @@ class SnakeHuntInitializer {
 	public static void initialize(File xmlFilePath) {
 		XMLSnakeHuntReader xmlSnakeHuntReader = new XMLSnakeHuntReader(xmlFilePath); 
 		try {
-			Duration duration = xmlSnakeHuntReader.readDurationInSeconds();
-			log.info("Duration initialized: %s".formatted(duration.toNanos()));
+			Duration duration = xmlSnakeHuntReader.readDuration();
+			log.info("Duration initialized: %s seconds".formatted(duration.toSeconds()));
 			Jungle jungle = xmlSnakeHuntReader.readJungle();
 			log.info("Jungle initialized: %s".formatted(jungle));
 			Map<SnakeTypeId, SnakeType> snakeTypes = xmlSnakeHuntReader.readSnakeTypes();

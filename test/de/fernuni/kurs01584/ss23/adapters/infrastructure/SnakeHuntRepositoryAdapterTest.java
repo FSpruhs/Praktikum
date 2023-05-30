@@ -52,7 +52,7 @@ class SnakeHuntRepositoryAdapterTest {
         assertEquals(jungle, xmlSnakeHuntReader.readJungle());
         assertEquals(solution, xmlSnakeHuntReader.readSolution());
         assertEquals(snakeTypes, xmlSnakeHuntReader.readSnakeTypes());
-        assertEquals(targetDuration, xmlSnakeHuntReader.readDurationInSeconds());
+        assertEquals(targetDuration, xmlSnakeHuntReader.readDuration());
 
     }
 }

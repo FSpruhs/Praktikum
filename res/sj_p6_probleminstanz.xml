@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Schlangenjagd SYSTEM "schlangenjagd.dtd">
+<Schlangenjagd>
+    <Zeit einheit="ms">
+        <Vorgabe>2000.0</Vorgabe>
+    </Zeit>
+    <Dschungel zeilen="6" spalten="6" zeichen="X">
+        <Feld id="F0" zeile="0" spalte="0" verwendbarkeit="1" punkte="5">A</Feld>
+        <Feld id="F1" zeile="0" spalte="1" verwendbarkeit="1" punkte="8">A</Feld>
+        <Feld id="F2" zeile="0" spalte="2" verwendbarkeit="1" punkte="7">X</Feld>
+        <Feld id="F3" zeile="0" spalte="3" verwendbarkeit="1" punkte="3">A</Feld>
+        <Feld id="F4" zeile="0" spalte="4" verwendbarkeit="1" punkte="4">A</Feld>
+        <Feld id="F5" zeile="0" spalte="5" verwendbarkeit="1" punkte="4">X</Feld>
+        <Feld id="F6" zeile="1" spalte="0" verwendbarkeit="1" punkte="4">A</Feld>
+        <Feld id="F7" zeile="1" spalte="1" verwendbarkeit="1" punkte="6">A</Feld>
+        <Feld id="F8" zeile="1" spalte="2" verwendbarkeit="1" punkte="8">A</Feld>
+        <Feld id="F9" zeile="1" spalte="3" verwendbarkeit="1" punkte="8">A</Feld>
+        <Feld id="F10" zeile="1" spalte="4" verwendbarkeit="1" punkte="9">X</Feld>
+        <Feld id="F11" zeile="1" spalte="5" verwendbarkeit="1" punkte="3">X</Feld>
+        <Feld id="F12" zeile="2" spalte="0" verwendbarkeit="1" punkte="7">A</Feld>
+        <Feld id="F13" zeile="2" spalte="1" verwendbarkeit="1" punkte="3">X</Feld>
+        <Feld id="F14" zeile="2" spalte="2" verwendbarkeit="1" punkte="2">A</Feld>
+        <Feld id="F15" zeile="2" spalte="3" verwendbarkeit="1" punkte="4">X</Feld>
+        <Feld id="F16" zeile="2" spalte="4" verwendbarkeit="1" punkte="2">X</Feld>
+        <Feld id="F17" zeile="2" spalte="5" verwendbarkeit="1" punkte="2">X</Feld>
+        <Feld id="F18" zeile="3" spalte="0" verwendbarkeit="1" punkte="6">A</Feld>
+        <Feld id="F19" zeile="3" spalte="1" verwendbarkeit="1" punkte="9">A</Feld>
+        <Feld id="F20" zeile="3" spalte="2" verwendbarkeit="1" punkte="6">A</Feld>
+        <Feld id="F21" zeile="3" spalte="3" verwendbarkeit="1" punkte="2">A</Feld>
+        <Feld id="F22" zeile="3" spalte="4" verwendbarkeit="1" punkte="0">A</Feld>
+        <Feld id="F23" zeile="3" spalte="5" verwendbarkeit="1" punkte="9">X</Feld>
+        <Feld id="F24" zeile="4" spalte="0" verwendbarkeit="1" punkte="4">A</Feld>
+        <Feld id="F25" zeile="4" spalte="1" verwendbarkeit="1" punkte="9">X</Feld>
+        <Feld id="F26" zeile="4" spalte="2" verwendbarkeit="1" punkte="8">A</Feld>
+        <Feld id="F27" zeile="4" spalte="3" verwendbarkeit="1" punkte="3">A</Feld>
+        <Feld id="F28" zeile="4" spalte="4" verwendbarkeit="1" punkte="7">X</Feld>
+        <Feld id="F29" zeile="4" spalte="5" verwendbarkeit="1" punkte="2">A</Feld>
+        <Feld id="F30" zeile="5" spalte="0" verwendbarkeit="1" punkte="5">X</Feld>
+        <Feld id="F31" zeile="5" spalte="1" verwendbarkeit="1" punkte="4">A</Feld>
+        <Feld id="F32" zeile="5" spalte="2" verwendbarkeit="1" punkte="0">X</Feld>
+        <Feld id="F33" zeile="5" spalte="3" verwendbarkeit="1" punkte="6">A</Feld>
+        <Feld id="F34" zeile="5" spalte="4" verwendbarkeit="1" punkte="3">A</Feld>
+        <Feld id="F35" zeile="5" spalte="5" verwendbarkeit="1" punkte="5">X</Feld>
+    </Dschungel>
+    <Schlangenarten>
+        <Schlangenart id="A0" punkte="1" anzahl="2">
+            <Zeichenkette>AA</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Distanz">
+                <Parameter wert="1" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+        <Schlangenart id="A1" punkte="5" anzahl="2">
+            <Zeichenkette>AA</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Sprung">
+                <Parameter wert="1" />
+                <Parameter wert="0" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+        <Schlangenart id="A2" punkte="5" anzahl="2">
+            <Zeichenkette>AA</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Sprung">
+                <Parameter wert="1" />
+                <Parameter wert="1" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+        <Schlangenart id="A3" punkte="10" anzahl="2">
+            <Zeichenkette>AA</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Sprung">
+                <Parameter wert="2" />
+                <Parameter wert="1" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+        <Schlangenart id="A4" punkte="100" anzahl="2">
+            <Zeichenkette>AAA</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Sprung">
+                <Parameter wert="3" />
+                <Parameter wert="1" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+    </Schlangenarten>
+    <Schlangen />
+</Schlangenjagd>

@@ -2,6 +2,7 @@ package de.fernuni.kurs01584.ss23.adapters.users;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +29,9 @@ import de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure.Neighborhood
 public class XMLSnakeHuntReader {
 	
 	private static final Logger log = Logger.getLogger(XMLSnakeHuntReader.class.getName());
+	private static final int MINUTES_TO_SECOND_FACTOR = 60;
+	private static final int HOURS_TO_SECOND_FACTOR = 3600;
+	private static final int DAYS_TO_SECOND_FACTOR = 86400;
 	private Element root;
 
 	/**
@@ -168,8 +172,48 @@ public class XMLSnakeHuntReader {
 	 *
 	 * @return the read target time.
 	 */
-	public Duration readDurationInSeconds() {
-		return Duration.ofSeconds( (long) Float.parseFloat(root.getChild(SnakeHuntXML.TIME).getChild(SnakeHuntXML.TARGET).getValue()));
+	public Duration readDuration() {
+		String timeUnit = root.getChild(SnakeHuntXML.TIME).getAttributeValue(SnakeHuntXML.UNIT);
+		switch (timeUnit) {
+			case SnakeHuntXML.MILLI_SECONDS -> {
+				return Duration.ofMillis(getDuration());
+			}
+			case SnakeHuntXML.SECONDS -> {
+				return Duration.ofSeconds(getDuration());
+			}
+			case SnakeHuntXML.MINUTES -> {
+				return Duration.ofSeconds(getDurationMinutesToSeconds());
+			}
+			case SnakeHuntXML.HOURS -> {
+				return Duration.ofSeconds(getDurationHoursToSeconds());
+			}
+			case SnakeHuntXML.DAYS -> {
+				return Duration.ofSeconds(getDurationDaysToSeconds());
+			}
+			default -> {
+				return Duration.ofSeconds(30);
+			}
+		}
+	}
+
+	private long getDuration() {
+		return (long) Float.parseFloat(getDurationValue());
+	}
+
+	private long getDurationMinutesToSeconds() {
+		return (long) (Float.parseFloat(getDurationValue()) * MINUTES_TO_SECOND_FACTOR);
+	}
+
+	private long getDurationHoursToSeconds() {
+		return (long) (Float.parseFloat(getDurationValue()) * HOURS_TO_SECOND_FACTOR);
+	}
+
+	private long getDurationDaysToSeconds() {
+		return (long) (Double.parseDouble(new BigDecimal(getDurationValue()).toPlainString()) * DAYS_TO_SECOND_FACTOR);
+	}
+
+	private String getDurationValue() {
+		return root.getChild(SnakeHuntXML.TIME).getChild(SnakeHuntXML.TARGET).getValue();
 	}
 
 	/**

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Schlangenjagd SYSTEM "schlangenjagd.dtd">
+<Schlangenjagd>
+    <Zeit einheit="h">
+        <Vorgabe>0.005</Vorgabe>
+    </Zeit>
+    <Dschungel zeilen="8" spalten="10" zeichen="ÁÀĂÂÄÓÒǑÔÖ">
+        <Feld id="F0" zeile="0" spalte="0" verwendbarkeit="1" punkte="5">Ó</Feld>
+        <Feld id="F1" zeile="0" spalte="1" verwendbarkeit="1" punkte="8">N</Feld>
+        <Feld id="F2" zeile="0" spalte="2" verwendbarkeit="1" punkte="7">Ô</Feld>
+        <Feld id="F3" zeile="0" spalte="3" verwendbarkeit="1" punkte="3">Ǒ</Feld>
+        <Feld id="F4" zeile="0" spalte="4" verwendbarkeit="1" punkte="4">Â</Feld>
+        <Feld id="F5" zeile="0" spalte="5" verwendbarkeit="1" punkte="4">O</Feld>
+        <Feld id="F6" zeile="0" spalte="6" verwendbarkeit="1" punkte="4">T</Feld>
+        <Feld id="F7" zeile="0" spalte="7" verwendbarkeit="1" punkte="6">T</Feld>
+        <Feld id="F8" zeile="0" spalte="8" verwendbarkeit="1" punkte="8">Ä</Feld>
+        <Feld id="F9" zeile="0" spalte="9" verwendbarkeit="1" punkte="8">Ä</Feld>
+        <Feld id="F10" zeile="1" spalte="0" verwendbarkeit="1" punkte="9">N</Feld>
+        <Feld id="F11" zeile="1" spalte="1" verwendbarkeit="1" punkte="3">N</Feld>
+        <Feld id="F12" zeile="1" spalte="2" verwendbarkeit="1" punkte="7">A</Feld>
+        <Feld id="F13" zeile="1" spalte="3" verwendbarkeit="1" punkte="3">N</Feld>
+        <Feld id="F14" zeile="1" spalte="4" verwendbarkeit="1" punkte="2">A</Feld>
+        <Feld id="F15" zeile="1" spalte="5" verwendbarkeit="1" punkte="4">Ä</Feld>
+        <Feld id="F16" zeile="1" spalte="6" verwendbarkeit="1" punkte="2">T</Feld>
+        <Feld id="F17" zeile="1" spalte="7" verwendbarkeit="1" punkte="2">A</Feld>
+        <Feld id="F18" zeile="1" spalte="8" verwendbarkeit="1" punkte="6">O</Feld>
+        <Feld id="F19" zeile="1" spalte="9" verwendbarkeit="1" punkte="9">Ò</Feld>
+        <Feld id="F20" zeile="2" spalte="0" verwendbarkeit="1" punkte="6">A</Feld>
+        <Feld id="F21" zeile="2" spalte="1" verwendbarkeit="1" punkte="2">Ô</Feld>
+        <Feld id="F22" zeile="2" spalte="2" verwendbarkeit="1" punkte="0">N</Feld>
+        <Feld id="F23" zeile="2" spalte="3" verwendbarkeit="1" punkte="9">A</Feld>
+        <Feld id="F24" zeile="2" spalte="4" verwendbarkeit="1" punkte="4">Ô</Feld>
+        <Feld id="F25" zeile="2" spalte="5" verwendbarkeit="1" punkte="9">N</Feld>
+        <Feld id="F26" zeile="2" spalte="6" verwendbarkeit="1" punkte="8">T</Feld>
+        <Feld id="F27" zeile="2" spalte="7" verwendbarkeit="1" punkte="3">N</Feld>
+        <Feld id="F28" zeile="2" spalte="8" verwendbarkeit="1" punkte="7">N</Feld>
+        <Feld id="F29" zeile="2" spalte="9" verwendbarkeit="1" punkte="2">A</Feld>
+        <Feld id="F30" zeile="3" spalte="0" verwendbarkeit="1" punkte="5">Ö</Feld>
+        <Feld id="F31" zeile="3" spalte="1" verwendbarkeit="1" punkte="4">N</Feld>
+        <Feld id="F32" zeile="3" spalte="2" verwendbarkeit="1" punkte="0">O</Feld>
+        <Feld id="F33" zeile="3" spalte="3" verwendbarkeit="1" punkte="6">Â</Feld>
+        <Feld id="F34" zeile="3" spalte="4" verwendbarkeit="1" punkte="3">A</Feld>
+        <Feld id="F35" zeile="3" spalte="5" verwendbarkeit="1" punkte="5">N</Feld>
+        <Feld id="F36" zeile="3" spalte="6" verwendbarkeit="1" punkte="9">A</Feld>
+        <Feld id="F37" zeile="3" spalte="7" verwendbarkeit="1" punkte="0">O</Feld>
+        <Feld id="F38" zeile="3" spalte="8" verwendbarkeit="1" punkte="5">T</Feld>
+        <Feld id="F39" zeile="3" spalte="9" verwendbarkeit="1" punkte="4">Ǒ</Feld>
+        <Feld id="F40" zeile="4" spalte="0" verwendbarkeit="1" punkte="5">Â</Feld>
+        <Feld id="F41" zeile="4" spalte="1" verwendbarkeit="1" punkte="0">A</Feld>
+        <Feld id="F42" zeile="4" spalte="2" verwendbarkeit="1" punkte="7">N</Feld>
+        <Feld id="F43" zeile="4" spalte="3" verwendbarkeit="1" punkte="7">O</Feld>
+        <Feld id="F44" zeile="4" spalte="4" verwendbarkeit="1" punkte="7">Ă</Feld>
+        <Feld id="F45" zeile="4" spalte="5" verwendbarkeit="1" punkte="2">T</Feld>
+        <Feld id="F46" zeile="4" spalte="6" verwendbarkeit="1" punkte="0">Ä</Feld>
+        <Feld id="F47" zeile="4" spalte="7" verwendbarkeit="1" punkte="8">Ă</Feld>
+        <Feld id="F48" zeile="4" spalte="8" verwendbarkeit="1" punkte="0">O</Feld>
+        <Feld id="F49" zeile="4" spalte="9" verwendbarkeit="1" punkte="7">O</Feld>
+        <Feld id="F50" zeile="5" spalte="0" verwendbarkeit="1" punkte="2">A</Feld>
+        <Feld id="F51" zeile="5" spalte="1" verwendbarkeit="1" punkte="3">N</Feld>
+        <Feld id="F52" zeile="5" spalte="2" verwendbarkeit="1" punkte="6">A</Feld>
+        <Feld id="F53" zeile="5" spalte="3" verwendbarkeit="1" punkte="5">N</Feld>
+        <Feld id="F54" zeile="5" spalte="4" verwendbarkeit="1" punkte="6">T</Feld>
+        <Feld id="F55" zeile="5" spalte="5" verwendbarkeit="1" punkte="5">O</Feld>
+        <Feld id="F56" zeile="5" spalte="6" verwendbarkeit="1" punkte="8">Ă</Feld>
+        <Feld id="F57" zeile="5" spalte="7" verwendbarkeit="1" punkte="9">T</Feld>
+        <Feld id="F58" zeile="5" spalte="8" verwendbarkeit="1" punkte="4">O</Feld>
+        <Feld id="F59" zeile="5" spalte="9" verwendbarkeit="1" punkte="4">Ò</Feld>
+        <Feld id="F60" zeile="6" spalte="0" verwendbarkeit="1" punkte="0">N</Feld>
+        <Feld id="F61" zeile="6" spalte="1" verwendbarkeit="1" punkte="1">A</Feld>
+        <Feld id="F62" zeile="6" spalte="2" verwendbarkeit="1" punkte="6">T</Feld>
+        <Feld id="F63" zeile="6" spalte="3" verwendbarkeit="1" punkte="3">A</Feld>
+        <Feld id="F64" zeile="6" spalte="4" verwendbarkeit="1" punkte="8">N</Feld>
+        <Feld id="F65" zeile="6" spalte="5" verwendbarkeit="1" punkte="6">O</Feld>
+        <Feld id="F66" zeile="6" spalte="6" verwendbarkeit="1" punkte="8">A</Feld>
+        <Feld id="F67" zeile="6" spalte="7" verwendbarkeit="1" punkte="4">T</Feld>
+        <Feld id="F68" zeile="6" spalte="8" verwendbarkeit="1" punkte="5">T</Feld>
+        <Feld id="F69" zeile="6" spalte="9" verwendbarkeit="1" punkte="8">Ö</Feld>
+        <Feld id="F70" zeile="7" spalte="0" verwendbarkeit="1" punkte="9">Ò</Feld>
+        <Feld id="F71" zeile="7" spalte="1" verwendbarkeit="1" punkte="6">T</Feld>
+        <Feld id="F72" zeile="7" spalte="2" verwendbarkeit="1" punkte="5">O</Feld>
+        <Feld id="F73" zeile="7" spalte="3" verwendbarkeit="1" punkte="8">O</Feld>
+        <Feld id="F74" zeile="7" spalte="4" verwendbarkeit="1" punkte="2">N</Feld>
+        <Feld id="F75" zeile="7" spalte="5" verwendbarkeit="1" punkte="7">Ă</Feld>
+        <Feld id="F76" zeile="7" spalte="6" verwendbarkeit="1" punkte="2">Á</Feld>
+        <Feld id="F77" zeile="7" spalte="7" verwendbarkeit="1" punkte="1">O</Feld>
+        <Feld id="F78" zeile="7" spalte="8" verwendbarkeit="1" punkte="1">O</Feld>
+        <Feld id="F79" zeile="7" spalte="9" verwendbarkeit="1" punkte="7">Ö</Feld>
+    </Dschungel>
+    <Schlangenarten>
+        <Schlangenart id="A0" punkte="10" anzahl="3">
+            <Zeichenkette>ANNA</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Distanz">
+                <Parameter wert="1" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+        <Schlangenart id="A1" punkte="1" anzahl="3">
+            <Zeichenkette>ANNA</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Distanz">
+                <Parameter wert="2" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+        <Schlangenart id="A2" punkte="10" anzahl="3">
+            <Zeichenkette>OTTO</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Distanz">
+                <Parameter wert="1" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+        <Schlangenart id="A3" punkte="1" anzahl="3">
+            <Zeichenkette>OTTO</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Distanz">
+                <Parameter wert="2" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+        <Schlangenart id="A4" punkte="30" anzahl="1">
+            <Zeichenkette>ANON</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Sprung">
+                <Parameter wert="2" />
+                <Parameter wert="1" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+        <Schlangenart id="A5" punkte="20" anzahl="1">
+            <Zeichenkette>NONA</Zeichenkette>
+            <Nachbarschaftsstruktur typ="Sprung">
+                <Parameter wert="2" />
+                <Parameter wert="1" />
+            </Nachbarschaftsstruktur>
+        </Schlangenart>
+    </Schlangenarten>
+    <Schlangen />
+</Schlangenjagd>

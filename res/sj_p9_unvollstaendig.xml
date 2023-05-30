@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Schlangenjagd SYSTEM "schlangenjagd.dtd" >
+<Schlangenjagd>
+	<Zeit einheit="h">
+		<Vorgabe>0.005</Vorgabe>
+	</Zeit>
+	<Dschungel zeilen="8" spalten="10" zeichen="ÁÀĂÂÄÓÒǑÔÖ">
+	</Dschungel>
+	<Schlangenarten>
+		<Schlangenart id="A0" punkte="10" anzahl="3">
+			<Zeichenkette>ANNA</Zeichenkette>
+			<Nachbarschaftsstruktur typ="Distanz">
+				<Parameter wert="1" />
+			</Nachbarschaftsstruktur>
+		</Schlangenart>
+		<Schlangenart id="A1" punkte="1" anzahl="3">
+			<Zeichenkette>ANNA</Zeichenkette>
+			<Nachbarschaftsstruktur typ="Distanz">
+				<Parameter wert="2" />
+			</Nachbarschaftsstruktur>
+		</Schlangenart>
+		<Schlangenart id="A2" punkte="10" anzahl="3">
+			<Zeichenkette>OTTO</Zeichenkette>
+			<Nachbarschaftsstruktur typ="Distanz">
+				<Parameter wert="1" />
+			</Nachbarschaftsstruktur>
+		</Schlangenart>
+		<Schlangenart id="A3" punkte="1" anzahl="3">
+			<Zeichenkette>OTTO</Zeichenkette>
+			<Nachbarschaftsstruktur typ="Distanz">
+				<Parameter wert="2" />
+			</Nachbarschaftsstruktur>
+		</Schlangenart>
+		<Schlangenart id="A4" punkte="30" anzahl="1">
+			<Zeichenkette>ANON</Zeichenkette>
+			<Nachbarschaftsstruktur typ="Sprung">
+				<Parameter wert="2" />
+				<Parameter wert="1" />
+			</Nachbarschaftsstruktur>
+		</Schlangenart>
+		<Schlangenart id="A5" punkte="20" anzahl="1">
+			<Zeichenkette>NONA</Zeichenkette>
+			<Nachbarschaftsstruktur typ="Sprung">
+				<Parameter wert="2" />
+				<Parameter wert="1" />
+			</Nachbarschaftsstruktur>
+		</Schlangenart>
+	</Schlangenarten>
+</Schlangenjagd>

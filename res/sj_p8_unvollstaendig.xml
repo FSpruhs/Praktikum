@@ -1,0 +1,41 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!DOCTYPE Schlangenjagd SYSTEM "schlangenjagd.dtd" >
+<Schlangenjagd>
+	<Zeit einheit="min">
+		<Vorgabe>0.2</Vorgabe>
+	</Zeit>
+	<Dschungel zeilen="8" spalten="8" zeichen="☀☁☂☃☄★☆☇☔☕☼☽☾♨♫⚘⚽⛄⛅⛆⛈⛐⛰⛵⛷⛸⛹⛺">
+	</Dschungel>
+	<Schlangenarten>
+		<Schlangenart id="A0" punkte="10" anzahl="1">
+			<Zeichenkette>PR☻PR♥</Zeichenkette>
+			<Nachbarschaftsstruktur typ="Distanz">
+				<Parameter wert="1" />
+			</Nachbarschaftsstruktur>
+		</Schlangenart>
+		<Schlangenart id="A1" punkte="10" anzahl="1">
+			<Zeichenkette>PR☺PR♡</Zeichenkette>
+			<Nachbarschaftsstruktur typ="Distanz">
+				<Parameter wert="1" />
+			</Nachbarschaftsstruktur>
+		</Schlangenart>
+		<Schlangenart id="A2" punkte="1" anzahl="6">
+			<Zeichenkette>☺☻</Zeichenkette>
+			<Nachbarschaftsstruktur typ="Distanz">
+				<Parameter wert="1" />
+			</Nachbarschaftsstruktur>
+		</Schlangenart>
+		<Schlangenart id="A3" punkte="3" anzahl="4">
+			<Zeichenkette>☺☻☺☻</Zeichenkette>
+			<Nachbarschaftsstruktur typ="Distanz">
+				<Parameter wert="1" />
+			</Nachbarschaftsstruktur>
+		</Schlangenart>
+		<Schlangenart id="A4" punkte="6" anzahl="2">
+			<Zeichenkette>☺☻☺☻☺☻</Zeichenkette>
+			<Nachbarschaftsstruktur typ="Distanz">
+				<Parameter wert="1" />
+			</Nachbarschaftsstruktur>
+		</Schlangenart>
+	</Schlangenarten>
+</Schlangenjagd>

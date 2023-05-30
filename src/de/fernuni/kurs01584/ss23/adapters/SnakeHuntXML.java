@@ -37,6 +37,12 @@ public class SnakeHuntXML {
     public static final String UNIT = "einheit";
     public static final String SUBMISSION = "Abgabe";
     public static final String SNAKE_HUNT = "Schlangenjagd";
+    public static final String MILLI_SECONDS = "ms";
+    public static final String SECONDS = "s";
+    public static final String MINUTES = "min";
+    public static final String HOURS = "h";
+    public static final String DAYS = "d";
+
 
 
 
