@@ -3,6 +3,7 @@ package de.fernuni.kurs01584.ss23.application.junglegenerator;
 import de.fernuni.kurs01584.ss23.domain.model.*;
 import de.fernuni.kurs01584.ss23.domain.model.neighborhoodstructure.NeighborhoodStructure;
 
+import java.time.Duration;
 import java.util.*;
 
 /**
@@ -14,6 +15,8 @@ import java.util.*;
  * All jungle fields have the value 1 and the usability 1.
  */
 public class SimpleJungleGenerator implements JungleGenerator{
+
+    private final static long DEFAULT_RUNTIME = 30;
 
     private final Jungle jungle;
     private final Map<SnakeTypeId, SnakeType> snakeTypes;
@@ -33,18 +36,31 @@ public class SimpleJungleGenerator implements JungleGenerator{
     }
 
     /**
-     * Generates the new jungle.
+     * Generates the new jungle. Aborts the generation when the default time is exceeded.
      */
     @Override
     public void generate() {
         boolean found = false;
+        long start = System.nanoTime();
         fillJungleWithNull();
-        while (!found) {
+        while (!found && inTime(start)) {
             resetJungle();
             found = startSearchNextJungleField();
         }
-        fillJungleWithDefaults();
-        jungle.setJungleFields(jungleFields);
+        processResult(found);
+    }
+
+    private void processResult(boolean found) {
+        if (found) {
+            fillJungleWithDefaults();
+            jungle.setJungleFields(jungleFields);
+        } else {
+            jungle.setJungleFields(null);
+        }
+    }
+
+    private boolean inTime(long start) {
+        return System.nanoTime() - start < Duration.ofSeconds(DEFAULT_RUNTIME).toNanos();
     }
 
     /**
