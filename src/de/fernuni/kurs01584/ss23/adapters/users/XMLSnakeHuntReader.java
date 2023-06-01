@@ -2,7 +2,6 @@ package de.fernuni.kurs01584.ss23.adapters.users;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -197,19 +196,19 @@ public class XMLSnakeHuntReader {
 	}
 
 	private long getDuration() {
-		return (long) Float.parseFloat(getDurationValue());
+		return (long) Double.parseDouble(getDurationValue());
 	}
 
 	private long getDurationMinutesToSeconds() {
-		return (long) (Float.parseFloat(getDurationValue()) * MINUTES_TO_SECOND_FACTOR);
+		return (long) (Double.parseDouble(getDurationValue()) * MINUTES_TO_SECOND_FACTOR);
 	}
 
 	private long getDurationHoursToSeconds() {
-		return (long) (Float.parseFloat(getDurationValue()) * HOURS_TO_SECOND_FACTOR);
+		return (long) (Double.parseDouble(getDurationValue()) * HOURS_TO_SECOND_FACTOR);
 	}
 
 	private long getDurationDaysToSeconds() {
-		return (long) (Double.parseDouble(new BigDecimal(getDurationValue()).toPlainString()) * DAYS_TO_SECOND_FACTOR);
+		return (long) (Double.parseDouble(getDurationValue()) * DAYS_TO_SECOND_FACTOR);
 	}
 
 	private String getDurationValue() {
